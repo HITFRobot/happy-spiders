@@ -3,11 +3,11 @@
 
 ## 快速导航
 
--[x] **[伯乐在线最新文章](http://blog.jobbole.com/all-posts/)**
+- [x] **[伯乐在线最新文章](http://blog.jobbole.com/all-posts/)**
 
 ## 详细说明
 
-### 伯乐在线最新文章 
+### [伯乐在线最新文章](https://github.com/neuclil/scrapy-spider-templete/tree/master/jobbole) 
 
 |  内容  |                 说明                 |
 | :--: | :--------------------------------: |
