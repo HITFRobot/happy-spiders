@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for house_price project
+# Scrapy settings for houseSpider project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'house_price'
+BOT_NAME = 'houseSpider'
 
-SPIDER_MODULES = ['house_price.spiders']
-NEWSPIDER_MODULE = 'house_price.spiders'
+SPIDER_MODULES = ['houseSpider.spiders']
+NEWSPIDER_MODULE = 'houseSpider.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'house_price (+http://www.yourdomain.com)'
+#USER_AGENT = 'houseSpider (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'house_price.middlewares.HousePriceSpiderMiddleware': 543,
+#    'houseSpider.middlewares.HousePriceSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'house_price.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'houseSpider.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'house_price.pipelines.HousePricePipeline': 300,
+#    'houseSpider.pipelines.HousePricePipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
