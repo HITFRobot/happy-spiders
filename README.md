@@ -8,7 +8,7 @@
 
 ## 详细说明
 
-### [伯乐在线——最新文章](https://github.com/conghuaicai/scrapy-spider-templete/tree/master/jobbole) 
+### [伯乐在线——最新文章](https://github.com/conghuaicai/scrapy-spider-templetes/tree/master/jobbole) 
 
 |   内容   |                 说明                 |
 | :----: | :--------------------------------: |
