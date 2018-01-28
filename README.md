@@ -26,9 +26,10 @@
 | 数据存储方式 |                  MySQL                  |
 |  爬取难度  |                  ⭐️⭐️                   |
 
-### [豆瓣网-movie top250] (https://movie.douban.com/top250)
+### [豆瓣网-movie top250](https://github.com/conghuaicai/scrapy-spider-templetes/tree/master/douban)
 |  内容   |                  说明                   |
 :----: | :-------------------------------------: |
 |  网址  | https://movie.douban.com/top250 |
+| 网页结构 |                 列表               |
 | 数据存储方式 |               JSON          |
 | 爬取难度 |                 :star:          |
