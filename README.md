@@ -26,3 +26,9 @@
 | 数据存储方式 |                  MySQL                  |
 |  爬取难度  |                  ⭐️⭐️                   |
 
+### [豆瓣网-movie top250] (https://movie.douban.com/top250)
+|  内容   |                  说明                   |
+:----: | :-------------------------------------: |
+|  网址  | https://movie.douban.com/top250 |
+| 数据存储方式 |               JSON          |
+| 爬取难度 |                 :star:          |
