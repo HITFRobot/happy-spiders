@@ -22,8 +22,8 @@ import requests
 import hashlib
 from bs4 import BeautifulSoup
 
-YUMDAMA_USERNAME='neuclil'
-YUMDAMA_PASSWORD='mJzUuKpy6TLfosmRvqgQJAxn'
+YUMDAMA_USERNAME=''
+YUMDAMA_PASSWORD=''
 CaptchaImagePath = QRImgPath = os.path.split(os.path.realpath(__file__))[0] + os.sep + 'captcha.jpg'
 
 # 请求对象
