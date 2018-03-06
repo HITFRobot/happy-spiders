@@ -57,7 +57,7 @@ class JsonExporterPipeline(object):
 
 class MysqlPipeline(object):
     def __init__(self) -> None:
-        self.conn = MySQLdb.connect('120.76.28.16', 'root', 'icesices1515', 'jobbole',  charset="utf8", use_unicode=True)
+        self.conn = MySQLdb.connect('', '', '', '',  charset="utf8", use_unicode=True)
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):
