@@ -95,10 +95,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'lagou'))
 
 # MYSQL SETTINGS
-MYSQL_HOST = "120.78.163.237"
-MYSQL_DBNAME = "lagou"
-MYSQL_USER = "root"
-MYSQL_PASSWORD = "123456"
+MYSQL_HOST = ""
+MYSQL_DBNAME = ""
+MYSQL_USER = ""
+MYSQL_PASSWORD = ""
 
 SQL_DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 SQL_DATE_FORMAT = "%Y-%m-%d"
