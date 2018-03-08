@@ -11,7 +11,6 @@ from scrapy.loader import ItemLoader
 class GubaSpider(scrapy.Spider):
     name = 'guba'
 
-    # allowed domains
     allowed_domains = ['http://guba.eastmoney.com/']
     start_urls = ['http://guba.eastmoney.com/list,300133_1.html']
     current_page = 1
