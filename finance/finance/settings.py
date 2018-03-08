@@ -65,12 +65,13 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'finance.pipelines.MysqlTwistedPipline': 300,
+   'finance.pipelines.MysqlTwistedPipline': 400,
+   'finance.pipelines.MyJsonPipline': 400
 }
 FILES_URLS_FIELD ='front_image_url'
 import os
-current_dir = os.path.abspath(os.path.dirname(__file__))
-FILES_STORE = os.path.join(current_dir, 'pdfs')
+CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+FILES_STORE = os.path.join(CURRENT_DIR, 'pdfs')
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

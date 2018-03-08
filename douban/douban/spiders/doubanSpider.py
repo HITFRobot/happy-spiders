@@ -4,12 +4,16 @@ from scrapy.http import Request
 from ..items import DoubanMoiveItem
 from urllib import parse
 
+
 __author__ = 'HIT Lianjie Sun'
 
 
 class DoubanSpider(scrapy.Spider):
     """
         爬取豆瓣top250电影，以json文件形式存储
+        关于Spider中from_crawler，_set_crawler的理解
+        框架一旦启动，就会创建crawler对象
+        任何一个spider都要绑定crawler对象，这个crawler对象贯穿整个scrapy框架
     """
     name = 'doubanSpider'
     allowed_domains = ['douban.com']

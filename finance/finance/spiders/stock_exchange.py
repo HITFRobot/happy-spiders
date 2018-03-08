@@ -4,9 +4,10 @@ from scrapy.http import Request
 from urllib import parse
 import re
 import os
-from items import SEAItemLoader, StockExchangeAnnouncement
+
+from ..items import SEAItemLoader, StockExchangeAnnouncement
 from datetime import datetime
-from utils.common import get_md5
+from ..utils.common import get_md5
 
 
 class StockExchangeSpider(scrapy.Spider):

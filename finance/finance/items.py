@@ -9,7 +9,7 @@ import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
 import datetime
-from settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
+from .settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
 
 
 class FinanceItem(scrapy.Item):
@@ -64,3 +64,12 @@ class StockExchangeAnnouncement(scrapy.Item):
             self['crawl_time'].strftime(SQL_DATETIME_FORMAT),
         )
         return insert_sql, params
+
+
+class HuaceItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    title = scrapy.Field()
+    content = scrapy.Field()
+    time = scrapy.Field()
+    comment = scrapy.Field(output_processor=Join(separator='###'))
