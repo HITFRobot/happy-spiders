@@ -28,7 +28,7 @@ class SEAItemLoader(ItemLoader):
 
 
 # Unix时间戳(Unix timestamp)转换
-def date_convert_two(value):
+def utime_convert(value):
     format_string = "%Y-%m-%d %H:%M:%S"
     time_array = time.localtime(value / 1000)
     str_date = time.strftime(format_string, time_array)
@@ -79,6 +79,6 @@ class HuaceItem(scrapy.Item):
 
 class IceItem(scrapy.Item):
     title = scrapy.Field()
-    create_time = scrapy.Field(input_processor=MapCompose(date_convert_two))
+    create_time = scrapy.Field(input_processor=MapCompose(utime_convert))
     content = scrapy.Field()
     author_name = scrapy.Field()
