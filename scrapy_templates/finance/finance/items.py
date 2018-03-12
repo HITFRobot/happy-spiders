@@ -18,20 +18,12 @@ class FinanceItem(scrapy.Item):
     pass
 
 
-class SEAItemLoader(ItemLoader):
-    default_output_processor = TakeFirst()
-
-
 def remove_space(value):
     return value.strip()
 
 
-def date_convert(value):
-    try:
-        date = datetime.datetime.strptime(value.split('：')[1].strip(), '%Y-%m-%d').date()
-    except:
-        date = datetime.datetime().date()
-    return date
+class SEAItemLoader(ItemLoader):
+    default_output_processor = TakeFirst()
 
 
 class StockExchangeAnnouncement(scrapy.Item):
@@ -41,7 +33,8 @@ class StockExchangeAnnouncement(scrapy.Item):
         input_processor=MapCompose(remove_space),
     )
     publish_time = scrapy.Field(
-        input_processor=MapCompose(remove_space, date_convert),
+        input_processor=MapCompose(remove_space,
+                                   lambda x: datetime.datetime.strptime(x.split('：')[1].strip(), '%Y-%m-%d').date()),
     )
     # number = scrapy.Field()
     content = scrapy.Field(
