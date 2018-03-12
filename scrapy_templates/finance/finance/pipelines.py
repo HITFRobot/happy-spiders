@@ -25,10 +25,10 @@ class MysqlTwistedPipline(object):
     @classmethod
     def from_settings(cls, settings):
         dbparms = dict(
-            host = settings["MYSQL_HOST"],
-            db = settings["MYSQL_DBNAME"],
-            user = settings["MYSQL_USER"],
-            passwd = settings["MYSQL_PASSWORD"],
+            host=settings["MYSQL_HOST"],
+            db=settings["MYSQL_DBNAME"],
+            user=settings["MYSQL_USER"],
+            passwd=settings["MYSQL_PASSWORD"],
             charset='utf8',
             cursorclass=MySQLdb.cursors.DictCursor,
             use_unicode=True,
@@ -53,7 +53,8 @@ class MysqlTwistedPipline(object):
 
 class MyJsonPipline(object):
     def __init__(self, current_dir):
-        self.file = open(os.path.join(current_dir, 'json/huace.json'), 'a', encoding='utf-8')
+        self.huace_file = open(os.path.join(current_dir, 'json/huace.json'), 'a', encoding='utf-8')
+        self.xueqiu_file = open(os.path.join(current_dir, 'json/xueqiu.json'), 'w', encoding='utf-8')
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -69,8 +70,13 @@ class MyJsonPipline(object):
     def process_item(self, item, spider):
         if spider.name == 'guba':
             item_json = json.dumps(dict(item), ensure_ascii=False) + '\n'
-            self.file.write(item_json)
+            self.huace_file.write(item_json)
+            return item
+        if spider.name == 'xueqiu':
+            item_json = json.dumps(dict(item), ensure_ascii=False) + '\n'
+            self.xueqiu_file.write(item_json)
             return item
 
     def close_spider(self, spider):
-        self.file.close()
+        self.huace_file.close()
+        self.xueqiu_file.close()

@@ -6,6 +6,7 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+import time
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
 import datetime
@@ -24,6 +25,14 @@ def remove_space(value):
 
 class SEAItemLoader(ItemLoader):
     default_output_processor = TakeFirst()
+
+
+# Unix时间戳(Unix timestamp)转换
+def date_convert_two(value):
+    format_string = "%Y-%m-%d %H:%M:%S"
+    time_array = time.localtime(value / 1000)
+    str_date = time.strftime(format_string, time_array)
+    return str_date
 
 
 class StockExchangeAnnouncement(scrapy.Item):
@@ -66,3 +75,10 @@ class HuaceItem(scrapy.Item):
     content = scrapy.Field()
     time = scrapy.Field()
     comment = scrapy.Field(output_processor=Join(separator='###'))
+
+
+class IceItem(scrapy.Item):
+    title = scrapy.Field()
+    create_time = scrapy.Field(input_processor=MapCompose(date_convert_two))
+    content = scrapy.Field()
+    author_name = scrapy.Field()
