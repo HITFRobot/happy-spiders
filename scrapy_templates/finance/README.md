@@ -5,7 +5,7 @@
 
 - [x] [**深圳证券交易所公告**](http://www.szse.cn/main/disclosure/bsgg_front/)
 - [ ] [**上海证券交易所公告**](http://www.sse.com.cn/disclosure/announcement/general/)
-- [ ] [**巨潮咨询**](http://www.cninfo.com.cn/cninfo-new/index)
+- [x] [**巨潮咨询**](http://www.cninfo.com.cn/cninfo-new/index)
 - [ ] [**新浪财经网**](http://finance.sina.com.cn/stock/newstock/)
 - [x] [**雪球新闻**](https://xueqiu.com/)
 - [ ] [**和讯网新闻**](http://roll.hexun.com/)
