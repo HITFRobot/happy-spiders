@@ -10,7 +10,7 @@ import time
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
 import datetime
-from .settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
+from settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
 
 
 class FinanceItem(scrapy.Item):
@@ -82,3 +82,11 @@ class IceItem(scrapy.Item):
     create_time = scrapy.Field(input_processor=MapCompose(utime_convert))
     content = scrapy.Field()
     author_name = scrapy.Field()
+
+
+class CNInfoItem(scrapy.Item):
+    site = scrapy.Field()
+    files_urls_field = scrapy.Field()
+    name = scrapy.Field()
+    date = scrapy.Field()
+    title = scrapy.Field()

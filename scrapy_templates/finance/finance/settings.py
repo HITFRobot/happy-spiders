@@ -65,11 +65,10 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    #'finance.pipelines.MysqlTwistedPipline': 400,
-   #'finance.pipelines.MyJsonPipline': 400
+   'finance.pipelines.PDFDownloadPipeline': 400
 }
-FILES_URLS_FIELD = 'front_image_url'
-import os
 
+import os
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 FILES_STORE = os.path.join(CURRENT_DIR, 'pdfs')
 
