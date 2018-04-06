@@ -5,3 +5,4 @@
 
 - [scrapy_templates](https://github.com/conghuaicai/happy-spiders/tree/master/scrapy_templates)——基于**scrapy**框架编写的，爬取各大主流网站的模板代码。
 - [tools](https://github.com/conghuaicai/happy-spiders/tree/master/tools)——爬虫涉及到的相关工具。
+- [documents](https://github.com/conghuaicai/happy-spiders/tree/master/documents)——爬虫知识相关的文档和书籍。
