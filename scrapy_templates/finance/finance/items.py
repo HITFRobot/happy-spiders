@@ -10,7 +10,7 @@ import time
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
 import datetime
-from .settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
+from settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
 
 
 class FinanceItem(scrapy.Item):
@@ -19,24 +19,16 @@ class FinanceItem(scrapy.Item):
     pass
 
 
-class SEAItemLoader(ItemLoader):
-    default_output_processor = TakeFirst()
-
-
 def remove_space(value):
     return value.strip()
 
 
-def date_convert(value):
-    try:
-        date = datetime.datetime.strptime(value.split('：')[1].strip(), '%Y-%m-%d').date()
-    except:
-        date = datetime.datetime().date()
-    return date
+class SEAItemLoader(ItemLoader):
+    default_output_processor = TakeFirst()
 
 
 # Unix时间戳(Unix timestamp)转换
-def date_convert_two(value):
+def utime_convert(value):
     format_string = "%Y-%m-%d %H:%M:%S"
     time_array = time.localtime(value / 1000)
     str_date = time.strftime(format_string, time_array)
@@ -50,7 +42,8 @@ class StockExchangeAnnouncement(scrapy.Item):
         input_processor=MapCompose(remove_space),
     )
     publish_time = scrapy.Field(
-        input_processor=MapCompose(remove_space, date_convert),
+        input_processor=MapCompose(remove_space,
+                                   lambda x: datetime.datetime.strptime(x.split('：')[1].strip(), '%Y-%m-%d').date()),
     )
     # number = scrapy.Field()
     content = scrapy.Field(
@@ -86,6 +79,14 @@ class HuaceItem(scrapy.Item):
 
 class IceItem(scrapy.Item):
     title = scrapy.Field()
-    create_time = scrapy.Field(input_processor=MapCompose(date_convert_two))
+    create_time = scrapy.Field(input_processor=MapCompose(utime_convert))
     content = scrapy.Field()
     author_name = scrapy.Field()
+
+
+class CNInfoItem(scrapy.Item):
+    site = scrapy.Field()
+    files_urls_field = scrapy.Field()
+    name = scrapy.Field()
+    date = scrapy.Field()
+    title = scrapy.Field()

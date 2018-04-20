@@ -15,7 +15,7 @@ class StockExchangeSpider(scrapy.Spider):
     深圳证券交易所公告信息页面解析类
     http://www.szse.cn/main/disclosure/bsgg_front/
     """
-    name = 'stock_exchange'
+    name = 'sz_stock_exchange'
     # allowed_domains = ['http://www.szse.cn/']
     start_urls = ['http://www.szse.cn/main/disclosure/bsgg_front/']
     current_page = 1

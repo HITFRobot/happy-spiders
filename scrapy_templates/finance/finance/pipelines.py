@@ -6,9 +6,11 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import MySQLdb.cursors
 import MySQLdb
+from scrapy.pipelines.files import FilesPipeline
 from twisted.enterprise import adbapi
 import os
 import json
+import scrapy
 
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 
@@ -16,6 +18,16 @@ BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 class FinancePipeline(object):
     def process_item(self, item, spider):
         return item
+
+
+class PDFDownloadPipeline(FilesPipeline):
+    def get_media_requests(self, item, info):
+        yield scrapy.Request(url=item['files_urls_field'], meta={'item': item})
+
+    def file_path(self, request, response=None, info=None):
+        item = request.meta['item']
+        path = '%s/%s_%s_%s.pdf' %(item['site'], item['name'], item['date'], item['title'])
+        return path
 
 
 class MysqlTwistedPipline(object):
