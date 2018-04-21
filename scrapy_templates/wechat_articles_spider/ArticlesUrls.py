@@ -5,6 +5,7 @@ import os
 import re
 import requests
 from requests.cookies import cookielib
+import time
 
 
 class ArticlesUrls(object):
@@ -55,7 +56,6 @@ class ArticlesUrls(object):
             if self.s.get(url=profile_url, headers=self.headers, params=self.params).status_code == 200:
                 return True
             else:
-                print('dadasd')
                 self.params.pop('t')
                 self.params.pop('token')
                 self.s.cookies = None
@@ -94,7 +94,8 @@ class ArticlesUrls(object):
                 for c in self.s.cookies}, new_cookie_jar
         )
 
-        new_cookie_jar.save('cookies/' + username + '.txt', ignore_discard=True, ignore_expires=True)
+        new_cookie_jar.save(os.path.join(os.path.dirname(__file__), 'cookies/' + username + '.txt'),
+                            ignore_discard=True, ignore_expires=True)
 
     def __read_cookie(self, username):
         """
@@ -105,7 +106,7 @@ class ArticlesUrls(object):
         load_cookiejar = cookielib.LWPCookieJar()
         try:
             load_cookiejar.load(
-                'cookies/' + username + '.txt',
+                os.path.join(os.path.dirname(__file__), 'cookies/' + username + '.txt'),
                 ignore_discard=True
             )
             load_cookies = requests.utils.dict_from_cookiejar(load_cookiejar)
@@ -120,13 +121,13 @@ class ArticlesUrls(object):
         :param username:
         :return:
         """
-        with open('tokens/' + username + '.txt', 'w') as fp:
+        with open(os.path.join(os.path.dirname(__file__), 'tokens/' + username + '.txt'), 'w') as fp:
             fp.write(self.params['token'])
 
     def __read_token(self, username):
 
         try:
-            with open('tokens/' + username + '.txt', 'r') as fp:
+            with open(os.path.join(os.path.dirname(__file__), 'tokens/' + username + '.txt'), 'r') as fp:
                 self.params['token'] = re.sub('\s', '', fp.read())
                 return True
         except Exception:
@@ -224,22 +225,21 @@ class ArticlesUrls(object):
             print('please try again')
             self.__startlogin(username, password)
 
-    def articles_nums(self, nickname):
+    def articles_nums(self, official_info):
         """
         获取公众号的总共发布的文章数量
         :param nickname:
         :return:
         """
-        self.__versify_str(nickname, 'nickname')
         try:
-            return self.__get_articles_data(nickname, begin='0')['app_msg_cnt']
+            return self.__get_articles_data(official_info, begin='0')['app_msg_cnt']
         except Exception:
             raise Exception(u'公众号名称错误或cookie、token错误，请重新输入')
 
-    def articles(self, nickname, begin=0, count=5):
+    def articles(self, official_info, begin=0, count=5):
         """
         获取公众号每一页所对应的文章信息
-        :param nickname:
+        :param official_info:
         :param begin:
         :param count:
         :return:
@@ -255,9 +255,8 @@ class ArticlesUrls(object):
                     'title': 文章标题,
                     'update_time': 文章更新时间戳
         """
-        self.__versify_str(nickname, 'nickname')
         try:
-            return self.__get_articles_data(nickname, begin=str(begin), count=str(count))['app_msg_list']
+            return self.__get_articles_data(official_info, begin=str(begin), count=str(count))['app_msg_list']
         except Exception:
             raise Exception(u'公众号名称错误或者cookie、token错误，请重新输入')
 
@@ -321,15 +320,20 @@ class ArticlesUrls(object):
             'count': str(count)
         }
         self.params.update(params)
+        flag = True
+        while flag:
+            try:
+                # 返回与输入公众号名称最接近的公众号信息
+                official = self.s.get(url=search_url, headers=self.headers, params=self.params).ｉjson()
+                if official['err_msg'] == 'freq contorl':
+                    print('操作太频繁，请稍后再试，等10分钟')
+                    time.sleep(600)
+                else:
+                    return official['list'][0]
+            except Exception:
+                raise Exception(u'公众号名称错误或cookie、token错误，请重新输入')
 
-        try:
-            # 返回与输入公众号名称最接近的公众号信息
-            official = self.s.get(url=search_url, headers=self.headers, params=self.params).ｉjson()
-            return official['list'][0]
-        except Exception:
-            raise Exception(u'公众号名称错误或cookie、token错误，请重新输入')
-
-    def __get_articles_data(self, nickname, begin, count='5', type_='9', action='list_ex', query=None):
+    def __get_articles_data(self, official_info, begin, count='5', type_='9', action='list_ex', query=None):
         """
         获取公众号文章的一些信息
         :param nickname:
@@ -355,7 +359,6 @@ class ArticlesUrls(object):
 
         try:
             # 获取公众号的fakeid
-            official_info = self.official_info(nickname)
             self.params['fakeid'] = official_info['fakeid']
         except Exception:
             raise Exception(u'公众号名称错误或cookie、token错误，请重新输入')
@@ -374,5 +377,7 @@ class ArticlesUrls(object):
         return data
 
 if __name__ == '__main__':
-    articlesUrls = ArticlesUrls(username='sun1252058937@163.com', password='')
-    print(articlesUrls.articles(u'杨毅侃球'))
+    articlesUrls = ArticlesUrls(username='sun1252058937@163.com', password='hong1252058937')
+    # 获取公众号的fakeId
+    official_info = articlesUrls.official_info('杨毅侃球')
+    articlesUrls.articles_nums(official_info)
