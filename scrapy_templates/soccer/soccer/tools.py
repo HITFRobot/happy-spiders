@@ -29,7 +29,10 @@ def extract_data(text, repl, final_time=None):
     visit = cc.group(2)
     home = re.sub(r"'", '"', home)
     visit = re.sub(r"'", '"', visit)
-    home_data = json.loads(home)
+    try:
+        home_data = json.loads(home)
+    except json.decoder.JSONDecodeError:
+        print(home)
     visit_data = json.loads(visit)
 
     """
@@ -165,11 +168,11 @@ def getSiheyi(html):
             rangqiu_table[int(tds[0].text.split("'")[0].strip())] = a
             sort_table[int(tds[0].text.split("'")[0].strip())] = tds[1].text.strip()
     max_key = max(rangqiu_table.keys())
-    for i in range(1, max_key):
+    for i in range(50, max_key):
         if i not in rangqiu_table:
             rangqiu_table[i] = rangqiu_table[i - 1]
 
-    for i in range(1, max_key):
+    for i in range(50, max_key):
         if i not in sort_table:
             sort_table[i] = sort_table[i - 1]
 
@@ -187,7 +190,7 @@ def getSiheyi(html):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             daxiaoqiu_table[int(tds[0].text.split("'")[0].strip())] = a
     max_key = max(daxiaoqiu_table.keys())
-    for i in range(1, max_key):
+    for i in range(50, max_key):
         if i not in daxiaoqiu_table:
             daxiaoqiu_table[i] = daxiaoqiu_table[i - 1]
     # 得到胜平复表
@@ -204,7 +207,7 @@ def getSiheyi(html):
             shengpingfu_table[int(tds[0].text.split("'")[0].strip())] = a
 
     max_key = max(shengpingfu_table.keys())
-    for i in range(1, max_key):
+    for i in range(50, max_key):
         if i not in shengpingfu_table:
             shengpingfu_table[i] = shengpingfu_table[i - 1]
 
@@ -222,7 +225,7 @@ def getSiheyi(html):
     return [zhudui_jinqiu, kedui_jinqiu, zhudui_qiucha, kedui_qiucha, rangqiu_table, daxiaoqiu_table, shengpingfu_table]
 
 
-def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, path):
+def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, name):
     """
     将现场数据写入excel
     :param return_data:
@@ -230,7 +233,7 @@ def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, pa
     :param path:
     :return:
     """
-    savepath = os.path.join(os.path.dirname(__file__), 'excel/test.xlsx')
+    savepath = os.path.join(os.path.dirname(__file__), 'excel/' + name)
 
     # 创建工作簿
     workbook = xlsxwriter.Workbook(filename=savepath)
@@ -433,10 +436,6 @@ def getpai_event(race_events, max_minute, zhudui_name, kedui_name):
         kedui_hongpai[i + 1] = kedui_hongpai[i + 1] + kedui_hongpai[i]
     for i in range(1, max_minute + 1):
         hongpaicha[i] = zhudui_hongpai[i] - kedui_hongpai[i]
-
-    print(zhudui_hongpai)
-    print(kedui_hongpai)
-    print(hongpaicha)
 
     return [zhudui_hongpai, kedui_hongpai, hongpaicha]
 
