@@ -27,13 +27,30 @@ def extract_data(text, repl, final_time=None):
     cc = re.search(r'(^\{.+\}\}),(.+})', bb)
     home = cc.group(1)
     visit = cc.group(2)
+
+    def _change(mathed):
+        return mathed.group()[0] + '$' + mathed.group()[-1]
+
+    home = re.sub(r"([a-zA-Z]'[a-zA-Z])", _change, home)
     home = re.sub(r"'", '"', home)
+    home = re.sub(r'\$', "'", home)
+
+    visit = re.sub(r"([a-zA-Z]'[a-zA-Z])", _change, visit)
     visit = re.sub(r"'", '"', visit)
+    visit = re.sub(r'\$', "'", visit)
+
     try:
         home_data = json.loads(home)
     except json.decoder.JSONDecodeError:
-        print(home)
-    visit_data = json.loads(visit)
+        with open('error_home.txt', mode='w', encoding='utf-8') as fp:
+            fp.write(home)
+        print('home' + home)
+    try:
+        visit_data = json.loads(visit)
+    except json.decoder.JSONDecodeError:
+        with open('error_visit.txt', mode='w', encoding='utf-8') as fp:
+            fp.write(home)
+        print('visit' + visit)
 
     """
     进攻数据
@@ -49,6 +66,7 @@ def extract_data(text, repl, final_time=None):
 
     dict_data = dict()
     dict_data['name'] = home_data['name']
+    dict_data[0] = 0
     for item in home_data['data']:
         if item['x'] not in dict_data:
             dict_data[item['x']] = item['y']
@@ -59,6 +77,7 @@ def extract_data(text, repl, final_time=None):
     return_data.append(dict_data)
 
     dict_data = dict()
+    dict_data[0] = 0
     dict_data['name'] = visit_data['name']
     for item in visit_data['data']:
         if item['x'] not in dict_data:
@@ -91,7 +110,7 @@ def main_extract(text):
     shezhengcha = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         home_dict_data[i] = return_data['shezheng'][0][i] - return_data['shezheng'][1][i]
         visit_dict_data[i] = return_data['shezheng'][1][i] - return_data['shezheng'][0][i]
     shezhengcha.append(home_dict_data)
@@ -101,15 +120,17 @@ def main_extract(text):
     shezhenglv = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         if (return_data['shezheng'][0][i] + return_data['shepian'][0][i]) == 0:
             home_dict_data[i] = 'div/0'
         else:
-            home_dict_data[i] = round(return_data['shezheng'][0][i] / (return_data['shezheng'][0][i] + return_data['shepian'][0][i]), 2)
+            home_dict_data[i] = round(
+                return_data['shezheng'][0][i] / (return_data['shezheng'][0][i] + return_data['shepian'][0][i]), 2)
         if (return_data['shezheng'][1][i] + return_data['shepian'][1][i]) == 0:
             visit_dict_data[i] = 'div/0'
         else:
-            visit_dict_data[i] = round(return_data['shezheng'][1][i] / (return_data['shezheng'][1][i] + return_data['shepian'][1][i]), 2)
+            visit_dict_data[i] = round(
+                return_data['shezheng'][1][i] / (return_data['shezheng'][1][i] + return_data['shepian'][1][i]), 2)
     shezhenglv.append(home_dict_data)
     shezhenglv.append(visit_dict_data)
     return_data['shezhenglv'] = shezhenglv
@@ -117,7 +138,7 @@ def main_extract(text):
     weixianbi = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         if return_data['weixian'][1][i] == 0:
             home_dict_data[i] = 'div/0'
         else:
@@ -133,7 +154,7 @@ def main_extract(text):
     jingongbi = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         if return_data['jingong'][1][i] == 0:
             home_dict_data[i] = 'div/0'
         else:
@@ -168,11 +189,13 @@ def getSiheyi(html):
             rangqiu_table[int(tds[0].text.split("'")[0].strip())] = a
             sort_table[int(tds[0].text.split("'")[0].strip())] = tds[1].text.strip()
     max_key = max(rangqiu_table.keys())
-    for i in range(50, max_key):
+    rangqiu_table[0] = ['0', '0', '0']
+    sort_table[0] = '0:0'
+    for i in range(1, max_key):
         if i not in rangqiu_table:
             rangqiu_table[i] = rangqiu_table[i - 1]
 
-    for i in range(50, max_key):
+    for i in range(1, max_key):
         if i not in sort_table:
             sort_table[i] = sort_table[i - 1]
 
@@ -190,7 +213,8 @@ def getSiheyi(html):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             daxiaoqiu_table[int(tds[0].text.split("'")[0].strip())] = a
     max_key = max(daxiaoqiu_table.keys())
-    for i in range(50, max_key):
+    daxiaoqiu_table[0] = ['0', '0', '0']
+    for i in range(1, max_key):
         if i not in daxiaoqiu_table:
             daxiaoqiu_table[i] = daxiaoqiu_table[i - 1]
     # 得到胜平复表
@@ -205,9 +229,9 @@ def getSiheyi(html):
         a.append(tds[4].text.strip())
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             shengpingfu_table[int(tds[0].text.split("'")[0].strip())] = a
-
+    shengpingfu_table[0] = ['0', '0', '0']
     max_key = max(shengpingfu_table.keys())
-    for i in range(50, max_key):
+    for i in range(1, max_key):
         if i not in shengpingfu_table:
             shengpingfu_table[i] = shengpingfu_table[i - 1]
 
@@ -241,7 +265,7 @@ def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, na
 
     # 生成第一行
     row_header = ['赛事', '开赛时间', '角球初盘', '大小球初盘', '亚盘初盘', '半场比分', '全场比分', '', '']
-    for i in range(50, final_time+1):
+    for i in range(50, final_time + 1):
         row_header.append(i)
     row = 0
     column = 0
@@ -318,7 +342,7 @@ def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, na
         {'border': 1, 'align': 'center', 'valign': 'vcenter'})
 
     column = 7
-    worksheet.merge_range(row, column, row+8, column, '四合一', cell_format=formater)
+    worksheet.merge_range(row, column, row + 8, column, '四合一', cell_format=formater)
 
     row = write_50_final_zhang_siheyi(worksheet, shengpingfu_table, column=9, row=row)
 
@@ -425,11 +449,19 @@ def getpai_event(race_events, max_minute, zhudui_name, kedui_name):
     for pai in pai_infor:
         if zhudui_name in pai:
             time = pai.split("'")[0]
-            zhudui_hongpai[int(time)] = 1
+            if '+'in time:
+                real_time = int(time.split('+')[0])+int(time.split('+')[1])
+                zhudui_hongpai[real_time] = 1
+            else:
+                zhudui_hongpai[int(time)] = 1
 
         if kedui_name in pai:
             time = pai.split("'")[0]
-            zhudui_hongpai[int(time)] = 1
+            if '+'in time:
+                real_time = int(time.split('+')[0])+int(time.split('+')[1])
+                kedui_hongpai[real_time] = 1
+            else:
+                kedui_hongpai[int(time)] = 1
 
     for i in range(1, max_minute):
         zhudui_hongpai[i + 1] = zhudui_hongpai[i + 1] + zhudui_hongpai[i]
