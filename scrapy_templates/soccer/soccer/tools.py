@@ -91,7 +91,7 @@ def main_extract(text):
     shezhengcha = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         home_dict_data[i] = return_data['shezheng'][0][i] - return_data['shezheng'][1][i]
         visit_dict_data[i] = return_data['shezheng'][1][i] - return_data['shezheng'][0][i]
     shezhengcha.append(home_dict_data)
@@ -101,15 +101,17 @@ def main_extract(text):
     shezhenglv = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         if (return_data['shezheng'][0][i] + return_data['shepian'][0][i]) == 0:
             home_dict_data[i] = 'div/0'
         else:
-            home_dict_data[i] = round(return_data['shezheng'][0][i] / (return_data['shezheng'][0][i] + return_data['shepian'][0][i]), 2)
+            home_dict_data[i] = round(
+                return_data['shezheng'][0][i] / (return_data['shezheng'][0][i] + return_data['shepian'][0][i]), 2)
         if (return_data['shezheng'][1][i] + return_data['shepian'][1][i]) == 0:
             visit_dict_data[i] = 'div/0'
         else:
-            visit_dict_data[i] = round(return_data['shezheng'][1][i] / (return_data['shezheng'][1][i] + return_data['shepian'][1][i]), 2)
+            visit_dict_data[i] = round(
+                return_data['shezheng'][1][i] / (return_data['shezheng'][1][i] + return_data['shepian'][1][i]), 2)
     shezhenglv.append(home_dict_data)
     shezhenglv.append(visit_dict_data)
     return_data['shezhenglv'] = shezhenglv
@@ -117,7 +119,7 @@ def main_extract(text):
     weixianbi = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         if return_data['weixian'][1][i] == 0:
             home_dict_data[i] = 'div/0'
         else:
@@ -133,7 +135,7 @@ def main_extract(text):
     jingongbi = []
     home_dict_data = {'name': return_data['shezheng'][0]['name']}
     visit_dict_data = {'name': return_data['shezheng'][1]['name']}
-    for i in range(final_time+1):
+    for i in range(final_time + 1):
         if return_data['jingong'][1][i] == 0:
             home_dict_data[i] = 'div/0'
         else:
@@ -167,6 +169,9 @@ def getSiheyi(html):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             rangqiu_table[int(tds[0].text.split("'")[0].strip())] = a
             sort_table[int(tds[0].text.split("'")[0].strip())] = tds[1].text.strip()
+
+    rangqiu_table[0]=0
+    sort_table[0] = 0
     max_key = max(rangqiu_table.keys())
     for i in range(50, max_key):
         if i not in rangqiu_table:
@@ -178,7 +183,6 @@ def getSiheyi(html):
 
     # 得到大小球表
     daxiaoqiu_table = {}
-
     daxiaoqiu_aa = soup.select('#sp_daxiao')
     daxiaoqiu_bb = daxiaoqiu_aa[0].select('tr')
     for tr in daxiaoqiu_bb:
@@ -190,6 +194,7 @@ def getSiheyi(html):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             daxiaoqiu_table[int(tds[0].text.split("'")[0].strip())] = a
     max_key = max(daxiaoqiu_table.keys())
+    daxiaoqiu_table[0] = 0
     for i in range(50, max_key):
         if i not in daxiaoqiu_table:
             daxiaoqiu_table[i] = daxiaoqiu_table[i - 1]
@@ -207,6 +212,7 @@ def getSiheyi(html):
             shengpingfu_table[int(tds[0].text.split("'")[0].strip())] = a
 
     max_key = max(shengpingfu_table.keys())
+    shengpingfu_table[0] = 0
     for i in range(50, max_key):
         if i not in shengpingfu_table:
             shengpingfu_table[i] = shengpingfu_table[i - 1]
@@ -241,7 +247,7 @@ def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, na
 
     # 生成第一行
     row_header = ['赛事', '开赛时间', '角球初盘', '大小球初盘', '亚盘初盘', '半场比分', '全场比分', '', '']
-    for i in range(50, final_time+1):
+    for i in range(50, final_time + 1):
         row_header.append(i)
     row = 0
     column = 0
@@ -318,7 +324,7 @@ def write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, na
         {'border': 1, 'align': 'center', 'valign': 'vcenter'})
 
     column = 7
-    worksheet.merge_range(row, column, row+8, column, '四合一', cell_format=formater)
+    worksheet.merge_range(row, column, row + 8, column, '四合一', cell_format=formater)
 
     row = write_50_final_zhang_siheyi(worksheet, shengpingfu_table, column=9, row=row)
 
