@@ -33,29 +33,30 @@ class SoccerSpider(scrapy.Spider):
             yield Request(url=url, callback=self.parse, headers=self.headers)
 
     def parse(self, response):
-        global page_num
-        global pages_number
-        global total_page
-        soup = BeautifulSoup(response.text, "html.parser")
-        if total_page == 0:
-            total_page = int(soup.select('#pager > ul > li')[-2].text.strip())
-        all_tr = response.css('#diary_info > table > tbody > tr')
-
-        for tr in all_tr:
-            a = tr.css('tr > td:nth-child(12) > a')
-            url = a.css('a::attr(href)').extract()[0]
-            url_num = url.split('/')[-1]
-            pages_number.append(url_num)
-        page_num += 1
-        if page_num <= total_page:
-            yield Request(url=self.start_urls[0] + '/p.' + str(page_num), callback=self.parse,
-                          dont_filter=True)
-        for number in pages_number:
-            url = 'https://www.dszuqiu.com/race_xc/' + number
-            yield Request(url=url, callback=self.parse_one, dont_filter=True, meta={'number': number})
+        # global page_num
+        # global pages_number
+        # global total_page
+        # soup = BeautifulSoup(response.text, "html.parser")
+        # if total_page == 0:
+        #     total_page = int(soup.select('#pager > ul > li')[-2].text.strip())
+        # all_tr = response.css('#diary_info > table > tbody > tr')
+        #
+        # for tr in all_tr:
+        #     a = tr.css('tr > td:nth-child(12) > a')
+        #     url = a.css('a::attr(href)').extract()[0]
+        #     url_num = url.split('/')[-1]
+        #     pages_number.append(url_num)
+        # page_num += 1
+        # if page_num <= total_page:
+        #     yield Request(url=self.start_urls[0] + '/p.' + str(page_num), callback=self.parse,
+        #                   dont_filter=True)
+        # for number in pages_number:
+        #     url = 'https://www.dszuqiu.com/race_xc/' + number
+        #     yield Request(url=url, callback=self.parse_one, dont_filter=True, meta={'number': number})
+        yield Request(url='https://www.dszuqiu.com/race_xc/413963', callback=self.parse_one)
 
     def parse_one(self, response):
-        number = response.meta['number']
+        # number = response.meta['number']
         # search 现场数据
         return_data = None
         final_time = None
@@ -65,34 +66,40 @@ class SoccerSpider(scrapy.Spider):
             if script.string is not None:
                 if 'draw_half_line' in script.string:
                     return_data, final_time = main_extract(script.string)
-
+                # else:
+                #     return
         # 请求红牌数据
         try:
             race_events = soup.select('#race_events')[0]
         except IndexError:
             print('error' + response.meta['number'])
         race_events = race_events.select('li')
-        pai_data = getpai_event(race_events=race_events, max_minute=final_time,
+
+
+        try:
+            pai_data = getpai_event(race_events=race_events, max_minute=final_time,
                                 zhudui_name=return_data['shezheng'][0]['name'],
                                 kedui_name=return_data['shezheng'][1]['name'])
+            print('dasda', pai_data)
+        except BaseException as e:
+            raise e
 
         # 请求main data
         infor_detail = get_mian(soup=soup)
 
-
         # 请求 四合一数据
-        siheyi_data = None
-        session = requests.session()
-        session.cookies = cookielib.LWPCookieJar(
-            filename='/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/soccer/soccer/spiders/cookie')
-        try:
-            session.cookies.load(ignore_discard=True)
-            sp_url = 'https://www.dszuqiu.com/race_sp/' + response.meta['number']
-            re = session.get(sp_url, headers=self.headers,
-                             allow_redirects=False)
-            siheyi_data = getSiheyi(re.text)
-        except BaseException as e:
-            raise e
-
-        write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, name=number + '.xlsx')
+        # siheyi_data = None
+        # session = requests.session()
+        # session.cookies = cookielib.LWPCookieJar(
+        #     filename='/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/soccer/soccer/spiders/cookie')
+        # try:
+        #     session.cookies.load(ignore_discard=True)
+        #     sp_url = 'https://www.dszuqiu.com/race_sp/' + response.meta['number']
+        #     re = session.get(sp_url, headers=self.headers,
+        #                      allow_redirects=False)
+        #     siheyi_data = getSiheyi(re.text)
+        # except BaseException as e:
+        #     raise e
+        # if return_data is not None:
+        #     write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, name=number + '.xlsx')
 

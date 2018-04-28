@@ -27,13 +27,30 @@ def extract_data(text, repl, final_time=None):
     cc = re.search(r'(^\{.+\}\}),(.+})', bb)
     home = cc.group(1)
     visit = cc.group(2)
+
+    def _change(mathed):
+        return mathed.group()[0] + '$' + mathed.group()[-1]
+
+    home = re.sub(r"([a-zA-Z]'[a-zA-Z])", _change, home)
     home = re.sub(r"'", '"', home)
+    home = re.sub(r'\$', "'", home)
+
+    visit = re.sub(r"([a-zA-Z]'[a-zA-Z])", _change, visit)
     visit = re.sub(r"'", '"', visit)
+    visit = re.sub(r'\$', "'", visit)
+
     try:
         home_data = json.loads(home)
     except json.decoder.JSONDecodeError:
-        print(home)
-    visit_data = json.loads(visit)
+        with open('error_home.txt', mode='w', encoding='utf-8') as fp:
+            fp.write(home)
+        print('home' + home)
+    try:
+        visit_data = json.loads(visit)
+    except json.decoder.JSONDecodeError:
+        with open('error_visit.txt', mode='w', encoding='utf-8') as fp:
+            fp.write(home)
+        print('visit' + visit)
 
     """
     进攻数据
@@ -49,6 +66,7 @@ def extract_data(text, repl, final_time=None):
 
     dict_data = dict()
     dict_data['name'] = home_data['name']
+    dict_data[0] = 0
     for item in home_data['data']:
         if item['x'] not in dict_data:
             dict_data[item['x']] = item['y']
@@ -59,6 +77,7 @@ def extract_data(text, repl, final_time=None):
     return_data.append(dict_data)
 
     dict_data = dict()
+    dict_data[0] = 0
     dict_data['name'] = visit_data['name']
     for item in visit_data['data']:
         if item['x'] not in dict_data:
@@ -173,11 +192,13 @@ def getSiheyi(html):
     rangqiu_table[0]=0
     sort_table[0] = 0
     max_key = max(rangqiu_table.keys())
-    for i in range(50, max_key):
+    rangqiu_table[0] = ['0', '0', '0']
+    sort_table[0] = '0:0'
+    for i in range(1, max_key):
         if i not in rangqiu_table:
             rangqiu_table[i] = rangqiu_table[i - 1]
 
-    for i in range(50, max_key):
+    for i in range(1, max_key):
         if i not in sort_table:
             sort_table[i] = sort_table[i - 1]
 
@@ -194,8 +215,9 @@ def getSiheyi(html):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             daxiaoqiu_table[int(tds[0].text.split("'")[0].strip())] = a
     max_key = max(daxiaoqiu_table.keys())
-    daxiaoqiu_table[0] = 0
-    for i in range(50, max_key):
+
+    daxiaoqiu_table[0] = ['0', '0', '0']
+    for i in range(1, max_key):
         if i not in daxiaoqiu_table:
             daxiaoqiu_table[i] = daxiaoqiu_table[i - 1]
     # 得到胜平复表
@@ -210,10 +232,9 @@ def getSiheyi(html):
         a.append(tds[4].text.strip())
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             shengpingfu_table[int(tds[0].text.split("'")[0].strip())] = a
-
+    shengpingfu_table[0] = ['0', '0', '0']
     max_key = max(shengpingfu_table.keys())
-    shengpingfu_table[0] = 0
-    for i in range(50, max_key):
+    for i in range(1, max_key):
         if i not in shengpingfu_table:
             shengpingfu_table[i] = shengpingfu_table[i - 1]
 
@@ -431,11 +452,19 @@ def getpai_event(race_events, max_minute, zhudui_name, kedui_name):
     for pai in pai_infor:
         if zhudui_name in pai:
             time = pai.split("'")[0]
-            zhudui_hongpai[int(time)] = 1
+            if '+'in time:
+                real_time = int(time.split('+')[0])+int(time.split('+')[1])
+                zhudui_hongpai[real_time] = 1
+            else:
+                zhudui_hongpai[int(time)] = 1
 
         if kedui_name in pai:
             time = pai.split("'")[0]
-            zhudui_hongpai[int(time)] = 1
+            if '+'in time:
+                real_time = int(time.split('+')[0])+int(time.split('+')[1])
+                kedui_hongpai[real_time] = 1
+            else:
+                kedui_hongpai[int(time)] = 1
 
     for i in range(1, max_minute):
         zhudui_hongpai[i + 1] = zhudui_hongpai[i + 1] + zhudui_hongpai[i]
