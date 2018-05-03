@@ -83,6 +83,15 @@ class XiluoduExcelPipeline(object):
 
     def process_item(self, item, spider):
         if item['name'] != 'xiluodu':
+            pass
+
+class XiangJiaExcelPipeline(object):
+    def __init__(self) -> None:
+        self.file = os.path.join(data_dir, 'xiangjiaba.xlsx')
+        self.excel = load_workbook(self.file)
+
+    def process_item(self, item, spider):
+        if item['name'] != 'xiangjia':
             return item
         year = item['time'].split('-')[0]
         # 获取指定的sheet

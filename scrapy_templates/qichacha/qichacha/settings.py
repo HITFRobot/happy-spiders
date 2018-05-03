@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for three_gorges project
+# Scrapy settings for qichacha project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'three_gorges'
+BOT_NAME = 'qichacha'
 
-SPIDER_MODULES = ['three_gorges.spiders']
-NEWSPIDER_MODULE = 'three_gorges.spiders'
+SPIDER_MODULES = ['qichacha.spiders']
+NEWSPIDER_MODULE = 'qichacha.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'three_gorges (+http://www.yourdomain.com)'
+#USER_AGENT = 'qichacha (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -47,13 +47,13 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'three_gorges.middlewares.ThreeGorgesSpiderMiddleware': 543,
+#    'qichacha.middlewares.QichachaSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'three_gorges.middlewares.ThreeGorgesDownloaderMiddleware': 543,
+#    'qichacha.middlewares.QichachaDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,12 +64,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   #'three_gorges.pipelines.SanXiaExcelPipeline': 300,
-   'three_gorges.pipelines.XiluoduExcelPipeline': 300,
-  # 'three_gorges.pipelines.SanXiaExcelPipeline': 300,
-  # 'three_gorges.pipelines.XiangJiaExcelPipeline': 500,
-}
+#ITEM_PIPELINES = {
+#    'qichacha.pipelines.QichachaPipeline': 300,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html

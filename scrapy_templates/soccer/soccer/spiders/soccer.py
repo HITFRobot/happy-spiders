@@ -75,6 +75,7 @@ class SoccerSpider(scrapy.Spider):
             print('error' + response.meta['number'])
         race_events = race_events.select('li')
 
+
         try:
             pai_data = getpai_event(race_events=race_events, max_minute=final_time,
                                 zhudui_name=return_data['shezheng'][0]['name'],
