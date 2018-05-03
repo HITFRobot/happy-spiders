@@ -66,6 +66,9 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'three_gorges.pipelines.SanXiaExcelPipeline': 300,
+   'three_gorges.pipelines.GezhoubaExcelPipeline': 300,
+   'three_gorges.pipelines.XiangjiabaExcelPipeline': 300,
+   'three_gorges.pipelines.XiluoduExcelPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

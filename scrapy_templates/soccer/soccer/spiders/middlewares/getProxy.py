@@ -11,7 +11,7 @@ import logging.config
 from bs4 import BeautifulSoup
 import threading
 import requests
-logger = logging.getLogger('ahu')
+logger = logging.getLogger('soccer')
 
 
 class getProxy(threading.Thread):
@@ -85,9 +85,9 @@ class getProxy(threading.Thread):
         :param url: 代理链接
         :return: beautiful对象
         '''
-        request = urllib.Request(url)
-        request.add_header("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit\/537.36 (KHTML, like Gecko) "
-                                         "Chrome/47.0.2526.106 Safari/537.36")
-        html_doc = urllib.urlopen(request).read()
+        header = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit\/537.36 (KHTML, like Gecko) '
+                                'Chrome/47.0.2526.106 Safari/537.36'}
+        req = requests.request(method='GET', url=url, header=header)
+        html_doc = req.text
         soup = BeautifulSoup(html_doc, "lxml")
         return soup

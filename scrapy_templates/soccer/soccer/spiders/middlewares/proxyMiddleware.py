@@ -14,7 +14,7 @@ from .testProxy import testProxy
 from twisted.internet import defer
 from twisted.internet.error import TimeoutError, ConnectionRefusedError, \
     ConnectError, ConnectionLost, TCPTimedOutError, ConnectionDone
-logger = logging.getLogger('ahu')
+logger = logging.getLogger('soccer')
 
 
 class proxyMiddleware(object):
@@ -22,7 +22,7 @@ class proxyMiddleware(object):
     EXCEPTIONS_TO_CHANGE = (defer.TimeoutError, TimeoutError, ConnectionRefusedError, ConnectError, ConnectionLost, TCPTimedOutError, ConnectionDone)
     _settings = [
         ('enable', True),
-        ('allow_spider', ['MOHRSSjob']),
+        ('allow_spider', ['MOHRSSjob', 'soccercrawl']),
         ('test_urls', [('http://www.w3school.com.cn', '06004630'), ]),
         ('test_proxy_timeout', 5),
         ('download_timeout', 60),
@@ -81,10 +81,11 @@ class proxyMiddleware(object):
         '''
         if spider.name not in self.allow_spider:
             return response
-        if not self._is_enabled_for_request(request,spider):
+        if not self._is_enabled_for_request(request, spider):
             return response
 
         if response.status in self.ban_code:
+            # 判断 什么status_code 代表被ban
             self.invaild_proxy(request.meta['proxy'])
             logger.debug("代理[%s]被扳,返回状态码:[%s]. ", request.meta['proxy'], str(response.status))
             new_request = request.copy()

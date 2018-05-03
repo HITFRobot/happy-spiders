@@ -53,7 +53,7 @@ class SoccerSpider(scrapy.Spider):
         # for number in pages_number:
         #     url = 'https://www.dszuqiu.com/race_xc/' + number
         #     yield Request(url=url, callback=self.parse_one, dont_filter=True, meta={'number': number})
-        yield Request(url='https://www.dszuqiu.com/race_xc/413963', callback=self.parse_one)
+        yield Request(url='https://www.dszuqiu.com/race_xc/413968', callback=self.parse_one)
 
     def parse_one(self, response):
         # number = response.meta['number']
@@ -79,26 +79,25 @@ class SoccerSpider(scrapy.Spider):
             pai_data = getpai_event(race_events=race_events, max_minute=final_time,
                                 zhudui_name=return_data['shezheng'][0]['name'],
                                 kedui_name=return_data['shezheng'][1]['name'])
-            print('dasda', pai_data)
         except BaseException as e:
             raise e
 
         # 请求main data
         infor_detail = get_mian(soup=soup)
 
-        # 请求 四合一数据
-        # siheyi_data = None
-        # session = requests.session()
-        # session.cookies = cookielib.LWPCookieJar(
-        #     filename='/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/soccer/soccer/spiders/cookie')
-        # try:
-        #     session.cookies.load(ignore_discard=True)
-        #     sp_url = 'https://www.dszuqiu.com/race_sp/' + response.meta['number']
-        #     re = session.get(sp_url, headers=self.headers,
-        #                      allow_redirects=False)
-        #     siheyi_data = getSiheyi(re.text)
-        # except BaseException as e:
-        #     raise e
+        #请求 四合一数据
+        siheyi_data = None
+        session = requests.session()
+        session.cookies = cookielib.LWPCookieJar(
+            filename='/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/soccer/soccer/spiders/cookie')
+        try:
+            session.cookies.load(ignore_discard=True)
+            sp_url = 'https://www.dszuqiu.com/race_sp/413968'
+            re = session.get(sp_url, headers=self.headers,
+                             allow_redirects=False)
+            siheyi_data = getSiheyi(re.text,race_events)
+        except BaseException as e:
+            raise e
         # if return_data is not None:
         #     write_excel(return_data, final_time, siheyi_data, pai_data, infor_detail, name=number + '.xlsx')
 

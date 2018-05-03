@@ -170,10 +170,12 @@ def main_extract(text):
     return return_data, final_time
 
 
-def getSiheyi(html):
+def getSiheyi(html,race_events):
     rangqiu_table = {}
     sort_table = {}
     soup = BeautifulSoup(html, "html.parser")
+    zhudui_defen =soup.select('.small-4.columns.text-right h3')[0].text.strip()
+    kedui_defen = soup.select('.small-4.columns.text-left h3')[0].text.strip()
     zhudui_name = soup.select('a.red-color')[0].text.strip()
     kedui_name = soup.select('a.blue-color')[0].text.strip()
     # 得到让球表
@@ -245,6 +247,41 @@ def getSiheyi(html):
         kedui_jinqiu[key] = value.split(':')[1].strip()
         zhudui_qiucha[key] = int(zhudui_jinqiu[key]) - int(kedui_jinqiu[key])
         kedui_qiucha[key] = int(kedui_jinqiu[key]) - int(zhudui_jinqiu[key])
+
+    max_time = max(sort_table.keys())
+    extra_jinqiu = {}
+    if zhudui_jinqiu[max_time] != zhudui_defen or kedui_jinqiu[max_time] != kedui_defen:
+        this_time = max_time
+        for event in race_events:
+            infor = event.text.strip()
+            if '+' in infor and '个进球' in infor and zhudui_name in infor:
+                this_time = int(infor.split('+')[0]) + int(infor.split('+')[1][0])
+                extra_jinqiu[this_time] = zhudui_name
+            if '+' in infor and '个进球' in infor and kedui_name in infor:
+                this_time = int(infor.split('+')[0]) + int(infor.split('+')[1][0])
+                extra_jinqiu[this_time] = kedui_name
+        print(extra_jinqiu)
+        extra_jinqiu_list = sorted(extra_jinqiu.keys())
+        for jinqiu_time in extra_jinqiu_list:
+            if extra_jinqiu[jinqiu_time] == zhudui_name:
+                for i in range(max_time+1, jinqiu_time):
+                    zhudui_jinqiu[i] = zhudui_jinqiu[i - 1]
+                    kedui_jinqiu[i] = kedui_jinqiu[i - 1]
+                zhudui_jinqiu[jinqiu_time] = int(zhudui_jinqiu[jinqiu_time-1]) + 1
+                kedui_jinqiu[jinqiu_time] = int(kedui_jinqiu[jinqiu_time - 1])
+                max_time=jinqiu_time
+            else:
+                for i in range(max_time+1, jinqiu_time):
+                    zhudui_jinqiu[i] = zhudui_jinqiu[i - 1]
+                    kedui_jinqiu[i] = kedui_jinqiu[i - 1]
+                kedui_jinqiu[jinqiu_time] = int(kedui_jinqiu[jinqiu_time-1]) + 1
+                zhudui_jinqiu[jinqiu_time] = int(zhudui_jinqiu[jinqiu_time - 1])
+                max_time = jinqiu_time
+            this_time = jinqiu_time
+
+        for i in range(max_time, this_time + 1):
+            zhudui_qiucha[i] = int(zhudui_jinqiu[i]) - int(kedui_jinqiu[i])
+            kedui_qiucha[i] = int(kedui_jinqiu[i]) - int(zhudui_jinqiu[i])
 
     return [zhudui_jinqiu, kedui_jinqiu, zhudui_qiucha, kedui_qiucha, rangqiu_table, daxiaoqiu_table, shengpingfu_table]
 

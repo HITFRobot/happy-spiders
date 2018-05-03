@@ -8,10 +8,11 @@ import time
 import datetime
 
 
-class SanxiaSpider(scrapy.Spider):
-    name = 'sanxia'
-    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=50c13b5c83554779aad47d71c1d1d8d8&&struts.portlet.' \
+class XiluoduSpider(scrapy.Spider):
+    name = 'xiluodu'
+    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=8a2bf7cbd37c4d4f961ed1a6fbdf1ea8&&struts.portlet.' \
           'mode=view&struts.portlet.action=/portlet/waterFront!getDatas.action'
+
 
     headers = {
         'Accept': 'application/json, text/javascript, */*; q=0.01',
@@ -29,7 +30,7 @@ class SanxiaSpider(scrapy.Spider):
 
     def parse(self, response):
         sx = SanXiaItem()
-        sx['name'] = 'sanxia'
+        sx['name'] = 'xiluodu'
         sx['time'] = response.meta.get('time', '')
         data = json.loads(response.body.decode())
         # 入库
@@ -137,10 +138,4 @@ class SanxiaSpider(scrapy.Spider):
             datestart += datetime.timedelta(days=1)
             time.sleep(5)
             yield post
-
-        # if type(requests) is list:
-        #     for request in requests:
-        #         yield request
-        # else:
-        #     yield requests
 

@@ -9,8 +9,8 @@
 
 import logging.config
 import threading
-# import urllib2
-logger = logging.getLogger('ahu')
+import urllib.request
+logger = logging.getLogger('soccer')
 
 
 class testProxy(threading.Thread):
@@ -28,19 +28,19 @@ class testProxy(threading.Thread):
         :param proxyes: 代理ip
         '''
         for proxy, valid in proxyes.iteritems():
-            if(self.check_proxy(proxy)):
+            if self.check_proxy(proxy):
                 self.proxyMiddleware.proxyes[proxy] = True
                 self.proxyMiddleware.append_proxy(proxy)
 
     def check_proxy(self, proxy):
         '''检测代理是否可用'''
-        proxy_handler = urllib2.ProxyHandler({'http': proxy})
-        opener = urllib2.build_opener(proxy_handler, urllib2.HTTPHandler)
+        proxy_handler = urllib.request.ProxyHandler({'http': proxy})
+        opener = urllib.request.build_opener(proxy_handler, urllib.request.HTTPHandler)
         try:
             for url, code in self.proxyMiddleware.test_urls:
                 resbody = opener.open(url, timeout=self.proxyMiddleware.test_proxy_timeout).read()
                 if code not in resbody:
-                    logger.info("IP:http://%s不可用"%proxy)
+                    logger.info("IP:http://%s不可用" % proxy)
                     return False
                 logger.info("IP:http://%s可用" % proxy)
             return True
