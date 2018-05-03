@@ -8,11 +8,17 @@ import time
 import datetime
 
 
+<<<<<<< HEAD
 class XiangjiabaSpider(scrapy.Spider):
     name = 'xiangjiaba'
     url = 'http://www.ctg.com.cn/eportal/ui?moduleId=3245f9208c304cfb99feb5a66e8a3e45&&struts' \
           '.portlet.mode=view&struts.portlet.action=/portlet/waterFront!getDatas.action'
 
+=======
+class XiangJiaSpider(scrapy.Spider):
+    name = 'xiangjiaba'
+    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=3245f9208c304cfb99feb5a66e8a3e45&&struts.portlet.mode=view&struts.portlet.action=/portlet/waterFront!getDatas.action'
+>>>>>>> 7d97e3de2fb932a06384b491f0ac30b2208d2248
     headers = {
         'Accept': 'application/json, text/javascript, */*; q=0.01',
         'Accept-Encoding': 'gzip, deflate',
@@ -29,7 +35,11 @@ class XiangjiabaSpider(scrapy.Spider):
 
     def parse(self, response):
         sx = SanXiaItem()
+<<<<<<< HEAD
         sx['name'] = 'xiangjiaba'
+=======
+        sx['name'] = 'xiangjia'
+>>>>>>> 7d97e3de2fb932a06384b491f0ac30b2208d2248
         sx['time'] = response.meta.get('time', '')
         data = json.loads(response.body.decode())
         # 入库
@@ -138,3 +148,12 @@ class XiangjiabaSpider(scrapy.Spider):
             time.sleep(5)
             yield post
 
+<<<<<<< HEAD
+=======
+        # if type(requests) is list:
+        #     for request in requests:
+        #         yield request
+        # else:
+        #     yield requests
+
+>>>>>>> 7d97e3de2fb932a06384b491f0ac30b2208d2248

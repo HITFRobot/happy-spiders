@@ -190,6 +190,9 @@ def getSiheyi(html,race_events):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             rangqiu_table[int(tds[0].text.split("'")[0].strip())] = a
             sort_table[int(tds[0].text.split("'")[0].strip())] = tds[1].text.strip()
+
+    rangqiu_table[0]=0
+    sort_table[0] = 0
     max_key = max(rangqiu_table.keys())
     rangqiu_table[0] = ['0', '0', '0']
     sort_table[0] = '0:0'
@@ -203,7 +206,6 @@ def getSiheyi(html,race_events):
 
     # 得到大小球表
     daxiaoqiu_table = {}
-
     daxiaoqiu_aa = soup.select('#sp_daxiao')
     daxiaoqiu_bb = daxiaoqiu_aa[0].select('tr')
     for tr in daxiaoqiu_bb:
@@ -215,6 +217,7 @@ def getSiheyi(html,race_events):
         if tds[0].text.strip() != '半' and tds[0].text.strip() != '-':
             daxiaoqiu_table[int(tds[0].text.split("'")[0].strip())] = a
     max_key = max(daxiaoqiu_table.keys())
+
     daxiaoqiu_table[0] = ['0', '0', '0']
     for i in range(1, max_key):
         if i not in daxiaoqiu_table:

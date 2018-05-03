@@ -141,6 +141,15 @@ class GezhoubaExcelPipeline(object):
 
 class XiangjiabaExcelPipeline(object):
     def __init__(self) -> None:
+        self.file = os.path.join(data_dir, 'xiluodu.xlsx')
+        self.excel = load_workbook(self.file)
+
+    def process_item(self, item, spider):
+        if item['name'] != 'xiluodu':
+            pass
+
+class XiangJiaExcelPipeline(object):
+    def __init__(self) -> None:
         self.file = os.path.join(data_dir, 'xiangjiaba.xlsx')
         self.excel = load_workbook(self.file)
 
