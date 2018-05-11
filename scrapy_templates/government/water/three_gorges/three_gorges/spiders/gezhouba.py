@@ -8,9 +8,9 @@ import time
 import datetime
 
 
-class SanxiaSpider(scrapy.Spider):
-    name = 'sanxia'
-    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=50c13b5c83554779aad47d71c1d1d8d8&&struts.portlet.' \
+class GezhoubaSpider(scrapy.Spider):
+    name = 'gezhouba'
+    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=622108b56feb41b5a9d1aa358c52c236&&struts.portlet.' \
           'mode=view&struts.portlet.action=/portlet/waterFront!getDatas.action'
 
     headers = {
@@ -29,7 +29,7 @@ class SanxiaSpider(scrapy.Spider):
 
     def parse(self, response):
         sx = SanXiaItem()
-        sx['name'] = 'sanxia'
+        sx['name'] = 'gezhouba'
         sx['time'] = response.meta.get('time', '')
         data = json.loads(response.body.decode())
         # 入库
@@ -137,10 +137,4 @@ class SanxiaSpider(scrapy.Spider):
             datestart += datetime.timedelta(days=1)
             time.sleep(5)
             yield post
-
-        # if type(requests) is list:
-        #     for request in requests:
-        #         yield request
-        # else:
-        #     yield requests
 

@@ -10,6 +10,8 @@
 import logging.config
 import threading
 import urllib.request
+from urllib import request
+from urllib.request import ProxyHandler, build_opener
 logger = logging.getLogger('soccer')
 
 
@@ -27,23 +29,26 @@ class testProxy(threading.Thread):
         检测代理ip是否可用，可用则修改ip标识为Ture
         :param proxyes: 代理ip
         '''
-        for proxy, valid in proxyes.iteritems():
+        for proxy, valid in proxyes.items():
             if self.check_proxy(proxy):
                 self.proxyMiddleware.proxyes[proxy] = True
                 self.proxyMiddleware.append_proxy(proxy)
 
     def check_proxy(self, proxy):
         '''检测代理是否可用'''
-        proxy_handler = urllib.request.ProxyHandler({'http': proxy})
-        opener = urllib.request.build_opener(proxy_handler, urllib.request.HTTPHandler)
+        proxy_handler = ProxyHandler({'http': str(proxy)})
+        # 挂载opener
+        opener = build_opener(proxy_handler, urllib.request.HTTPHandler)
         try:
             for url, code in self.proxyMiddleware.test_urls:
-                resbody = opener.open(url, timeout=self.proxyMiddleware.test_proxy_timeout).read()
-                if code not in resbody:
+                rep = opener.open(url, timeout=self.proxyMiddleware.test_proxy_timeout)
+                print(rep.status)
+                if rep.status != 200:
                     logger.info("IP:http://%s不可用" % proxy)
                     return False
                 logger.info("IP:http://%s可用" % proxy)
             return True
-        except Exception:
+        except Exception as e:
+            print(e)
             logger.info("IP:http://%s不可用" % proxy)
             return False

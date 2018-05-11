@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-  
-__author__ = 'conghuai'
+__author__ = 'neuclil'
+
 from scrapy.cmdline import execute
+
 import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-execute(["scrapy", "crawl", "xiangjiaba"])
+execute(["scrapy", "crawl", "qichachaspider"])

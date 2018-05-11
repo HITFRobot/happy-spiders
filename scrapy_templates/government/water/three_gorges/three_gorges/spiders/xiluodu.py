@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 import scrapy
 from ..items import SanXiaItem
+=======
+# -*- coding:utf-8 -*-  
+__author__ = 'conghuai'
+
+# -*- coding: utf-8 -*-
+import scrapy
+from items import SanXiaItem
+>>>>>>> 7d97e3de2fb932a06384b491f0ac30b2208d2248
 import json
 from datetime import date
 from dateutil.rrule import rrule, DAILY
@@ -8,10 +17,15 @@ import time
 import datetime
 
 
-class SanxiaSpider(scrapy.Spider):
-    name = 'sanxia'
-    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=50c13b5c83554779aad47d71c1d1d8d8&&struts.portlet.' \
+class XiluoduSpider(scrapy.Spider):
+    name = 'xiluodu'
+<<<<<<< HEAD
+    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=8a2bf7cbd37c4d4f961ed1a6fbdf1ea8&&struts.portlet.' \
           'mode=view&struts.portlet.action=/portlet/waterFront!getDatas.action'
+
+=======
+    url = 'http://www.ctg.com.cn/eportal/ui?moduleId=8a2bf7cbd37c4d4f961ed1a6fbdf1ea8&&struts.portlet.mode=view&struts.portlet.action=/portlet/waterFront!getDatas.action'
+>>>>>>> 7d97e3de2fb932a06384b491f0ac30b2208d2248
 
     headers = {
         'Accept': 'application/json, text/javascript, */*; q=0.01',
@@ -29,7 +43,7 @@ class SanxiaSpider(scrapy.Spider):
 
     def parse(self, response):
         sx = SanXiaItem()
-        sx['name'] = 'sanxia'
+        sx['name'] = 'xiluodu'
         sx['time'] = response.meta.get('time', '')
         data = json.loads(response.body.decode())
         # 入库
@@ -138,9 +152,13 @@ class SanxiaSpider(scrapy.Spider):
             time.sleep(5)
             yield post
 
+<<<<<<< HEAD
+=======
         # if type(requests) is list:
         #     for request in requests:
         #         yield request
         # else:
         #     yield requests
 
+
+>>>>>>> 7d97e3de2fb932a06384b491f0ac30b2208d2248

@@ -22,7 +22,7 @@ class proxyMiddleware(object):
     EXCEPTIONS_TO_CHANGE = (defer.TimeoutError, TimeoutError, ConnectionRefusedError, ConnectError, ConnectionLost, TCPTimedOutError, ConnectionDone)
     _settings = [
         ('enable', True),
-        ('allow_spider', ['MOHRSSjob', 'soccercrawl']),
+        ('allow_spider', ['qichachaspider']),
         ('test_urls', [('http://www.w3school.com.cn', '06004630'), ]),
         ('test_proxy_timeout', 5),
         ('download_timeout', 60),
@@ -31,7 +31,7 @@ class proxyMiddleware(object):
         ('ban_re', r''),
         ('proxy_least', 5),
         ('init_valid_proxys', 2),
-        ('invalid_limit', 200),
+        ('invalid_limit', 100),
     ]
 
     def __init__(self, proxy_set=None):
@@ -68,6 +68,7 @@ class proxyMiddleware(object):
             request.meta['download_timeout'] = self.download_timeout
         else:
             # 没有可用代理，直连
+            logger.info("没有可用代理，直连")
             if 'proxy' in request.meta:
                 del request.meta['proxy']
 
@@ -219,7 +220,7 @@ class proxyMiddleware(object):
         """
         测试代理是否可用
         """
-        list_proxy = proxyes.items()
+        list_proxy = list(proxyes.items())
         threads = []
         n = int(math.ceil(len(list_proxy) / self.test_threadnums))
         for i in range(self.test_threadnums):

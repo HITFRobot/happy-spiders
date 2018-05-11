@@ -43,12 +43,14 @@ class getProxy(threading.Thread):
                 soup = self.get_soup(url + str(i))
                 trs = soup.find("table", attrs={"id": "ip_list"}).find_all("tr")
                 for i, tr in enumerate(trs):
-                    if(0 == i):
+                    if 0 == i:
                         continue
                     tds = tr.find_all('td')
                     ip = tds[1].text
                     port = tds[2].text
                     proxy = ''.join(['http://', ip, ':', port]).encode('utf-8')
+                    if isinstance(proxy, bytes):
+                        proxy = bytes.decode(proxy, encoding='utf-8', errors='strict')
                     proxyes[proxy] = False
         except Exception as e:
             logger.error('从西刺网爬取IP出现异常[%s]', e)
@@ -71,9 +73,11 @@ class getProxy(threading.Thread):
                     if 0 == i:
                         continue
                     tds = tr.find_all("td")
-                    ip = tds[0].string.strip().encode('utf-8')
-                    port = tds[1].string.strip().encode('utf-8')
-                    proxy = ''.join(['http://', ip, ':', port])
+                    ip = str(tds[0].string.strip().encode('utf-8'))
+                    port = str(tds[1].string.strip().encode('utf-8'))
+                    proxy = ''.join(['http://', ip, ':', port]).encode('utf-8')
+                    if isinstance(proxy, bytes):
+                        proxy = bytes.decode(proxy, encoding='utf-8', errors='strict')
                     proxyes[proxy] = False
         except Exception as e:
             logger.error('从ip3336爬取IP出现异常[%s]', e)
@@ -87,7 +91,7 @@ class getProxy(threading.Thread):
         '''
         header = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit\/537.36 (KHTML, like Gecko) '
                                 'Chrome/47.0.2526.106 Safari/537.36'}
-        req = requests.request(method='GET', url=url, header=header)
+        req = requests.request(method='GET', url=url, headers=header)
         html_doc = req.text
         soup = BeautifulSoup(html_doc, "lxml")
         return soup
