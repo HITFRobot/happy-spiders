@@ -47,7 +47,7 @@ class proxyMiddleware(object):
         self.counter_proxy = {}
         self.fecth_new_proxy()
         self.test_proxyes(self.proxyes, wait=True)
-        logger.info('使用代理 : %s', self.proxy)
+        # logger.info('使用代理 : %s', self.proxy)
 
     def process_request(self, request, spider):
         '''
@@ -146,7 +146,7 @@ class proxyMiddleware(object):
         if not proxy_valid:
             self.change_proxy()
         request.meta['proxy'] = self.proxy[self.proxy_index]
-        logger.debug('已设置代理request.meta: %s', request.meta)
+        # logger.debug('已设置代理request.meta: %s', request.meta)
 
     def change_proxy(self):
         """
