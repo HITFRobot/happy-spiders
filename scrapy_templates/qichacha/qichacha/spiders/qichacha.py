@@ -1,12 +1,13 @@
-import scrapy
 import logging.config
-from bs4 import BeautifulSoup
-import time
-import xlrd
-import random
-from scrapy.http import Request
-from urllib.parse import quote
 import os
+import time
+from urllib.parse import quote
+
+import scrapy
+import xlrd
+from bs4 import BeautifulSoup
+from scrapy.http import Request
+
 from items import QichachaItem
 
 logger = logging.getLogger('soccer')
