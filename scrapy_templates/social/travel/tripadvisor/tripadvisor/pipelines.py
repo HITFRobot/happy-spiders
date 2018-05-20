@@ -12,7 +12,7 @@ data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
 
 class TripadvisorPipeline(object):
     def __init__(self) -> None:
-        self.file = os.path.join(data_dir, 'zh.xlsx')
+        self.file = os.path.join(data_dir, 'en.xlsx')
         self.excel = load_workbook(self.file)
 
     def process_item(self, item, spider):

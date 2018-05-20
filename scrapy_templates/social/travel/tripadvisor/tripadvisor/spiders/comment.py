@@ -5,6 +5,7 @@ import re
 import urllib.parse
 from items import TripadvisorItem
 
+
 class CommentSpider(scrapy.Spider):
     name = 'comment'
 
@@ -70,58 +71,58 @@ class CommentSpider(scrapy.Spider):
 
 
     # def parse_detail(self, response):
-        # 获取前10条
-        # names = response.css('div.username.mo > span::text').extract()
-        # titles = response.css('span.noQuotes::text').extract()
-        # comments = response.css('div.review-container p.partial_entry::text').extract()
-        # 进行cookie验证
-        # 获取roybatty
-        # pattern = re.compile(r'taSecureToken = "(.*?)";')
-        # roybatty = pattern.search(response.text).group(1)
-        # roybatty += ',1'
-        # roybatty = urllib.parse.quote(roybatty)
-        # roybatty = '; ' + 'roybatty=' + roybatty
-        # # 获取cookie并格式化
-        # cookie = response.headers.getlist('Set-Cookie')
-        # cookie = [c.decode() for c in cookie]
-        # cookie = [c for c in cookie if not c.startswith('SRT')]
-        # cookie = '; '.join(cookie)
-        # cookie += roybatty
-        # # 获取X-Puid
-        # pattern = re.compile(r"'X-Puid', '(.*?)'")
-        # try:
-        #     X_Puid = pattern.search(response.text).group(1)
-        # except:
-        #     pass
-        # # CookiePingback
-        # cookie_pingback_headers = {
-        #     'Accept': 'text/html, */*',
-        #     'Accept-Encoding': 'gzip, deflate, br',
-        #     'Accept-Language': 'en-us',
-        #     'Connection': 'keep-alive',
-        #     'Content-Length': '0',
-        #     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        #     'Host': 'www.tripadvisor.cn',
-        #     'Origin': 'https://www.tripadvisor.cn',
-        #     'Cookie': cookie,
-        #     'Referer': 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html',
-        #     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36',
-        #     'X-Requested-With': 'XMLHttpRequest'
-        # }
-        # yield scrapy.FormRequest(
-        #     url='https://www.tripadvisor.cn/CookiePingback?early=true',
-        #     headers=cookie_pingback_headers,
-        #     meta={'cookie': cookie,
-        #           'X_Puid': X_Puid},
-        #     callback=self.parse
-        # )
+    # 获取前10条
+    # names = response.css('div.username.mo > span::text').extract()
+    # titles = response.css('span.noQuotes::text').extract()
+    # comments = response.css('div.review-container p.partial_entry::text').extract()
+    # 进行cookie验证
+    # 获取roybatty
+    # pattern = re.compile(r'taSecureToken = "(.*?)";')
+    # roybatty = pattern.search(response.text).group(1)
+    # roybatty += ',1'
+    # roybatty = urllib.parse.quote(roybatty)
+    # roybatty = '; ' + 'roybatty=' + roybatty
+    # # 获取cookie并格式化
+    # cookie = response.headers.getlist('Set-Cookie')
+    # cookie = [c.decode() for c in cookie]
+    # cookie = [c for c in cookie if not c.startswith('SRT')]
+    # cookie = '; '.join(cookie)
+    # cookie += roybatty
+    # # 获取X-Puid
+    # pattern = re.compile(r"'X-Puid', '(.*?)'")
+    # try:
+    #     X_Puid = pattern.search(response.text).group(1)
+    # except:
+    #     pass
+    # # CookiePingback
+    # cookie_pingback_headers = {
+    #     'Accept': 'text/html, */*',
+    #     'Accept-Encoding': 'gzip, deflate, br',
+    #     'Accept-Language': 'en-us',
+    #     'Connection': 'keep-alive',
+    #     'Content-Length': '0',
+    #     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    #     'Host': 'www.tripadvisor.cn',
+    #     'Origin': 'https://www.tripadvisor.cn',
+    #     'Cookie': cookie,
+    #     'Referer': 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html',
+    #     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36',
+    #     'X-Requested-With': 'XMLHttpRequest'
+    # }
+    # yield scrapy.FormRequest(
+    #     url='https://www.tripadvisor.cn/CookiePingback?early=true',
+    #     headers=cookie_pingback_headers,
+    #     meta={'cookie': cookie,
+    #           'X_Puid': X_Puid},
+    #     callback=self.parse
+    # )
 
     def parse(self, response):
         # 获取前10条
         names = response.css('div.username.mo > span::text').extract()
         titles = response.css('span.noQuotes::text').extract()
         comments = response.css('div.review-container p.partial_entry::text').extract()
-        for name, title, comment in names, titles, comments:
+        for name, title, comment in zip(names, titles, comments):
             item = TripadvisorItem()
             item['name'] = name
             item['title'] = title
@@ -132,43 +133,54 @@ class CommentSpider(scrapy.Spider):
         # 第一页
         url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html'
         headers = {
-            'Accept': 'text/html, */*',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Accept-Language': 'en-us',
-            'Connection': 'keep-alive',
             'Host': 'www.tripadvisor.cn',
+            'Accept': 'text/html, */*',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept-Language': 'en-us',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': 'https://www.tripadvisor.cn',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.117 Safari/537.36',
+            'X-Puid': 'WwEkXMCoCxsAAKEJLKoAAAAb',
+            'Connection': 'keep-alive',
+            'Referer': 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html',
         }
 
-        page = 0
-        while page < 481:
-            if page == 0:
-                url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html'
-                yield Request(url=url, headers=headers, callback=self.parse)
-            else:
-                url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-or{}-Gulangyu_Island-Xiamen_Fujian.html'.format(
-                    page * 10)
-                yield Request(url=url, headers=headers, callback=self.parse)
-            import time
-            time.sleep(5)
-            page += 1
-
-
-        # 英文 共79页
-        # formdata['filterLang'] = 'en'
         # page = 0
-        # while page < 80:
+        # while page < 5:
         #     if page == 0:
         #         url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html'
+        #         yield Request(url=url, headers=headers, callback=self.parse)
         #     else:
         #         url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-or{}-Gulangyu_Island-Xiamen_Fujian.html'.format(
         #             page * 10)
+        #         yield Request(url=url, headers=headers, callback=self.parse)
         #     page += 1
-        #     post = scrapy.FormRequest(
-        #         url=url,
-        #         #meta={'lang': filterLang},
-        #         headers=self.headers,
-        #         formdata=formdata,
-        #         callback=self.parse
-        #     )
-        #     yield post
+
+
+        formdata = {
+            'returnTo': '#REVIEWS',
+            'filterLang': 'en',
+            'filterSeasons': '',
+            'filterSegment': '',
+            'filterRating': '',
+            'reqNum': '1',
+            'changeSet': 'REVIEW_LIST',
+            'puid': 'WwEkXMCoCxsAAKEJLKoAAAAb'
+        }
+        # 英文 共79页
+        page = 0
+        while page < 80:
+            if page == 0:
+                url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-Gulangyu_Island-Xiamen_Fujian.html'
+            else:
+                url = 'https://www.tripadvisor.cn/Attraction_Review-g297407-d1131761-Reviews-or{}-Gulangyu_Island-Xiamen_Fujian.html'.format(
+                    page * 10)
+            page += 1
+            post = scrapy.FormRequest(
+                url=url,
+                headers=headers,
+                formdata=formdata,
+                callback=self.parse
+            )
+            yield post
