@@ -5,6 +5,8 @@ import time
 import xlrd
 import random
 from scrapy.http import Request
+from urllib.parse import quote
+
 
 logger = logging.getLogger('soccer')
 
@@ -12,21 +14,19 @@ logger = logging.getLogger('soccer')
 class QichachaSpider(scrapy.Spider):
     name = 'qichachaspider'
     allowed_domains = ['qichacha.com']
-    start_urls = ['https://www.qichacha.com/firm_9e0b9df2f89dfe544d15fc16655d520c.html']
     header = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'zh-CN,zh;q=0.5',
-        'Connection': 'keep - alive',
-        'Host': 'www.qichacha.com',
-        'Cookie': 'acw_tc=AQAAAPsPx14riAgAF3zfdgPnXspofkC7; PHPSESSID=fh1a4sk2upjqdr5nq4dvl3krs2; UM_distinctid=16325c83aa814c-09293b2b255171-3b7c015b-1fa400-16325c83aa9168d; zg_did=%7B%22did%22%3A%20%2216325c83ab4619-0892953ddee5b2-3b7c015b-1fa400-16325c83ab716a%22%7D; _uab_collina=152534727141551053723082; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1525347270,1525355036; CNZZDATA1254842228=1479707132-1525343680-%7C1525398269; _umdata=0712F33290AB8A6DE8A6A7E152EBF34BA30F072D4F4B7B4D9C3E1542E897D7C5AEF7A60E7F69AD9ACD43AD3E795C914CA03AB50BBA5C73EFC5E2AD409966215D; hasShow=1; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1525401795; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201525400231778%2C%22updated%22%3A%201525401833516%2C%22info%22%3A%201525347269308%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22%22%2C%22cuid%22%3A%20%228a6f8caea6f05d464d5d1cea1ec36ea2%22%7D',
-        'referer': 'https://www.qichacha.com/',
+        'Cache-Control': 'max-age=0',
+        'Cookie': 'acw_tc=AQAAAPsPx14riAgAF3zfdgPnXspofkC7; PHPSESSID=fh1a4sk2upjqdr5nq4dvl3krs2; UM_distinctid=16325c83aa814c-09293b2b255171-3b7c015b-1fa400-16325c83aa9168d; zg_did=%7B%22did%22%3A%20%2216325c83ab4619-0892953ddee5b2-3b7c015b-1fa400-16325c83ab716a%22%7D; _uab_collina=152534727141551053723082; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1525347270,1525355036; _umdata=0712F33290AB8A6DE8A6A7E152EBF34BA30F072D4F4B7B4D9C3E1542E897D7C5AEF7A60E7F69AD9ACD43AD3E795C914CA03AB50BBA5C73EFC5E2AD409966215D; hasShow=1; CNZZDATA1254842228=1479707132-1525343680-%7C1525430717; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1525431420; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201525430472062%2C%22updated%22%3A%201525431518084%2C%22info%22%3A%201525347269308%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22%22%2C%22cuid%22%3A%20%228a6f8caea6f05d464d5d1cea1ec36ea2%22%7D',
+        'Referer': 'https://www.qichacha.com/',
+        'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                      'Chrome/63.0.3239.132 Safari/537.36'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36'
 
     }
-    search_url = 'https://www.qichacha.com/search?key='
+    search_url = 'http://www.qichacha.com/search?key='
     target_hrefs = []
     companys = []
 
@@ -41,16 +41,17 @@ class QichachaSpider(scrapy.Spider):
             rowValues = table.row_values(i)  # 某一行数据
             self.companys.append(rowValues[0].strip())
         for company in self.companys:
-            yield Request(url=self.search_url + company+'/', dont_filter=True, headers=self.header, callback=self.parse)
-
-        time.sleep(random.randint(3, 6))
+            # self.header[':path'] = '/search?key='+quote(company)+'/'
+            yield Request(url=self.search_url + quote(company), dont_filter=True,
+                          callback=self.parse, headers=self.header)
+            time.sleep(random.randint(6, 10))
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, "html.parser")
         print(response.text)
         try:
             result = soup.select('.m_srchList > tbody > tr')[0]
-            self.fs.write('https://www.qichacha.com/' + result.find('a').get('href').strip() + '\n')
+            self.fs.write('http://www.qichacha.com/' + result.find('a').get('href').strip() + '\n')
             logger.info('已抓取ip https://www.qichacha.com/' + result.find('a').get('href').strip() + '\n')
         except BaseException as error:
             print('搜不到 ')

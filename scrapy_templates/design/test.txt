@@ -1,0 +1,608 @@
+
+            <script data-type="bootstrap-data" type="application/json">{
+                "_metadata": {
+                  "total_count": 41828,
+                  "previous_cursor": 0,
+                  "next_cursor": 30
+                },
+                "articles": [{
+                  "id": 229254,
+                  "type": "award",
+                  "headline": "0720 Cosmetics",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/229254-0720-cosmetics\/",
+                  "description": "Teenage girls are clueless about how to buy and apply makeup, leading to careless purchases of low-quality products that damage their budding skin. The brand 0720 was created based on a study of 1,000 teens\u2019 needs. The brand concept is \u201cThe So-Easy Cosmetics\u201d, designed as a primary beauty solution for girls who long to express their beauty in a safe and fun way. The brand name represents 07:20 am in the morning, when on-the-go girls have to fuss over getting ready for school. The story of 0720 \u2013 that \u201cwe are really busy but are not lazy about grooming\u201d starts here.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_229254_01_0720_if_01.jpg",
+                    "width": 299,
+                    "height": 224,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 237623,
+                  "type": "award",
+                  "headline": "10.5\u2011inch iPad Pro",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/237623-105inch-ipad-pro\/",
+                  "description": "The iPad Pro features a new 10.5-inch display whilst reducing the borders by nearly 40 percent to fit into an incredibly compact package that still weighs just one pound. The Retina display is Apple\u2019s brightest iPad display yet and features antireflective coating, making content easier to see indoors and out. True Tone dynamically adjusts the white balance of the display to match the light around you for a more natural and accurate viewing experience. A wide color gamut enables iPad Pro to deliver digital cinema-standard colors.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_237623_01_ipad_pro_10522.jpg",
+                    "width": 299,
+                    "height": 231,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 232138,
+                  "type": "award",
+                  "headline": "10+air",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/232138-10air\/",
+                  "description": "This is new compact fan can effectively purify the air and provide sufficient oxygen to a confined space. Air quality in central and northern China is poor, and people living here need a product to protect them from air pollution. This product was designed with the typical Chinese home environment in mind, and can effectively provide clean, comfortable, and healthy air.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_232138_01_air_tube_1.jpg",
+                    "width": 300,
+                    "height": 200,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 230880,
+                  "type": "award",
+                  "headline": "1+1=\u221e Paper design",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/230880-11-paper-design\/",
+                  "description": "About 70% of Dongjiu\u2019s papers are for green, eco-friendly use. Its sample design papers are classified into two types. One is for book papers. It uses different white quality paper with similar effect images printed on different texture of the paper so that users easily identify the differences of the paper quality. The other is for packaging papers. Dongjiu uses a three-dimensional folding effect and laser technology to create a sense of emotion towards the papers and create a clear expression of the paper characteristics.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_230880_01_2.jpg",
+                    "width": 299,
+                    "height": 183,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 237528,
+                  "type": "award",
+                  "headline": "120V Li-ion Hedge Trimmer",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/237528-120v-li-ion-hedge-trimmer\/",
+                  "description": "The G-Force 120V Li-ion Hedge Trimmer is the market leader in Li-ion powered trimmers. The features of the G-Force 120V Li-ion Hedge Trimmer include: soft grip for comfort use, 3-Sided Operations, Laser Cut Blade, One Click Rear Handle Rotary.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_237528_01_120v_li_ion_hedge_trimmer.jpg",
+                    "width": 299,
+                    "height": 268,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 232107,
+                  "type": "award",
+                  "headline": "2015 SHENZHEN FRINGE",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/232107-2015-shenzhen-fringe\/",
+                  "description": "The Edinburgh Fringe Festival was born in 1947, and has become one of the biggest art events in the world. Shenzhen Fringe Festival is an arts festival which takes place in the city's streets and squares. The 2015 Shenzhen Fringe Festival was staged along the theme of \"Play For Fringe!\" The promotional design combines hobo signs with tradition Native American patterns to create a dynamic identity. It expresses the full attraction and tolerance of the festival. For those who \"roam\" in every corner of the Fringe, the signs direct you to many pleasant surprises.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_232107_01_08.jpg",
+                    "width": 300,
+                    "height": 212,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 231590,
+                  "type": "award",
+                  "headline": "2017 VD DESIGN STORY",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/231590-2017-vd-design-story\/",
+                  "description": "On the theme of \"Blending into Home\", Samsung has developed an empathetic, emotional product narrative that brings the emphasis back to people-centric experiences. The book depicts products as items that bring a welcoming, intimate touch to any space, instead of mechanical assemblies. It also features interesting details, such as installation guidance, graphic description of a product concept, creation of a TV logo, screen images, and the process of product design.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_231590_01_2017_design_story_01.jpg",
+                    "width": 298,
+                    "height": 158,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 236455,
+                  "type": "award",
+                  "headline": "24-in-1 Screwdriver Set",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/236455-24-in-1-screwdriver-set\/",
+                  "description": "The 24 bits of the imonkey 24-in-1 screwdriver set have been carefully selected to cover most of the screws needed in the home. The case is made of an aluminum alloy and lends the set a high-quality appearance. A special mechanism makes the product easy to open and close. The bits are attached to the case using magnets. In addition, the bit handle is also made of an aluminum alloy and thus more robust than conventional plastic handles.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_236455_01_screwdriver_set_01.jpg",
+                    "width": 223,
+                    "height": 299,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 224628,
+                  "type": "award",
+                  "headline": "2-in-1 air purifier and humidifier",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/224628-2-in-1-air-purifier-and-humidifier\/",
+                  "description": "These 2-in-1 air purifier and humidifiers simultaneously remove pollution and allergens while adjusting indoor humidity to the desired level. Its compact design and multi-dimensional wheels make it easy to move around. Settings can be easily adjusted on its angled, user-friendly front control panel, which also features a numerical display to reassure users. The elevated top rigid exhale grill is highlighted with a curved back, hinting at performance with elegance. Below the grill, a metal mesh prevents objects accidentally falling into fan and a robust water tank design features a release trigger that secures the tank against accidental release.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_224628_01_2_in_1_air_purifier_and_humidifier_series_2000_3000_1.jpg",
+                    "width": 300,
+                    "height": 225,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 233808,
+                  "type": "award",
+                  "headline": "2nd Screen Media&Commerce",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/233808-2nd-screen-mediacommerce\/",
+                  "description": "The information on the TV screen is presented in the form of a minimal card to minimize interference between information. The card expands as users zoom in on a particular piece of information, and this interaction enhances users\u2019 focus. Also, retrieving third-party CP contents is as easy as taking a card from a wallet, enabling users to consume various contents quickly.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Professional Concept"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_233808_01_01.jpg",
+                    "width": 298,
+                    "height": 179,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 234108,
+                  "type": "award",
+                  "headline": "360 Security Lock S1",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/234108-360-security-lock-s1\/",
+                  "description": "This design ensures convenience, safety and user-friendliness. It requires just 0.5 seconds to activate or deactivate the lock. The lock is made from strengthened stainless steel and is designed to prevent break-in or explosion. The innovative keys are only authorized for the owner to use. If deactivated using the app, the keys no longer work. If any object is inserted into the key hole, this will trigger the alarm and send a message to the owner's phone. The push-pull door handle design ensures that children or adults carrying heavy objects can open the door easily.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_234108_01_3601.jpg",
+                    "width": 299,
+                    "height": 168,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 229235,
+                  "type": "award",
+                  "headline": "3D Shower",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/229235-3d-shower\/",
+                  "description": "3D Shower has an unusual and innovative shape, with a design formed by asymmetrically arranged geometric wefts from which water flows. This gives the user an intriguing view from below. The geometric lines create a sensation of modernity and technology. The squares that integrate the product keeps people wondering about the water path. This non-standard design only became possible for manufacturing thanks to 3D printing technology, as the 3D Shower is printed in thermoplastic resin.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_229235_01_3D-Shower-1.jpg",
+                    "width": 299,
+                    "height": 155,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 232678,
+                  "type": "award",
+                  "headline": "3M Earworm Billboards",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/232678-3m-earworm-billboards\/",
+                  "description": "Nothing sticks with you like the melody of a classic pop hit song. That\u2019s why 3M took some of the catchiest tunes ever, and put them on numerous billboard sites across Hong Kong. Individually hand-lettered on-site by one of the world\u2019s leading tape-artists using actual 3M duct tape, each billboard showed 3M\u2019s sticking power in a unique way that\u2019s as simple as it is memorable. Where possible, the actual tape rolls used were finally stuck to the billboard as a \u201clive\u201d pack shot.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_232678_01_3m_foreverstickingbillboards_1_macarena.jpg",
+                    "width": 299,
+                    "height": 212,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 237021,
+                  "type": "award",
+                  "headline": "3M SolutionDispensing Mop",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/237021-3m-solutiondispensing-mop\/",
+                  "description": "3M\u2122 Solution Dispensing Mop Tool is an innovative commercial floor cleaning tool designed for non- professional cleaning in places such restaurants or medical centers. By using this tool with our disposable mop sheets, customers can dispense water or cleaning fluid when needed simply by pressing a button. The convenient design leads to four major benefits: cleanliness, high productivity, labor-cost reduction and hygiene control. It also helps to resolve issues such as labor shortage and cross-infection.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_237021_01_mop.jpg",
+                    "width": 200,
+                    "height": 300,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 230412,
+                  "type": "award",
+                  "headline": "3OX bar concept",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/230412-3ox-bar-concept\/",
+                  "description": "The very light yet strong SQlab 3OX handlebar was designed for a range of sports bikes, from cross-country to downhill MTB. The ergonomic shape with an upsweep of 4\u00b0 and backsweep of 12\u00b0 and 16\u00b0 relieves the pressure on the wrists and palms, while the width of 780mm provides more stability for the rider. The 16\u00b0 backsweep provides a natural transition from the lower arm to the hand. The backsweep largely stems from the motocross arena where a similar backsweep and upsweep is custom.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_230412_01_30x_2.jpg",
+                    "width": 299,
+                    "height": 133,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 235716,
+                  "type": "award",
+                  "headline": "47 Perspectives",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/235716-47-perspectives\/",
+                  "description": "Designed, illustrated and written inhouse, this City Guide by Munich-based brand and design agency is a real piece of creative handicraft. And it's a charming way to discover Munich. In words and pictures, employees reveal their favorite places surrounding the agency. From urban arts museums to lavish Isar beaches, every spot is illustrated and described in an individual way. A real eye-catcher is the extensive production, printed in the three pantone colors neon orange, purple and red. The colored backstitch sewing underlines the handicraft panache, while reduced inner sides made of pigmented paper ensure the highest level of sophistication.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_235716_01_if_47perspectives_guide.jpg",
+                    "width": 300,
+                    "height": 212,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 237491,
+                  "type": "award",
+                  "headline": "494 Center Ball Head",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/237491-494-center-ball-head\/",
+                  "description": "The 494 aluminum Center ball head enables fast and precise camera positioning. This tripod head is made of highly-resistant, lightweight aluminum, which makes it portable and strong enough to hold all kinds of mirror less cameras with zoom lenses and even medium-format DSLRs. It combines ergonomics with high functionality and it features three independent controls; A main knob for managing the sphere lock, an integrated friction control knob to keep the equipment weight perfectly balanced and an independent panoramic knob that enable astonishing landscape shots maintaining the horizon perfectly flat",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_237491_01_photo_tripod_center_ball_head_494_mh494_bh.jpg",
+                    "width": 270,
+                    "height": 300,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 230409,
+                  "type": "award",
+                  "headline": "4smarts Treasure Box",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/230409-4smarts-treasure-box\/",
+                  "description": "The Gadget Treasure Box allows you to safely store your valuables while at hotels, hospitals, events, sports clubs, or shopping malls. It also allows you to charge your smart devices thanks to the built-in 8000 mAh Powerbank. It has a built-in fingerprint reader for unlocking and locking the Treasure Box without a key. It is a unique and truly innovative design and available in black and aluminum. The global patent for this German-designed product is pending.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_230409_01_01202.jpg",
+                    "width": 299,
+                    "height": 168,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 236766,
+                  "type": "award",
+                  "headline": "4x4 AP",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/236766-4x4-ap\/",
+                  "description": "The AP is designed to provide a fast and stable wireless internet service as the number of wireless Internet access devices at the home and office increases. It considers performance, minimization of user\u2019s visual stress and harmony with its environment. It\u2019s a high performance AP with four antennas to provide a fast and stable wireless internet service with a distance of 8cm between antennas to ensure the best performance by design. It is designed to be unobtrusive and efficient with a clean white color without additional decorative elements to avoid low reception rate.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_236766_01_ap4x4_label.jpg",
+                    "width": 299,
+                    "height": 209,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 234130,
+                  "type": "award",
+                  "headline": "5G 3D RF Planning Tools",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/234130-5g-3d-rf-planning-tools\/",
+                  "description": "This is a new 3D UX network design tool making complex 5G network design accurate, easy and fast. Thanks to a Visual Object Palette, users can easily add buildings\/shrubs and other changes to an identical virtual environment. Network design data is provided by phase for easy design following the system\u2019s steps. \nDigitized simulation results visually marked on the 3D map allow quick grasp of strong\/weak signal spots. Without complex data entry, users can intuitively operate (move\/rotate) base stations with the mouse.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_234130_01_5g_3d_rf_planning_tools_324_3_234130_01.jpg",
+                    "width": 299,
+                    "height": 168,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 234519,
+                  "type": "award",
+                  "headline": "60 seconds be.yond",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/234519-60-seconds-beyond\/",
+                  "description": "Martin et Karczinski is growing, and new employees are needed. The problem was that great consultants, highly competent client service employees and exceptional designers have become a scarce commodity these days, so employer branding is no longer dispensable. The idea and implementation of this unique project came from within the agency: the employees and what connects them with the agency were turned into highly aesthetic, sophisticated films and were placed online in the style of a growth hacking campaign \u2013 a congenial offer to apply for one of the open positions of the agency.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_234519_01_if_webbilder_60s_01_titel.jpg",
+                    "width": 300,
+                    "height": 225,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 230386,
+                  "type": "award",
+                  "headline": "611 ERGOWAVE\u00ae ES Edition",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/230386-611-ergowave-es-edition\/",
+                  "description": "This new saddle was developed in collaboration with the Frankfurt University of Applied Sciences and the University Clinic of Frankfurt. For the first time in a research project, the forces involved and the maximum load limits applied to a bike saddle could be precisely calculated. The end result of this research is the new ERGOWAVE\u00ae saddle, which allows the rider to adopt a more aggressive sitting position on- and off-road.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_230386_01_ergowave_611.jpg",
+                    "width": 212,
+                    "height": 300,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 234880,
+                  "type": "award",
+                  "headline": "6501Yellow Rice Spirit",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/234880-6501yellow-rice-spirit\/",
+                  "description": "6501 is a new brand of yellow rice spirit. Its main target consumers are young people. As we know, our genes determine and form our characters from the outset. The designers have adopted this concept of genetics in the branding, using different colors to express various types of products like individuals, so as to convey the unique personalities of products and increase the sense of participation and user experience. They used metal to create a hand-held holder with curvy spiral structure that fits snugly around the bottle.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Packaging"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_234880_01_04.jpg",
+                    "width": 300,
+                    "height": 212,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 231770,
+                  "type": "award",
+                  "headline": "700Kids TF 1",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/231770-700kids-tf-1\/",
+                  "description": "700Kids TF1 is a transformable kids\u2019 bike, which can be adjusted easily for different usage \u2013 pushbike or tricycle \u2013 by switching the safety mechanism and rotating the rear wheels. The wider anti-skid tires offer higher stability and throughput capacity, making it much easier to keep balance. The track of the rear wheels is designed to prevent rolling over. The metal frame inside makes it stiffer, while the environmental plastic shell makes it smoother without sharp angles. The handlebar and saddle are adjustable, and all wheels are fully closed to avoiding clamping.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_231770_01_700kids_tf_1_yellow_1.jpg",
+                    "width": 299,
+                    "height": 202,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 235805,
+                  "type": "award",
+                  "headline": "751 Int'l Design Festival",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/235805-751-intl-design-festival\/",
+                  "description": "The 751 International Design Festival was part of Beijing design Week 2017. The theme of was Inspired by Uniqueness, which follows the lead of Comprehensiveness Design, aiming to discover how to reconnect design and the society, containing more needs of more people and taking care of all kinds of groups, to change current life status and improve life quality by designing. The festival design included not only posters, flyers and a guide, but also a brand-new guiding system which focused on involving, thinking and interaction, inspired by the theme Inspired by Uniqueness, trying to push the design concept into system design.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_235805_01_dsc_6402.jpg",
+                    "width": 299,
+                    "height": 198,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 234954,
+                  "type": "award",
+                  "headline": "896 washer",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/234954-896-washer\/",
+                  "description": "This top-loading washing machine is compact and easy to clean. Under the top lid, there is a wide and fluent loading portal that is convenient for accessing bulky items, like quilt cover, curtains, etc. The LED touch UI is set at an 18-degree angle to ensure a more convenient operation experience. The anti-pinch door lock and automatic door lock also help ensure the safety of operation process.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Product"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_234954_01_896_wahser_1.jpg",
+                    "width": 300,
+                    "height": 168,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 241171,
+                  "type": "award",
+                  "headline": "90% MILK",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/241171-90-milk\/",
+                  "description": "Pandas are human treasures, and so are kids. However, thousands of kids in impoverished communities are suffering from hunger and malnutrition. We presented the concept of \"90% milk\"- consumers get 90% of the milk they purchase and donate the remaining 10%. \"90% milk\" will be stored in vending machines for sale with a panda logo and \"90%\" in writing. We want our customers to empathize with others and understand that their actions are contributing to society. Prevalent vending machines make it easier for people to buy the milk and contribute to a good cause. As a result, sales will increase, which will help us battle against the humanitarian crisis that affects these kids.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN TALENT AWARD_01 2018"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_329\/conv_241171_01_329_241171_90_milk_1.jpg",
+                    "width": 300,
+                    "height": 225,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 221179,
+                  "type": "goldaward",
+                  "headline": "911 Turbo S Exclusive Series",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/221179-911-turbo-s-exclusive-series\/",
+                  "description": "The 911 Turbo S Exclusive Series is unique, shaped by craftsmanship and limited to 500 vehicles. The goal of our campaign was to give Porsche fans worldwide a feel for its exclusivity and rarity. At the same time, we offered them the chance to discover the vehicle. A completely new live experience: Two camera-equipped industrial robots frame the vehicle in an installation at the Porsche Museum in Zuffenhausen. Users individually control the livestream after booking one of the limited spots on the campaign website. By combining installation, livestream, and individual control to discover the real vehicle, we\u2019ve created a one-off personal experience.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr-gold.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_221179_01_comnews_goldjpg",
+                    "width": 299,
+                    "height": 174,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 232379,
+                  "type": "award",
+                  "headline": "9th DMZ Docs",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/232379-9th-dmz-docs\/",
+                  "description": "The main poster for the Ninth DMZ International Documentary Film Festival takes as its central motif an image from an iconic photograph by Seong Nam-hun, a circular window with a girl looking through. The window is the frame through which she sees the world. The circles that fill the poster thus represent the many windows that documentary films provide. BrandDirectors, the total branding group, was responsible for this design.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Communication"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_232379_01_dmz_01.jpg",
+                    "width": 200,
+                    "height": 300,
+                    "alt": ""
+                  }]
+                },
+                {
+                  "id": 232903,
+                  "type": "award",
+                  "headline": "A 360\u00b0 packaging identity",
+                  "subline": "",
+                  "label": "",
+                  "href": "\/entry\/232903-a-3600-packaging-identity\/",
+                  "description": "A 360\u00b0 packaging experience that considers all aspects of the user journey from in-store bold\/confident graphics through to a user-friendly unboxing process that gives a truly gifting experience. The packaging differs from competitors\u00b4 in its unique graphic treatment that combines minimal aesthetic and emotional touch with innovative photography placement, unique patterns that symbolize the product\u00b4s core character, and a simplified but clear information hierarchy with a humanized message.",
+                  "awardlogo": {
+                    "href": "\/images\/awards\/if-logo-tsr.svg",
+                    "title": "iF DESIGN AWARD 2018, Discipline Packaging"
+                  },
+                  "media": [{
+                    "type": "image",
+                    "href": "https:\/\/my.ifdesign.de\/upload\/award_img_324\/conv_232903_01_a_360_packaging_identity_01.jpg",
+                    "width": 299,
+                    "height": 168,
+                    "alt": ""
+                  }]
+                }]
+              }</script>
