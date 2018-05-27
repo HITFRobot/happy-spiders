@@ -5,12 +5,14 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+import datetime
 import time
+
+import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
-import datetime
-from settings import SQL_DATETIME_FORMAT, SQL_DATE_FORMAT
+
+from settings import SQL_DATETIME_FORMAT
 
 
 class FinanceItem(scrapy.Item):

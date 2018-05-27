@@ -10,5 +10,12 @@ import scrapy
 
 class QichachaItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    company = scrapy.Field()
+    websiteList = scrapy.Field()
+    email = scrapy.Field()
+    phone = scrapy.Field()
+    regNumber = scrapy.Field()
+    estiblishTime = scrapy.Field()
+    regLocation = scrapy.Field()
+    range = scrapy.Field()
+    english = scrapy.Field()

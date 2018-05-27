@@ -1,20 +1,27 @@
-import scrapy
 import logging.config
-from bs4 import BeautifulSoup
+import os
 import time
+from urllib.parse import quote
+
+import scrapy
 import xlrd
-import random
+from bs4 import BeautifulSoup
 from scrapy.http import Request
 from urllib.parse import quote
 
 
+from items import QichachaItem
+
 logger = logging.getLogger('soccer')
+
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
 
 
 class QichachaSpider(scrapy.Spider):
     name = 'qichachaspider'
     allowed_domains = ['qichacha.com']
     header = {
+        'Host': 'www.qichacha.com',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'zh-CN,zh;q=0.5',
@@ -24,38 +31,38 @@ class QichachaSpider(scrapy.Spider):
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36'
-
     }
     search_url = 'http://www.qichacha.com/search?key='
     target_hrefs = []
     companys = []
 
-    fs = open('/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/qichacha/qichacha/data/test.txt', 'a')
+    # fs = open('/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/qichacha/qichacha/data/test.txt', 'a')
 
     def start_requests(self):
-        data = xlrd.open_workbook(
-            '/home/sunlianjie/PycharmProjects/happy-spiders/scrapy_templates/qichacha/qichacha/data/Firm_May02.xlsx')
+        data = xlrd.open_workbook(os.path.join(data_dir, 'Firm_May02.xlsx'))
         table = data.sheets()[0]
         row = 101
         for i in range(1, row):
             rowValues = table.row_values(i)  # 某一行数据
             self.companys.append(rowValues[0].strip())
         for company in self.companys:
-            # self.header[':path'] = '/search?key='+quote(company)+'/'
-            yield Request(url=self.search_url + quote(company), dont_filter=True,
-                          callback=self.parse, headers=self.header)
-            time.sleep(random.randint(6, 10))
+            time.sleep(3)
+            keywords_encode = quote(company)
+            yield Request(url=self.search_url + keywords_encode, meta={'company': company}, dont_filter=True,
+                          headers=self.header,
+                          callback=self.parse)
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, "html.parser")
-        print(response.text)
         try:
             result = soup.select('.m_srchList > tbody > tr')[0]
-            self.fs.write('http://www.qichacha.com/' + result.find('a').get('href').strip() + '\n')
+            taget_url = 'https://www.qichacha.com/' + result.find('a').get('href').strip()
             logger.info('已抓取ip https://www.qichacha.com/' + result.find('a').get('href').strip() + '\n')
+            yield Request(url=taget_url, dont_filter=True, meta={'company': response.meta['company']},
+                          headers=self.header,
+                          callback=self.get_detail)
         except BaseException as error:
-            print('搜不到 ')
-
+            print('搜不到 ', error, response.text)
 
     # 获取细节信息函数
     def get_detail(self, response):
@@ -63,7 +70,7 @@ class QichachaSpider(scrapy.Spider):
         soup = BeautifulSoup(response.text, 'lxml')
         content = soup.find('section', id='Cominfo').find_all('table')[-1].find_all('tr')
         # 企业名
-        basic_list['name'] = '西安唯电电气技术有限公司'
+        basic_list['name'] = response.meta['company']
         # 官网
         try:
             basic_list['websiteList'] = soup.find('div', 'content').find_all('div', 'row')[2].find_all('span', 'cvlu')[
@@ -73,11 +80,11 @@ class QichachaSpider(scrapy.Spider):
 
         # 邮箱
         try:
-            basic_list['emainl'] = \
+            basic_list['email'] = \
                 soup.find('div', 'content').find_all('div', 'row')[2].find_all('span', 'cvlu')[
                     0].get_text()
         except:
-            basic_list['emainl'] = ''
+            basic_list['email'] = ''
 
         # 联系方式
         try:
@@ -98,19 +105,32 @@ class QichachaSpider(scrapy.Spider):
         except:
             basic_list['estiblishTime'] = ''
 
-            # 企业地址：
+        # 企业地址：
         try:
             basic_list['regLocation'] = content[9].find_all('td')[1].get_text().strip().split('查看地图')[0].strip()
         except:
             basic_list['regLocation'] = ''
-            # 经营范围：
+        # 经营范围：
         try:
             basic_list['range'] = content[-1].find_all('td')[1].get_text().strip()
         except:
             basic_list['range'] = ''
-        print(basic_list)
-
-
+        # 英文名称
+        try:
+            basic_list['english'] = content[-5].find_all('td')[3].get_text().strip()
+        except:
+            basic_list['english'] = ''
+        item = QichachaItem()
+        item['company'] = response.meta['company']
+        item['websiteList'] = basic_list['websiteList']
+        item['email'] = basic_list['email']
+        item['phone'] = basic_list['phone']
+        item['regNumber'] = basic_list['regNumber']
+        item['estiblishTime'] = basic_list['estiblishTime']
+        item['regLocation'] = basic_list['regLocation']
+        item['range'] = basic_list['range']
+        item['english'] = basic_list['english']
+        yield item
         # 英文名称
         # 注册时间 1
         # 注册号  1
