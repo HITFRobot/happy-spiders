@@ -7,7 +7,7 @@ import sys
 
 class DesignsSpider(scrapy.Spider):
     name = 'designs'
-    allowed_domains = ['ifworlddesignguide.com']
+    # allowed_domains = ['ifworlddesignguide.com']
     start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=2017&time_max=2017']
     url = 'https://ifworlddesignguide.com/design-excellence?time_min=2017&time_max=2017'
 
@@ -37,10 +37,84 @@ class DesignsSpider(scrapy.Spider):
         except Exception as error:
             print('error')
             sys.exit()
+        # yield第一次请求的内容的目标url
+        articles = json_obj['articles']
+        for article in articles:
+            href = article['href']
+            yield Request(url=response.urljoin(href), callback=self.parse_detail)
 
+        # 获得下一页请求
         next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
                    'time_min=2017&time_max=2017&cursor=30&lang=en&count=30&orderby=' \
                    'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=2017&time_max=2017' \
                    '&search='
         # next_url返回json
         # 同样进入主界面
+
+    def parse_detail(self, response):
+        # 1、名称
+        name = response.css('body > main > div > div:nth-child(1) > h1 > span.product-name::text').extract_first()
+        # 2、分类
+        type = response.css(
+            'body > main > div > div:nth-child(1) > h1 > span.product-type > span::text').extract_first()
+        # 3、类别
+        discipline = response.css(
+            'body > main > div > div.product-detail-page-images > div:nth-child(3) > div > div > h2::text').extract_first()
+        # 4、年份
+        year = response.css(
+            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(1) > span.column.small-6.xxlarge-7::text').extract_first()
+        # 5、开发时间
+        development = response.css(
+            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(3) > span.column.small-6.xxlarge-7::text').extract_first()
+        # 6、目标地区
+        regions = response.css(
+            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(5) > span.column.small-6.xxlarge-7::text').extract_first()
+        # 7、目标群体
+        groups = response.css(
+            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(7) > span.column.small-6.xxlarge-7::text').extract_first()
+        # 8、评价标准
+        try:
+            criteria = ''  # 有的目标页面没有
+        except:
+            criteria = ''
+        ## Client/Manufacturer
+        clients = []
+        clients_divs = response.css('body > main > div > div.row.align-right > div:nth-child(1) > div')
+        for client_div in clients_divs:
+            client = {}
+            # 9、生产企业
+            manufacturer = client_div.css('h2::text').extract_first()
+            # 10、所在地区
+            location = '/'.join(client_div.css('p::text').extract())
+            client['manufacturer'] = manufacturer
+            client['location'] = location
+            clients.append(client)
+        ## University
+        ## Design
+        designs = []
+        design_divs = response.css('body > main > div > div.row.align-right > div:nth-child(2)')
+        for design_div in design_divs:
+            design = {}
+            # 11、设计企业
+            try:
+                design_company = design_div.css('h2::text').extract_first()
+            except:
+                design_company = ''
+            # 12、所在地区
+            try:
+                location = '/'.join(design_divs[0].css('p::text').extract()[0:-1])
+            except:
+                location = ''
+            # 13、设计师
+            try:
+                designer = design_divs[0].css('p::text').extract()[-1]
+            except:
+                designer = ''
+            design['design_company'] = design_company
+            design['location'] = location
+            design['designer'] = designer
+            designs.append(design)
+        # 14、作品图片1
+        # 15、作品图片2
+        # 16、产品描述
+        description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
