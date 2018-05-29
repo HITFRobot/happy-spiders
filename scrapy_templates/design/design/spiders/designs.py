@@ -3,6 +3,7 @@ import scrapy
 from scrapy.http import Request
 from .util import parse_json_str
 import sys
+from items import DesignItem
 
 
 class DesignsSpider(scrapy.Spider):
@@ -52,6 +53,7 @@ class DesignsSpider(scrapy.Spider):
         # 同样进入主界面
 
     def parse_detail(self, response):
+        item = DesignItem()
         # 1、名称
         name = response.css('body > main > div > div:nth-child(1) > h1 > span.product-name::text').extract_first()
         # 2、分类
@@ -89,7 +91,8 @@ class DesignsSpider(scrapy.Spider):
             client['manufacturer'] = manufacturer
             client['location'] = location
             clients.append(client)
-        ## University
+        ## University （没找到在哪）
+        universities = []
         ## Design
         designs = []
         design_divs = response.css('body > main > div > div.row.align-right > div:nth-child(2)')
@@ -115,6 +118,24 @@ class DesignsSpider(scrapy.Spider):
             design['designer'] = designer
             designs.append(design)
         # 14、作品图片1
+        img1 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(1) > div > div > img::attr(data-src)').extract_first()
         # 15、作品图片2
+        img2 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(2) > div > div > img::attr(data-src)').extract_first()
         # 16、产品描述
         description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
+
+        item['name'] = name
+        item['type'] = type
+        item['discipline'] = discipline
+        item['year'] = year
+        item['development'] = development
+        item['regions'] = regions
+        item['groups'] = groups
+        item['criteria'] = criteria
+        item['clients'] = clients
+        item['universities'] = universities # 没找到在哪
+        item['designs'] = designs
+        item['img1'] = img1
+        item['img2'] = img2
+        item['description'] = description
+        yield item

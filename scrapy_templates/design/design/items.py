@@ -10,5 +10,17 @@ import scrapy
 
 class DesignItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    name = scrapy.Field()
+    type = scrapy.Field()
+    discipline = scrapy.Field()
+    year = scrapy.Field()
+    development = scrapy.Field()
+    regions = scrapy.Field()
+    groups = scrapy.Field()
+    criteria = scrapy.Field()
+    clients = scrapy.Field()
+    universities = scrapy.Field()
+    designs = scrapy.Field()
+    img1 = scrapy.Field()
+    img2 = scrapy.Field()
+    description = scrapy.Field()
