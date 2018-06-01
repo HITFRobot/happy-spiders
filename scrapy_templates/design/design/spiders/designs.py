@@ -111,10 +111,10 @@ class DesignsSpider(scrapy.Spider):
                 university_divs = div.css('div')
                 for university_div in university_divs:
                     university = {}
-                    # 9、生产企业
+                    # 9、学校
                     school = university_div.css('h2::text').extract_first()
                     # 10、所在地区
-                    location = '/'.join(client_div.css('p::text').extract())
+                    location = '/'.join(university_div.css('p::text').extract())
                     university['school'] = school
                     university['location'] = location
                     universities.append(university)
