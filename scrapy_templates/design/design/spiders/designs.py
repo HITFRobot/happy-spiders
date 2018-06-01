@@ -31,9 +31,10 @@ class DesignsSpider(scrapy.Spider):
     cursor = 30
 
     def start_requests(self):
-        for year in range(1954, 2019):
+        for year in range(1954, 1955): #1954 - 1975
             url = 'https://ifworlddesignguide.com/design-excellence?time_min='+str(year)+'&time_max='+str(year)
-            yield Request(url=url, callback=self.parse, meta={'year': year})
+            yield Request(url=url, headers=self.headers, callback=self.parse, meta={'year': year})
+            # time.sleep(random.randint(10, 20))
 
     def parse(self, response):
         content_type = response.headers['Content-Type'].decode(encoding='utf-8', errors='strict')
@@ -135,12 +136,12 @@ class DesignsSpider(scrapy.Spider):
             elif 'University' in title:
                 university_div = div.css('div')[-1]
                 university = {}
-                # 9、学校
+                # 11、学校
                 try:
                     school = university_div.css('h2::text').extract_first()
                 except:
                     school = ''
-                # 10、所在地区
+                # 12、所在地区
                 try:
                     location = ''.join(university_div.css('p::text').extract())
                 except:
@@ -162,24 +163,24 @@ class DesignsSpider(scrapy.Spider):
                 design_div = div.css('div')[-1]
                 # for design_div in design_divs:
                 design = {}
-                # 11、设计企业
-                try:
-                    design_company = design_div.css('h2::text').extract_first()
-                except:
-                    design_company = ''
-                # 12、所在地区
-                try:
-                    location = ''.join(design_div.css('p::text').extract()[0:-1])
-                except:
-                    location = ''
                 # 13、设计师
                 try:
                     designer = design_div.css('p::text').extract()[-1]
                 except:
                     designer = ''
+                # 14、设计企业
+                try:
+                    design_company = design_div.css('h2::text').extract_first()
+                except:
+                    design_company = ''
+                # 15、所在地区
+                try:
+                    location = ''.join(design_div.css('p::text').extract()[0:-1])
+                except:
+                    location = ''
+                design['designer'] = designer
                 design['design_company'] = design_company
                 design['location'] = location
-                design['designer'] = designer
                 designs.append(design)
 
         # 所有作品图片

@@ -38,15 +38,14 @@ class DownlodImagePipeline(FilesPipeline):
 
 class DesignPipeline(object):
     def __init__(self):
-        pass
-        # self.file = os.path.join(data_dir, '1954.xlsx')
-        # self.excel = load_workbook(self.file)
-        # self.ws = self.excel.active
-
-    def process_item(self, item, spider):
         self.file = os.path.join(data_dir, '1954.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
+
+    def process_item(self, item, spider):
+        # self.file = os.path.join(data_dir, '1954.xlsx')
+        # self.excel = load_workbook(self.file)
+        # self.ws = self.excel.active
         name = item['name']
         type = item['type']
         discipline = item['discipline']
@@ -63,7 +62,7 @@ class DesignPipeline(object):
 
         clients_length = len(clients)
         if clients_length > 5:
-            sys.exit()
+            clients = clients[0:5]
         all_clients = []
         for client in clients:
             all_clients.append(client['manufacturer'])
@@ -83,7 +82,7 @@ class DesignPipeline(object):
 
         designs_length = len(designs)
         if designs_length > 5:
-            sys.exit()
+            designs = designs[0:5]
         all_designs = []
         for design in designs:
             all_designs.append(design['designer'])
@@ -96,15 +95,17 @@ class DesignPipeline(object):
 
         images_length = len(images)
         if images_length > 7:
-            sys.exit()
+            images = images[0:7]
+        for i in range(7 - images_length):
+            images.append('')
+
         client_uni_design_images = all_clients + all_universities + all_designs + images
 
         all_data = [name, type, discipline, year, development, regions, groups, criteria] + client_uni_design_images
         all_data.append(description)
         self.ws.append(all_data)
         self.excel.save(self.file)
-        self.excel.close()
         return item
 
     def close_spider(self, spider):
-        pass
+        self.excel.close()
