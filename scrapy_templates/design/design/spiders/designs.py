@@ -3,14 +3,17 @@ import scrapy
 from scrapy.http import Request
 from .util import parse_json_str
 import sys
-from items import DesignItem
+from ..items import DesignItem
+import json
+import time
+import random
 
 
 class DesignsSpider(scrapy.Spider):
     name = 'designs'
     # allowed_domains = ['ifworlddesignguide.com']
-    start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=2017&time_max=2017']
-    url = 'https://ifworlddesignguide.com/design-excellence?time_min=2017&time_max=2017'
+    # start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954']
+    # url = 'https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954'
 
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -25,14 +28,21 @@ class DesignsSpider(scrapy.Spider):
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
     }
 
+    cursor = 30
+
     def start_requests(self):
-        yield Request(url=self.url, callback=self.parse)
+        for year in range(1954, 2019):
+            url = 'https://ifworlddesignguide.com/design-excellence?time_min='+str(year)+'&time_max='+str(year)
+            yield Request(url=url, callback=self.parse, meta={'year': year})
 
     def parse(self, response):
+        content_type = response.headers['Content-Type'].decode(encoding='utf-8', errors='strict')
         try:
-            if response.status == 200:
+            if response.status == 200 and 'html' in content_type:
                 json_obj = parse_json_str(response.text)
                 # "根据json_obj进入detail"
+            elif response.status == 200 and 'json' in content_type:
+                json_obj = json.loads(response.body_as_unicode())
             else:
                 raise Exception('error')
         except Exception as error:
@@ -40,17 +50,24 @@ class DesignsSpider(scrapy.Spider):
             sys.exit()
         # yield第一次请求的内容的目标url
         articles = json_obj['articles']
-        for article in articles:
-            href = article['href']
-            yield Request(url=response.urljoin(href), callback=self.parse_detail)
+        if len(articles) != 0:
+            year = response.meta['year']
+            for article in articles:
+                href = article['href']
+                yield Request(url='https://ifworlddesignguide.com/' + href, callback=self.parse_detail,
+                              meta={'year': year})
+                time.sleep(random.randint(1, 3))
 
-        # 获得下一页请求
-        next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
-                   'time_min=2017&time_max=2017&cursor=30&lang=en&count=30&orderby=' \
-                   'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=2017&time_max=2017' \
-                   '&search='
-        # next_url返回json
-        # 同样进入主界面
+            # 获得下一页请求
+            next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
+                       'time_min='+str(year)+'&time_max='+str(year)+'&cursor='+str(self.cursor) + \
+                       '&lang=en&count=30&orderby=' \
+                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min='+str(year)+'&time_max='+str(year) + \
+                       '&search='
+            yield Request(url=next_url, callback=self.parse, meta={'year': year})
+            self.cursor += 30
+            # next_url返回json
+            # 同样进入主界面
 
     def parse_detail(self, response):
         item = DesignItem()
@@ -76,7 +93,7 @@ class DesignsSpider(scrapy.Spider):
         lis = response.css('body > main > div > div.row.profile-text > div > div > ul > li')
         for li in lis:
             key = li.css('span.column.small-5::text').extract_first()
-            value = li.css('span.column.small-6.xxlarge-7').extract_first()
+            value = li.css('span.column.small-6.xxlarge-7::text').extract_first()
             if 'DATE OF LAUNCH' in key:
                 year = value
             elif 'DEVELOPMENT TIME' in key:
@@ -95,60 +112,83 @@ class DesignsSpider(scrapy.Spider):
         for div in divs:
             title = div.css('span::text').extract_first()
             ## Client/Manufacturer
-            if title == 'Client / Manufacturer':
-                clients_divs = div.css('div')
-                for client_div in clients_divs:
-                    client = {}
-                    # 9、生产企业
-                    manufacturer = client_div.css('h2::text').extract_first()
-                    # 10、所在地区
-                    location = '/'.join(client_div.css('p::text').extract())
-                    client['manufacturer'] = manufacturer
-                    client['location'] = location
-                    clients.append(client)
+            if 'Client / Manufacturer' in title:
+                clients_div = div.css('div')[-1]
+                client = {}
+                # 9、生产企业
+                manufacturer = clients_div.css('h2::text').extract_first()
+                # 10、所在地区
+                location = ''.join(clients_div.css('p::text').extract())
+                client['manufacturer'] = manufacturer
+                client['location'] = location
+                clients.append(client)
+                # for client_div in clients_divs:
+                #     client = {}
+                #     # 9、生产企业
+                #     manufacturer = client_div.css('h2::text').extract_first()
+                #     # 10、所在地区
+                #     location = '/'.join(client_div.css('p::text').extract())
+                #     client['manufacturer'] = manufacturer
+                #     client['location'] = location
+                #     clients.append(client)
             ## University
-            elif title == 'University':
-                university_divs = div.css('div')
-                for university_div in university_divs:
-                    university = {}
-                    # 9、学校
+            elif 'University' in title:
+                university_div = div.css('div')[-1]
+                university = {}
+                # 9、学校
+                try:
                     school = university_div.css('h2::text').extract_first()
-                    # 10、所在地区
-                    location = '/'.join(university_div.css('p::text').extract())
-                    university['school'] = school
-                    university['location'] = location
-                    universities.append(university)
+                except:
+                    school = ''
+                # 10、所在地区
+                try:
+                    location = ''.join(university_div.css('p::text').extract())
+                except:
+                    location = ''
+                university['school'] = school
+                university['location'] = location
+                universities.append(university)
+                # for university_div in university_divs:
+                #     university = {}
+                #     # 9、学校
+                #     school = university_div.css('h2::text').extract_first()
+                #     # 10、所在地区
+                #     location = '/'.join(university_div.css('p::text').extract())
+                #     university['school'] = school
+                #     university['location'] = location
+                #     universities.append(university)
             ## Design
-            elif title == 'Design':
-                design_divs = div.css('div')
-                for design_div in design_divs:
-                    design = {}
-                    # 11、设计企业
-                    try:
-                        design_company = design_div.css('h2::text').extract_first()
-                    except:
-                        design_company = ''
-                    # 12、所在地区
-                    try:
-                        location = '/'.join(design_divs[0].css('p::text').extract()[0:-1])
-                    except:
-                        location = ''
-                    # 13、设计师
-                    try:
-                        designer = design_divs[0].css('p::text').extract()[-1]
-                    except:
-                        designer = ''
-                    design['design_company'] = design_company
-                    design['location'] = location
-                    design['designer'] = designer
-                    designs.append(design)
-        # 14、作品图片1
-        img1 = response.css(
-            'body > main > div > div.product-detail-page-images > div:nth-child(1) > div > div > img::attr(data-src)').extract_first()
-        # 15、作品图片2
-        img2 = response.css(
-            'body > main > div > div.product-detail-page-images > div:nth-child(2) > div > div > img::attr(data-src)').extract_first()
-        # 16、产品描述
+            elif 'Design' in title:
+                design_div = div.css('div')[-1]
+                # for design_div in design_divs:
+                design = {}
+                # 11、设计企业
+                try:
+                    design_company = design_div.css('h2::text').extract_first()
+                except:
+                    design_company = ''
+                # 12、所在地区
+                try:
+                    location = ''.join(design_div.css('p::text').extract()[0:-1])
+                except:
+                    location = ''
+                # 13、设计师
+                try:
+                    designer = design_div.css('p::text').extract()[-1]
+                except:
+                    designer = ''
+                design['design_company'] = design_company
+                design['location'] = location
+                design['designer'] = designer
+                designs.append(design)
+
+        # 所有作品图片
+        images = []
+        imgs = response.css('body > main > div > div.product-detail-page-images')
+        for img in imgs.xpath('//img[contains(@data-src, "http")]'):
+            images.append(img.xpath('//@data-src').extract_first())
+
+        # 17、产品描述
         description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
 
         item['name'] = name
@@ -162,7 +202,7 @@ class DesignsSpider(scrapy.Spider):
         item['clients'] = clients
         item['universities'] = universities  # 没找到在哪
         item['designs'] = designs
-        item['img1'] = img1
-        item['img2'] = img2
+        item['images'] = images
         item['description'] = description
+        item['time'] = response.meta['year']
         yield item
