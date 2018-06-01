@@ -16,7 +16,7 @@ class TripadvisorPipeline(object):
         self.excel = load_workbook(self.file)
 
     def process_item(self, item, spider):
-        sheet = self.excel.get_sheet_by_name("Sheet1")
+        sheet = self.excel.get_sheet_by_name("Sheet2")
         name = item['name']
         title = item['title']
         comment = item['comment']
