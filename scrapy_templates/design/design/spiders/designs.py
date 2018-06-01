@@ -12,8 +12,8 @@ import random
 class DesignsSpider(scrapy.Spider):
     name = 'designs'
     # allowed_domains = ['ifworlddesignguide.com']
-    start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954']
-    url = 'https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954'
+    # start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954']
+    # url = 'https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954'
 
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -31,7 +31,9 @@ class DesignsSpider(scrapy.Spider):
     cursor = 30
 
     def start_requests(self):
-        yield Request(url=self.url, callback=self.parse)
+        for year in range(1954, 2019):
+            url = 'https://ifworlddesignguide.com/design-excellence?time_min='+str(year)+'&time_max='+str(year)
+            yield Request(url=url, callback=self.parse, meta={'year': year})
 
     def parse(self, response):
         content_type = response.headers['Content-Type'].decode(encoding='utf-8', errors='strict')
@@ -49,17 +51,20 @@ class DesignsSpider(scrapy.Spider):
         # yield第一次请求的内容的目标url
         articles = json_obj['articles']
         if len(articles) != 0:
+            year = response.meta['year']
             for article in articles:
                 href = article['href']
-                yield Request(url='https://ifworlddesignguide.com/' + href, callback=self.parse_detail)
-                time.sleep(random.randint(1, 4))
+                yield Request(url='https://ifworlddesignguide.com/' + href, callback=self.parse_detail,
+                              meta={'year': year})
+                time.sleep(random.randint(1, 3))
 
             # 获得下一页请求
             next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
-                       'time_min=1954&time_max=1954&cursor='+str(self.cursor)+'&lang=en&count=30&orderby=' \
-                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=1954&time_max=1954' \
+                       'time_min='+str(year)+'&time_max='+str(year)+'&cursor='+str(self.cursor) + \
+                       '&lang=en&count=30&orderby=' \
+                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min='+str(year)+'&time_max='+str(year) + \
                        '&search='
-            yield Request(url=next_url, callback=self.parse)
+            yield Request(url=next_url, callback=self.parse, meta={'year': year})
             self.cursor += 30
             # next_url返回json
             # 同样进入主界面
@@ -74,68 +79,115 @@ class DesignsSpider(scrapy.Spider):
         # 3、类别
         discipline = response.css(
             'body > main > div > div.product-detail-page-images > div:nth-child(3) > div > div > h2::text').extract_first()
+        ## 4 5 6 7
         # 4、年份
-        year = response.css(
-            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(1) > span.column.small-6.xxlarge-7::text').extract_first()
+        year = ''
         # 5、开发时间
-        development = response.css(
-            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(3) > span.column.small-6.xxlarge-7::text').extract_first()
+        development = ''
         # 6、目标地区
-        regions = response.css(
-            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(5) > span.column.small-6.xxlarge-7::text').extract_first()
+        regions = ''
         # 7、目标群体
-        groups = response.css(
-            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(7) > span.column.small-6.xxlarge-7::text').extract_first()
+        groups = ''
         # 8、评价标准
-        try:
-            criteria = groups = response.css(
-            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(9) > span.column.small-6.xxlarge-7::text').extract_first()  # 有的目标页面没有
-        except:
-            criteria = ''
-        ## Client/Manufacturer
+        criteria = ''
+        lis = response.css('body > main > div > div.row.profile-text > div > div > ul > li')
+        for li in lis:
+            key = li.css('span.column.small-5::text').extract_first()
+            value = li.css('span.column.small-6.xxlarge-7::text').extract_first()
+            if 'DATE OF LAUNCH' in key:
+                year = value
+            elif 'DEVELOPMENT TIME'in key:
+                development = value
+            elif 'TARGET REGIONS' in key:
+                regions = value
+            elif 'TARGET GROUPS' in key:
+                groups = value
+            elif 'ASSESMENT CRITERIA' in key:
+                criteria = value
+        ## Client/Manufacturer /// University ///
         clients = []
-        clients_divs = response.css('body > main > div > div.row.align-right > div:nth-child(1) > div')
-        for client_div in clients_divs:
-            client = {}
-            # 9、生产企业
-            manufacturer = client_div.css('h2::text').extract_first()
-            # 10、所在地区
-            location = '/'.join(client_div.css('p::text').extract())
-            client['manufacturer'] = manufacturer
-            client['location'] = location
-            clients.append(client)
-        ## University （没找到在哪）
         universities = []
-        ## Design
         designs = []
-        design_divs = response.css('body > main > div > div.row.align-right > div:nth-child(2)')
-        for design_div in design_divs:
-            design = {}
-            # 11、设计企业
-            try:
-                design_company = design_div.css('h2::text').extract_first()
-            except:
-                design_company = ''
-            # 12、所在地区
-            try:
-                location = '/'.join(design_divs[0].css('p::text').extract()[0:-1])
-            except:
-                location = ''
-            # 13、设计师
-            try:
-                designer = design_divs[0].css('p::text').extract()[-1]
-            except:
-                designer = ''
-            design['design_company'] = design_company
-            design['location'] = location
-            design['designer'] = designer
-            designs.append(design)
-        # 14、作品图片1
-        img1 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(1) > div > div > img::attr(data-src)').extract_first()
-        # 15、作品图片2
-        img2 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(2) > div > div > img::attr(data-src)').extract_first()
-        # 16、作品图片3
-        img3 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(3) > div > div > img::attr(data-src)').extract_first()
+        divs = response.css('body > main > div > div.row.align-right > div')
+        for div in divs:
+            title = div.css('span::text').extract_first()
+            ## Client/Manufacturer
+            if 'Client / Manufacturer' in title:
+                clients_div = div.css('div')[-1]
+                client = {}
+                # 9、生产企业
+                manufacturer = clients_div.css('h2::text').extract_first()
+                # 10、所在地区
+                location = ''.join(clients_div.css('p::text').extract())
+                client['manufacturer'] = manufacturer
+                client['location'] = location
+                clients.append(client)
+                # for client_div in clients_divs:
+                #     client = {}
+                #     # 9、生产企业
+                #     manufacturer = client_div.css('h2::text').extract_first()
+                #     # 10、所在地区
+                #     location = '/'.join(client_div.css('p::text').extract())
+                #     client['manufacturer'] = manufacturer
+                #     client['location'] = location
+                #     clients.append(client)
+            ## University
+            elif 'University' in title:
+                university_div = div.css('div')[-1]
+                university = {}
+                # 9、学校
+                try:
+                    school = university_div.css('h2::text').extract_first()
+                except:
+                    school = ''
+                # 10、所在地区
+                try:
+                    location = ''.join(university_div.css('p::text').extract())
+                except:
+                    location = ''
+                university['school'] = school
+                university['location'] = location
+                universities.append(university)
+                # for university_div in university_divs:
+                #     university = {}
+                #     # 9、学校
+                #     school = university_div.css('h2::text').extract_first()
+                #     # 10、所在地区
+                #     location = '/'.join(university_div.css('p::text').extract())
+                #     university['school'] = school
+                #     university['location'] = location
+                #     universities.append(university)
+            ## Design
+            elif 'Design' in title:
+                design_div = div.css('div')[-1]
+                # for design_div in design_divs:
+                design = {}
+                # 11、设计企业
+                try:
+                    design_company = design_div.css('h2::text').extract_first()
+                except:
+                    design_company = ''
+                # 12、所在地区
+                try:
+                    location = ''.join(design_div.css('p::text').extract()[0:-1])
+                except:
+                    location = ''
+                # 13、设计师
+                try:
+                    designer = design_div.css('p::text').extract()[-1]
+                except:
+                    designer = ''
+                design['design_company'] = design_company
+                design['location'] = location
+                design['designer'] = designer
+                designs.append(design)
+
+        # 所有作品图片
+        images = []
+        imgs = response.css('body > main > div > div.product-detail-page-images')
+        for img in imgs.xpath('//img[contains(@data-src, "http")]'):
+            images.append(img.xpath('//@data-src').extract_first())
+
         # 17、产品描述
         description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
 
@@ -150,8 +202,7 @@ class DesignsSpider(scrapy.Spider):
         item['clients'] = clients
         item['universities'] = universities # 没找到在哪
         item['designs'] = designs
-        item['img1'] = img1
-        item['img2'] = img2
-        item['img3'] = img3
+        item['images'] = images
         item['description'] = description
+        item['time'] = response.meta['year']
         yield item

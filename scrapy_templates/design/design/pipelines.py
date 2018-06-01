@@ -18,29 +18,35 @@ data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
 
 class DownlodImagePipeline(FilesPipeline):
     def get_media_requests(self, item, info):
-        img_urls = [item['img1'], item['img2'], item['img3']]
+        year = item['time']
+        images = item['images']
         name = item['name']
         i = 1
-        for img_url in img_urls:
-            if img_url is not None:
+        for img_url in images:
+            if 'http' in img_url:
                 image_name = name + '_' + str(i)
                 i += 1
-                yield scrapy.Request(url=img_url, meta={'image_name': image_name})
+                yield scrapy.Request(url=img_url, meta={'image_name': image_name, 'year': year})
 
     def file_path(self, request, response=None, info=None):
         image_name = request.meta['image_name']
         image_name = re.sub(r'/', ' ', image_name)
-        path = '%s/%s.jpg' % ('1954', image_name)
+        year = request.meta['year']
+        path = '%s/%s.jpg' % (str(year), image_name)
         return path
 
 
 class DesignPipeline(object):
     def __init__(self):
+        pass
+        # self.file = os.path.join(data_dir, '1954.xlsx')
+        # self.excel = load_workbook(self.file)
+        # self.ws = self.excel.active
+
+    def process_item(self, item, spider):
         self.file = os.path.join(data_dir, '1954.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
-
-    def process_item(self, item, spider):
         name = item['name']
         type = item['type']
         discipline = item['discipline']
@@ -52,9 +58,7 @@ class DesignPipeline(object):
         clients = item['clients']
         universities = item['universities']
         designs = item['designs']
-        img1 = item['img1']
-        img2 = item['img2']
-        img3 = item['img3']
+        images = item['images']
         description = item['description']
 
         clients_length = len(clients)
@@ -71,9 +75,9 @@ class DesignPipeline(object):
         universities_length = len(universities)
         all_universities = []
         for universitie in universities:
-            all_universities.append('')
-            all_universities.append('')
-        for i in range(3 - universities_length):
+            all_universities.append(universitie['school'])
+            all_universities.append(universitie['location'])
+        for i in range(5 - universities_length):
             all_universities.append('')
             all_universities.append('')
 
@@ -90,13 +94,17 @@ class DesignPipeline(object):
             all_designs.append('')
             all_designs.append('')
 
-        client_uni_design = all_clients + all_universities + all_designs
+        images_length = len(images)
+        if images_length > 7:
+            sys.exit()
+        client_uni_design_images = all_clients + all_universities + all_designs + images
 
-        all_data = [name, type, discipline, year, development, regions, groups, criteria] + client_uni_design
-        all_data.extend([img1, img2, img3, description])
+        all_data = [name, type, discipline, year, development, regions, groups, criteria] + client_uni_design_images
+        all_data.append(description)
         self.ws.append(all_data)
         self.excel.save(self.file)
+        self.excel.close()
         return item
 
     def close_spider(self, spider):
-        self.excel.close()
+        pass
