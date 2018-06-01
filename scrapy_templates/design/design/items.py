@@ -23,4 +23,5 @@ class DesignItem(scrapy.Item):
     designs = scrapy.Field()
     img1 = scrapy.Field()
     img2 = scrapy.Field()
+    img3 = scrapy.Field()
     description = scrapy.Field()

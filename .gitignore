@@ -10,4 +10,5 @@ config/conf.yaml
 .cache/
 */.cache/
 .DS_Store
-
+**/*.xlsx
+**/*.jpg

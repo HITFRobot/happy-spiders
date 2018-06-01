@@ -3,14 +3,17 @@ import scrapy
 from scrapy.http import Request
 from .util import parse_json_str
 import sys
-from items import DesignItem
+from ..items import DesignItem
+import json
+import time
+import random
 
 
 class DesignsSpider(scrapy.Spider):
     name = 'designs'
     # allowed_domains = ['ifworlddesignguide.com']
-    start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=2017&time_max=2017']
-    url = 'https://ifworlddesignguide.com/design-excellence?time_min=2017&time_max=2017'
+    start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954']
+    url = 'https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954'
 
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -25,14 +28,19 @@ class DesignsSpider(scrapy.Spider):
         'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
     }
 
+    cursor = 30
+
     def start_requests(self):
         yield Request(url=self.url, callback=self.parse)
 
     def parse(self, response):
+        content_type = response.headers['Content-Type'].decode(encoding='utf-8', errors='strict')
         try:
-            if response.status == 200:
+            if response.status == 200 and 'html' in content_type:
                 json_obj = parse_json_str(response.text)
                 # "根据json_obj进入detail"
+            elif response.status == 200 and 'json' in content_type:
+                json_obj = json.loads(response.body_as_unicode())
             else:
                 raise Exception('error')
         except Exception as error:
@@ -40,17 +48,21 @@ class DesignsSpider(scrapy.Spider):
             sys.exit()
         # yield第一次请求的内容的目标url
         articles = json_obj['articles']
-        for article in articles:
-            href = article['href']
-            yield Request(url=response.urljoin(href), callback=self.parse_detail)
+        if len(articles) != 0:
+            for article in articles:
+                href = article['href']
+                yield Request(url='https://ifworlddesignguide.com/' + href, callback=self.parse_detail)
+                time.sleep(random.randint(1, 4))
 
-        # 获得下一页请求
-        next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
-                   'time_min=2017&time_max=2017&cursor=30&lang=en&count=30&orderby=' \
-                   'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=2017&time_max=2017' \
-                   '&search='
-        # next_url返回json
-        # 同样进入主界面
+            # 获得下一页请求
+            next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
+                       'time_min=1954&time_max=1954&cursor='+str(self.cursor)+'&lang=en&count=30&orderby=' \
+                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=1954&time_max=1954' \
+                       '&search='
+            yield Request(url=next_url, callback=self.parse)
+            self.cursor += 30
+            # next_url返回json
+            # 同样进入主界面
 
     def parse_detail(self, response):
         item = DesignItem()
@@ -76,7 +88,8 @@ class DesignsSpider(scrapy.Spider):
             'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(7) > span.column.small-6.xxlarge-7::text').extract_first()
         # 8、评价标准
         try:
-            criteria = ''  # 有的目标页面没有
+            criteria = groups = response.css(
+            'body > main > div > div.row.profile-text > div > div > ul > li:nth-child(9) > span.column.small-6.xxlarge-7::text').extract_first()  # 有的目标页面没有
         except:
             criteria = ''
         ## Client/Manufacturer
@@ -121,7 +134,9 @@ class DesignsSpider(scrapy.Spider):
         img1 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(1) > div > div > img::attr(data-src)').extract_first()
         # 15、作品图片2
         img2 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(2) > div > div > img::attr(data-src)').extract_first()
-        # 16、产品描述
+        # 16、作品图片3
+        img3 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(3) > div > div > img::attr(data-src)').extract_first()
+        # 17、产品描述
         description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
 
         item['name'] = name
@@ -137,5 +152,6 @@ class DesignsSpider(scrapy.Spider):
         item['designs'] = designs
         item['img1'] = img1
         item['img2'] = img2
+        item['img3'] = img3
         item['description'] = description
         yield item
