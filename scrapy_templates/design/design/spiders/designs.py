@@ -79,7 +79,7 @@ class DesignsSpider(scrapy.Spider):
             value = li.css('span.column.small-6.xxlarge-7').extract_first()
             if 'DATE OF LAUNCH' in key:
                 year = value
-            elif 'DEVELOPMENT TIME'in key:
+            elif 'DEVELOPMENT TIME' in key:
                 development = value
             elif 'TARGET REGIONS' in key:
                 regions = value
@@ -143,9 +143,11 @@ class DesignsSpider(scrapy.Spider):
                     design['designer'] = designer
                     designs.append(design)
         # 14、作品图片1
-        img1 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(1) > div > div > img::attr(data-src)').extract_first()
+        img1 = response.css(
+            'body > main > div > div.product-detail-page-images > div:nth-child(1) > div > div > img::attr(data-src)').extract_first()
         # 15、作品图片2
-        img2 = response.css('body > main > div > div.product-detail-page-images > div:nth-child(2) > div > div > img::attr(data-src)').extract_first()
+        img2 = response.css(
+            'body > main > div > div.product-detail-page-images > div:nth-child(2) > div > div > img::attr(data-src)').extract_first()
         # 16、产品描述
         description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
 
@@ -158,7 +160,7 @@ class DesignsSpider(scrapy.Spider):
         item['groups'] = groups
         item['criteria'] = criteria
         item['clients'] = clients
-        item['universities'] = universities # 没找到在哪
+        item['universities'] = universities  # 没找到在哪
         item['designs'] = designs
         item['img1'] = img1
         item['img2'] = img2
