@@ -31,7 +31,7 @@ class DesignsSpider(scrapy.Spider):
     cursor = 30
 
     def start_requests(self):
-        for year in range(1954, 1955): #1954 - 1975
+        for year in range(2017, 2018): # 1954 - 1975
             url = 'https://ifworlddesignguide.com/design-excellence?time_min='+str(year)+'&time_max='+str(year)
             yield Request(url=url, headers=self.headers, callback=self.parse, meta={'year': year})
             # time.sleep(random.randint(10, 20))
@@ -57,7 +57,7 @@ class DesignsSpider(scrapy.Spider):
                 href = article['href']
                 yield Request(url='https://ifworlddesignguide.com/' + href, callback=self.parse_detail,
                               meta={'year': year})
-                time.sleep(random.randint(1, 3))
+                time.sleep(random.randint(0, 1))
 
             # 获得下一页请求
             next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
@@ -187,7 +187,7 @@ class DesignsSpider(scrapy.Spider):
         images = []
         imgs = response.css('body > main > div > div.product-detail-page-images')
         for img in imgs.xpath('//img[contains(@data-src, "http")]'):
-            images.append(img.xpath('//@data-src').extract_first())
+            images.append(img.xpath('@data-src').extract_first())
 
         # 17、产品描述
         description = response.css('body > main > div > div:nth-child(3) > div > p::text').extract_first()
