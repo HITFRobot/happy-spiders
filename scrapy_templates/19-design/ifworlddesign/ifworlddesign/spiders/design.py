@@ -10,7 +10,7 @@ import random
 
 
 class DesignsSpider(scrapy.Spider):
-    name = 'designs'
+    name = 'ifworlddesign'
     # allowed_domains = ['ifworlddesignguide.com']
     # start_urls = ['https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954']
     # url = 'https://ifworlddesignguide.com/design-excellence?time_min=1954&time_max=1954'
