@@ -102,7 +102,7 @@ class DesignPipeline(object):
         all_data.append(description)
         self.ws.append(all_data)
         self.excel.save(self.file)
-        return item
+        yield item
 
     def close_spider(self, spider):
         self.excel.close()
