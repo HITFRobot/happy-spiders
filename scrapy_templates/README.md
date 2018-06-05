@@ -1,11 +1,44 @@
 # Scrapy Spider Templetes
 提供用**scrapy**爬取各个网站的模板代码，以便于用最少的时间获得数据。
 
-## 快速导航
+## 分类
 
-- [x] [**伯乐在线——最新文章**](https://github.com/conghuaicai/happy-spiders/tree/master/scrapy_templates/jobbole)
-- [x] [**拉钩网——工作招聘详情**](https://github.com/conghuaicai/happy-spiders/tree/master/scrapy_templates/lagou)
-- [x] [**豆瓣网——top250movie**](https://github.com/conghuaicai/happy-spiders/tree/master/scrapy_templates/douban)
-- [x] [**csdn——机器之心专栏**](https://github.com/conghuaicai/happy-spiders/tree/master/scrapy_templates/csdnblog)
-- [x] [**金融数据——证券交易所公告、财经网、股吧、百度指数**](https://github.com/conghuaicai/happy-spiders/tree/master/scrapy_templates/finance)
+### 社交网络 01-social
 
+### 金融财经 02-finance
+
+### 电商购物 03-shopping
+
+### 汽车数据 04-car
+
+### 工作职业 05-profession
+
+### 房产数据 06-house
+
+### 健康医疗 07-heathy
+
+### 企业数据 08-enterprise
+
+### 旅行户外 09-travel
+
+### 政务数据 10-government
+
+### 科研分析 11-research
+
+### 资讯新闻 12-information
+
+### 娱乐休闲 13-leisure
+
+### 体育运动 14-sports
+
+### 生活日常 15-life
+
+### 游戏竞技 16-game
+
+### 影视数据 17-movie
+
+### 教育培训 18-education
+
+### 设计装修 19-design
+
+### 其他数据 20-other
