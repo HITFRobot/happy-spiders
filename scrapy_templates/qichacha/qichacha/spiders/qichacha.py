@@ -1,12 +1,15 @@
-import scrapy
 import logging.config
-from bs4 import BeautifulSoup
+import os
 import time
+from urllib.parse import quote
+
+import scrapy
 import xlrd
-import random
+from bs4 import BeautifulSoup
 from scrapy.http import Request
 from urllib.parse import quote
-import os
+
+
 from items import QichachaItem
 
 logger = logging.getLogger('soccer')
@@ -17,20 +20,19 @@ data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
 class QichachaSpider(scrapy.Spider):
     name = 'qichachaspider'
     allowed_domains = ['qichacha.com']
-    start_urls = ['https://www.qichacha.com/firm_9e0b9df2f89dfe544d15fc16655d520c.html']
     header = {
         'Host': 'www.qichacha.com',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'zh-CN,zh;q=0.5',
+        'Cache-Control': 'max-age=0',
+        'Cookie': 'acw_tc=AQAAAPsPx14riAgAF3zfdgPnXspofkC7; PHPSESSID=fh1a4sk2upjqdr5nq4dvl3krs2; UM_distinctid=16325c83aa814c-09293b2b255171-3b7c015b-1fa400-16325c83aa9168d; zg_did=%7B%22did%22%3A%20%2216325c83ab4619-0892953ddee5b2-3b7c015b-1fa400-16325c83ab716a%22%7D; _uab_collina=152534727141551053723082; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1525347270,1525355036; _umdata=0712F33290AB8A6DE8A6A7E152EBF34BA30F072D4F4B7B4D9C3E1542E897D7C5AEF7A60E7F69AD9ACD43AD3E795C914CA03AB50BBA5C73EFC5E2AD409966215D; hasShow=1; CNZZDATA1254842228=1479707132-1525343680-%7C1525430717; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1525431420; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201525430472062%2C%22updated%22%3A%201525431518084%2C%22info%22%3A%201525347269308%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22%22%2C%22cuid%22%3A%20%228a6f8caea6f05d464d5d1cea1ec36ea2%22%7D',
+        'Referer': 'https://www.qichacha.com/',
         'Connection': 'keep-alive',
-        'Cookie': 'PHPSESSID=bmmq40ipoiq3aglhs6i3ca7356; _umdata=E2AE90FA4E0E42DEDC258EB4B5D49A775C9FC424C2F48864C90B287E9158115B2DBA00354522D74BCD43AD3E795C914CD8851C0CAE10D6EC91956A76D0322B25; zg_de1d1a35bfa24ce29bbf2c7eb17e6c4f=%7B%22sid%22%3A%201525402723891%2C%22updated%22%3A%201525402957095%2C%22info%22%3A%201525402723893%2C%22superProperty%22%3A%20%22%7B%7D%22%2C%22platform%22%3A%20%22%7B%7D%22%2C%22utm%22%3A%20%22%7B%7D%22%2C%22referrerDomain%22%3A%20%22www.baidu.com%22%7D; Hm_lpvt_3456bee468c83cc63fb5147f119f1075=1525402811; Hm_lvt_3456bee468c83cc63fb5147f119f1075=1525402724; CNZZDATA1254842228=1442659497-1525399389-https%253A%252F%252Fwww.baidu.com%252F%7C1525399389; _uab_collina=152540281087230668241435; zg_did=%7B%22did%22%3A%20%221632916662d185-04267612bf12478-1d451b27-1fa400-1632916662e625%22%7D; acw_tc=AQAAAFuF2U0EwAwAHAE8Osl5mM8ZeM3e; hasShow=1; UM_distinctid=1632916656e90e-09196927cc1b29-1d451b27-1fa400-1632916656f80a',
-        'referer': 'http://www.qichacha.com',
         'Upgrade-Insecure-Requests': '1',
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0.3 Safari/604.5.6'
-
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.93 Safari/537.36'
     }
-    search_url = 'https://www.qichacha.com/search?key='
+    search_url = 'http://www.qichacha.com/search?key='
     target_hrefs = []
     companys = []
 

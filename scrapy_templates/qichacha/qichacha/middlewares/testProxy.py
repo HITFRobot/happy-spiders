@@ -10,7 +10,7 @@
 import logging.config
 import threading
 import urllib.request
-from urllib import request
+import requests
 from urllib.request import ProxyHandler, build_opener
 logger = logging.getLogger('soccer')
 
@@ -36,19 +36,25 @@ class testProxy(threading.Thread):
 
     def check_proxy(self, proxy):
         '''检测代理是否可用'''
-        proxy_handler = ProxyHandler({'http': str(proxy)})
-        # 挂载opener
-        opener = build_opener(proxy_handler, urllib.request.HTTPHandler)
+        logger.info('proxy is %s' % proxy)
+        proxies = {
+            'http': proxy,
+            'https': proxy
+        }
+        # proxy_handler = ProxyHandler({'http': proxy})
+        # # 挂载opener
+        # opener = build_opener(proxy_handler, urllib.request.HTTPHandler)
         try:
             for url, code in self.proxyMiddleware.test_urls:
-                rep = opener.open(url, timeout=self.proxyMiddleware.test_proxy_timeout)
-                print(rep.status)
-                if rep.status != 200:
-                    logger.info("IP:http://%s不可用" % proxy)
+                # rep = opener.open(url, timeout=self.proxyMiddleware.test_proxy_timeout)
+                rep = requests.get(url, proxies=proxies)
+                if code not in rep.text:
+                    logger.info("IP_1:%s不可用" % proxy)
                     return False
-                logger.info("IP:http://%s可用" % proxy)
+                logger.info("IP_2:%s可用" % proxy)
             return True
         except Exception as e:
-            print(e)
-            logger.info("IP:http://%s不可用" % proxy)
+            logger.info(type(proxy))
+            logger.info(e)
+            logger.info("IP_3:%s不可用" % proxy)
             return False

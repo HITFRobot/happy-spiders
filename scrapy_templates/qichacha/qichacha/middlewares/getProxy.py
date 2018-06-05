@@ -46,9 +46,13 @@ class getProxy(threading.Thread):
                     if 0 == i:
                         continue
                     tds = tr.find_all('td')
-                    ip = tds[1].text
-                    port = tds[2].text
-                    proxy = ''.join(['http://', ip, ':', port]).encode('utf-8')
+                    ip = str(tds[1].text)
+                    port = str(tds[2].text)
+                    proxy = ip + ':' + port
+                    if 'HTTP' in tds[5].text:
+                        proxy = 'http://' + proxy
+                    else:
+                        proxy = 'https://' + proxy
                     if isinstance(proxy, bytes):
                         proxy = bytes.decode(proxy, encoding='utf-8', errors='strict')
                     proxyes[proxy] = False
@@ -73,9 +77,13 @@ class getProxy(threading.Thread):
                     if 0 == i:
                         continue
                     tds = tr.find_all("td")
-                    ip = str(tds[0].string.strip().encode('utf-8'))
-                    port = str(tds[1].string.strip().encode('utf-8'))
-                    proxy = ''.join(['http://', ip, ':', port]).encode('utf-8')
+                    ip = str(tds[0].string.strip())
+                    port = str(tds[1].string.strip())
+                    proxy = ip + ':' + port
+                    if 'HTTP' in str(tds[3].string.strip()):
+                        proxy = 'http://' + proxy
+                    else:
+                        proxy = 'https://' + proxy
                     if isinstance(proxy, bytes):
                         proxy = bytes.decode(proxy, encoding='utf-8', errors='strict')
                     proxyes[proxy] = False

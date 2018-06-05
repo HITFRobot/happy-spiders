@@ -25,7 +25,7 @@ class proxyMiddleware(object):
         ('allow_spider', ['qichachaspider']),
         ('test_urls', [('http://www.w3school.com.cn', '06004630'), ]),
         ('test_proxy_timeout', 5),
-        ('download_timeout', 60),
+        ('download_timeout', 200),
         ('test_threadnums', 20),
         ('ban_code', [503, ]),
         ('ban_re', r''),
