@@ -12,7 +12,7 @@ import scrapy
 import re
 import sys
 
-data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
 
 
 class DownlodImagePipeline(FilesPipeline):
@@ -102,7 +102,7 @@ class DesignPipeline(object):
         all_data.append(description)
         self.ws.append(all_data)
         self.excel.save(self.file)
-        return item
+        yield item
 
     def close_spider(self, spider):
         self.excel.close()
