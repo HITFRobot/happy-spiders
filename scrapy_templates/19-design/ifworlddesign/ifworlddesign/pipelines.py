@@ -12,7 +12,7 @@ import scrapy
 import re
 import sys
 
-data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 
 class DownlodImagePipeline(FilesPipeline):
@@ -37,7 +37,7 @@ class DownlodImagePipeline(FilesPipeline):
 
 class DesignPipeline(object):
     def __init__(self):
-        self.file = os.path.join(data_dir, '1975.xlsx')
+        self.file = os.path.join(data_dir, '1955.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
 

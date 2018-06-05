@@ -7,6 +7,7 @@ from ..items import DesignItem
 import json
 import time
 import random
+import re
 
 
 class DesignsSpider(scrapy.Spider):
@@ -31,8 +32,8 @@ class DesignsSpider(scrapy.Spider):
     cursor = 30
 
     def start_requests(self):
-        for year in range(1975, 1976): #1954 - 1975
-            url = 'https://ifworlddesignguide.com/design-excellence?time_min='+str(year)+'&time_max='+str(year)
+        for year in range(1955, 1956):  # 1954 - 1975
+            url = 'https://ifworlddesignguide.com/design-excellence?time_min=' + str(year) + '&time_max=' + str(year)
             yield Request(url=url, headers=self.headers, callback=self.parse, meta={'year': year})
             # time.sleep(random.randint(10, 20))
 
@@ -61,9 +62,9 @@ class DesignsSpider(scrapy.Spider):
 
             # 获得下一页请求
             next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
-                       'time_min='+str(year)+'&time_max='+str(year)+'&cursor='+str(self.cursor) + \
+                       'time_min=' + str(year) + '&time_max=' + str(year) + '&cursor=' + str(self.cursor) + \
                        '&lang=en&count=30&orderby=' \
-                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min='+str(year)+'&time_max='+str(year) + \
+                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=' + str(year) + '&time_max=' + str(year) + \
                        '&search='
             yield Request(url=next_url, callback=self.parse, meta={'year': year})
             self.cursor += 30
@@ -78,8 +79,16 @@ class DesignsSpider(scrapy.Spider):
         type = response.css(
             'body > main > div > div:nth-child(1) > h1 > span.product-type > span::text').extract_first()
         # 3、类别
+        ## 情况1
         discipline = response.css(
             'body > main > div > div.product-detail-page-images > div:nth-child(3) > div > div > h2::text').extract_first()
+
+        if discipline is None or discipline == '':
+            try:
+                m = re.search('>(Discipline: .*?)</h2>', response.text)
+                discipline = m.group(1)
+            except:
+                discipline = ''
         ## 4 5 6 7
         # 4、年份
         year = ''
