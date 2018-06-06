@@ -32,7 +32,11 @@ class DesignsSpider(scrapy.Spider):
     cursor = 30
 
     def start_requests(self):
+<<<<<<< HEAD
         for year in range(1995, 1996):  # 1976 - 1995
+=======
+        for year in range(1975, 1976):  # 1954 - 1975
+>>>>>>> c423196dc87aece5fcd9e5208216e817c08ad440
             url = 'https://ifworlddesignguide.com/design-excellence?time_min=' + str(year) + '&time_max=' + str(year)
             yield Request(url=url, headers=self.headers, callback=self.parse, meta={'year': year})
             # time.sleep(random.randint(10, 20))
