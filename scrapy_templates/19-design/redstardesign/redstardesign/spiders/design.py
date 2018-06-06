@@ -4,12 +4,15 @@ import json
 import urllib
 import requests
 import re
+from .util import unicode_trans
 from bs4 import BeautifulSoup
 from ..items import RedstardesignItem
 
 
 class DesignSpider(scrapy.Spider):
     name = 'redstarspider'
+    global page_num
+    page_num = 1
     year_id = {
         '2017': '5773',
         '2016': '5452',
@@ -23,8 +26,9 @@ class DesignSpider(scrapy.Spider):
         '2008': '808',
         '2007': '809',
         '2006': '810'
-
     }
+    award = ['至尊金奖', '银奖', '最佳团队奖', '原创奖金奖', '原创奖', '未来之星奖', '金奖', '红星奖', '最佳新人奖', '原创奖银奖', '优秀设计师奖']
+    awardnum = {'原创奖': 2}
     headers = {
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate',
@@ -41,45 +45,73 @@ class DesignSpider(scrapy.Spider):
 
     def start_requests(self):
         this_year = '2017'
-
-        award = ['至尊金奖', '银奖', '最佳团队奖', '原创奖金奖', '原创奖', '未来之星奖', '金奖', '红星奖', '最佳新人奖', '原创奖银奖', '优秀设计师奖', ]
         form_data_one = {
             'cmd': 'getProTypeList',
             'type': '0',
             'yearid': self.year_id[this_year]
         }
-        response = requests.post(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
-                                 data=form_data_one)
-        print(urllib.parse.unquote(response.text))
+        yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
+                                 meta={'this_year': this_year},
+                                 formdata=form_data_one, callback=self.get_num)
 
-
-        # form_data = {
-        #     'cmd': 'getProList',
-        #     'page': '1',
-        #     'key': '原创奖',
-        #     'type': '0',
-        #     'yearid': self.year_id[this_year]
-        # }
-        # yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx', formdata=form_data,
-        #                          callback=self.parse)
+    def get_num(self, response):
+        soup = BeautifulSoup(unicode_trans(response.text), "html.parser")
+        numbers = soup.select('p > span')
+        temp = []
+        this_year = response.meta.get('this_year')
+        for num in numbers:
+            temp.append(num.text.split('个')[0])
+        for key, value in self.awardnum.items():
+            print(key, temp[self.awardnum[key]])
+            global page_num
+            page_num = 1
+            form_data = {
+                'cmd': 'getProList',
+                'page': str(page_num),
+                'key': key,
+                'type': '0',
+                'yearid': self.year_id[this_year]
+            }
+            yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
+                                     formdata=form_data,
+                                     meta={'this_year': this_year, 'award_name': key, 'num': temp[self.awardnum[key]]},
+                                     callback=self.parse)
 
     def parse(self, response):
-
+        global page_num
+        this_year = response.meta.get('this_year')
+        key = response.meta.get('award_name')
+        num = response.meta.get('num')
         url_past = 'http://www.redstaraward.org'
-        # print(urllib.parse.unquote(response.text))
-
         design_lists = response.text.split(',')[2]
-        html = urllib.parse.unquote(design_lists)
-        print(html)
+        html = unicode_trans(design_lists)
+        pages_html = unicode_trans(response.text.split(',')[3])
+        try:
+            total_pages = int(re.findall(".*value\)>(.*)\)\{alert.*", pages_html)[0])
+        except:
+            total_pages = 0
+        print('total pages:', total_pages)
+
         soup = BeautifulSoup(html, "html.parser")
         urls = soup.select('p > a')
         for url in urls:
             print(url.get('href'))
-
-        yield Request(url=url_past + '/details26_6172.html', headers=self.headers, callback=self.detail_parse)
-
-        # design_lists = eval(response.body.decode('utf-8'))
-        # print(design_lists)
+            yield Request(url=url_past + url.get('href'), meta={'this_year': this_year, 'award_name': key, 'num': num},
+                          headers=self.headers, callback=self.detail_parse)
+        if total_pages > 1 and page_num <= total_pages:
+            print('current page:',page_num)
+            page_num += 1
+            form_data = {
+                'cmd': 'getProList',
+                'page': str(page_num),
+                'key': key,
+                'type': '0',
+                'yearid': self.year_id[this_year]
+            }
+            yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
+                                     formdata=form_data,
+                                     meta={'this_year': this_year, 'award_name': key, 'num': num},
+                                     callback=self.parse)
 
     def detail_parse(self, response):
 
@@ -114,16 +146,16 @@ class DesignSpider(scrapy.Spider):
             awards = ''
 
         try:
+
             # 产品介绍
-            description = response.css('.zuopin > div:nth-child(5) > div::text').extract_first()
+            description = response.css('.zuopin > div:nth-child(6) > div::text').extract_first()
         except:
             description = ''
 
         item = RedstardesignItem()
-
-        item['year'] = year
-        item['awards_name'] = awards_name
-        item['num'] = num
+        item['year'] = response.meta.get('this_year')
+        item['awards_name'] = response.meta.get('award_name')
+        item['num'] = response.meta.get('num')
 
         item['img_path'] = img_path
         item['design_name'] = design_name
@@ -131,3 +163,4 @@ class DesignSpider(scrapy.Spider):
         item['design_unit'] = design_unit
         item['awards'] = awards
         item['description'] = description
+        yield item

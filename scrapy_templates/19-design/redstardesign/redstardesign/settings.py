@@ -64,10 +64,13 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'redstardesign.pipelines.RedstardesignPipeline': 300,
-#}
-
+ITEM_PIPELINES = {
+   'redstardesign.pipelines.RedstardesignPipeline': 200,
+    'redstardesign.pipelines.DownlodImagePipeline': 300
+}
+import os
+CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+FILES_STORE = os.path.join(CURRENT_DIR, 'images')
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
