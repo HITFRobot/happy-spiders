@@ -40,14 +40,14 @@ class DesignSpider(scrapy.Spider):
     #             '原创奖银奖': 9,
     #             '优秀设计师奖': 10}
     # 上面的一个一个往里面加,但是0-10的顺序不能变
-    awardnum = {'优秀设计师奖': 10}
+    awardnum = {'至尊金奖': 0,}
     headers = {
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'Connection': 'keep-alive',
-        'Cookie': 'ASP.NET_SessionId=a01rcs45gkechneweavvnz45; UM_distinctid=163d3fc2a81a9-0f9784b7c2a90a-3a760e5d-1aeaa0-163d3fc2a82340; CNZZDATA1000368224=1350957283-1528265226-%7C1528270679; support@hongru.com=lao=15',
+        'Cookie': 'ASP.NET_SessionId=a01rcs45gkechneweavvnz45; UM_distinctid=163d3fc2a81a9-0f9784b7c2a90a-3a760e5d-1aeaa0-163d3fc2a82340; CNZZDATA1000368224=1350957283-1528265226-%7C1528335400; support@hongru.com=lao=42',
         'Host': 'www.redstaraward.org',
         'Origin': 'http://www.redstaraward.org',
         'Referer': 'http://www.redstaraward.org/museum/new_award.html',
@@ -56,10 +56,10 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        this_year = '2017'
+        this_year = '2016'  # 14 -17
         form_data_one = {
             'cmd': 'getProTypeList',
-            'type': '0',
+            'type': '1',
             'yearid': self.year_id[this_year]
         }
         yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
@@ -81,7 +81,7 @@ class DesignSpider(scrapy.Spider):
                 'cmd': 'getProList',
                 'page': str(page_num),
                 'key': key,
-                'type': '0',
+                'type': '1',
                 'yearid': self.year_id[this_year]
             }
             yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
