@@ -28,8 +28,19 @@ class DesignSpider(scrapy.Spider):
         '2006': '810'
     }
     award = ['至尊金奖', '银奖', '最佳团队奖', '原创奖金奖', '原创奖', '未来之星奖', '金奖', '红星奖', '最佳新人奖', '原创奖银奖', '优秀设计师奖']
-    awardnum = {'至尊金奖': 0, '银奖': 1, '最佳团队奖': 2, '原创奖金奖': 3, '原创奖': 4, '未来之星奖': 5, '金奖': 6, '红星奖': 7, '最佳新人奖': 8,
-                '原创奖银奖': 9, '优秀设计师奖': 10}
+    # awardnum = {'至尊金奖': 0,
+    #             '银奖': 1,
+    #             '最佳团队奖': 2,
+    #             '原创奖金奖': 3,
+    #             '原创奖': 4,
+    #             '未来之星奖': 5,
+    #             '金奖': 6,
+    #             '红星奖': 7,
+    #             '最佳新人奖': 8,
+    #             '原创奖银奖': 9,
+    #             '优秀设计师奖': 10}
+    # 上面的一个一个往里面加,但是0-10的顺序不能变
+    awardnum = {'优秀设计师奖': 10}
     headers = {
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate',
@@ -95,7 +106,7 @@ class DesignSpider(scrapy.Spider):
             total_pages = int(re.findall(".*value\)>(.*)\)\{alert.*", pages_html)[0])
         except:
             total_pages = 0
-        print('total pages:', total_pages)
+        print('total pages:', key, total_pages)
 
         soup = BeautifulSoup(html, "html.parser")
         urls = soup.select('p > a')
@@ -104,6 +115,7 @@ class DesignSpider(scrapy.Spider):
             yield Request(url=url_past + url.get('href'), meta={'this_year': this_year, 'award_name': key, 'num': num},
                           headers=self.headers, callback=self.detail_parse)
         if total_pages > 1 and page_num < total_pages:
+            print('current page:', page_num)
             page_num += 1
             print('will crawl the page_num:', page_num)
             form_data = {
