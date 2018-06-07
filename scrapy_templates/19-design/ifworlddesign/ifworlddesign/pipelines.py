@@ -37,7 +37,7 @@ class DownlodImagePipeline(FilesPipeline):
 
 class DesignPipeline(object):
     def __init__(self):
-        self.file = os.path.join(data_dir, '1955.xlsx')
+        self.file = os.path.join(data_dir, '2017.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
 
@@ -102,7 +102,7 @@ class DesignPipeline(object):
         all_data.append(description)
         self.ws.append(all_data)
         self.excel.save(self.file)
-        yield item
+        return item
 
     def close_spider(self, spider):
         self.excel.close()
