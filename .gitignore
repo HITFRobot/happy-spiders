@@ -3,9 +3,7 @@
 .vscode
 __pycache__/
 logs
-celerybeat-schedule.db
 .env
-config/conf.yaml
 *.pyc
 .cache/
 */.cache/
