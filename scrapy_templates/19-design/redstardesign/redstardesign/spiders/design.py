@@ -28,19 +28,18 @@ class DesignSpider(scrapy.Spider):
         '2006': '810'
     }
     award = ['至尊金奖', '银奖', '最佳团队奖', '原创奖金奖', '原创奖', '未来之星奖', '金奖', '红星奖', '最佳新人奖', '原创奖银奖', '优秀设计师奖']
-    # awardnum = {'至尊金奖': 0,
-    #             '银奖': 1,
-    #             '最佳团队奖': 2,
-    #             '原创奖金奖': 3,
-    #             '原创奖': 4,
-    #             '未来之星奖': 5,
-    #             '金奖': 6,
-    #             '红星奖': 7,
-    #             '最佳新人奖': 8,
-    #             '原创奖银奖': 9,
-    #             '优秀设计师奖': 10}
-    # 上面的一个一个往里面加,但是0-10的顺序不能变
-    awardnum = {'至尊金奖': 0,}
+    awardnum = {'至尊金奖': 0,
+                '银奖': 1,
+                '最佳团队奖': 2,
+                '原创奖金奖': 3,
+                '原创奖': 4,
+                '未来之星奖': 5,
+                '金奖': 6,
+                '红星奖': 7,
+                '最佳新人奖': 8,
+                '原创奖银奖': 9,
+                '优秀设计师奖': 10}
+
     headers = {
         'Accept': '*/*',
         'Accept-Encoding': 'gzip, deflate',
@@ -87,7 +86,8 @@ class DesignSpider(scrapy.Spider):
             }
             yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
                                      formdata=form_data,
-                                     meta={'this_year': this_year, 'award_name': key, 'num': temp[self.awardnum[key]], 'page_num': page_num},
+                                     meta={'this_year': this_year, 'award_name': key, 'num': temp[self.awardnum[key]],
+                                           'page_num': page_num},
                                      callback=self.parse)
 
     def parse(self, response):
