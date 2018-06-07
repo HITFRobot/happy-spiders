@@ -164,9 +164,17 @@ class DesignSpider(scrapy.Spider):
 
         try:
             # 产品介绍
-            description = response.css('.zuopin > div:nth-child(6) > div::text').extract_first()
-            if description == '\r\n':
-                description = response.css('.zuopin > div:nth-child(6) > div > p:nth-child(1)::text').extract_first()
+            description = response.xpath('/html/body/div[2]/div[2]/div[2]/div/div/div[6]').xpath('string(.)').extract_first().strip()
+            try:
+                description = re.sub('\s', '', description)
+                description = description.replace('产品介绍：', '')
+            except:
+                pass
+            # if description == '\r\n':
+            #     description = response.css('.zuopin > div:nth-child(6) > div > p:nth-child(1)::text').extract_first()
+            # if description is None:
+            #     description = response.css(
+            #         'body > div.cont > div.cont_c.fl > div.only > div > div > div:nth-child(6) > div > p > span::text').extract_first()
         except:
             description = ''
 
