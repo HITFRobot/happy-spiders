@@ -17,7 +17,7 @@ data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 class RedstardesignPipeline(object):
     def __init__(self):
-        self.file = os.path.join(data_dir, '2016.xlsx')
+        self.file = os.path.join(data_dir, '2014.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
 
@@ -26,7 +26,7 @@ class RedstardesignPipeline(object):
         awards_name = item['awards_name']
         num = item['num']
         # img_path = item['img_path'].split('/')[-1]
-        img_path = item['design_name']+ item['img_path'].split('/')[-1] + '.jpg'
+        img_path = item['design_name']+ item['img_path'].split('/')[-1]
         design_name = item['design_name']
         productor_name = item['product_name']
         design_unit = item['design_unit']
@@ -53,5 +53,5 @@ class DownlodImagePipeline(FilesPipeline):
     def file_path(self, request, response=None, info=None):
         img_name = re.sub('/', '_', request.meta['img_name'])
         year = request.meta['year']
-        path = '%s/%s.jpg' % (year, img_name)
+        path = '%s/%s' % (year, img_name)
         return path
