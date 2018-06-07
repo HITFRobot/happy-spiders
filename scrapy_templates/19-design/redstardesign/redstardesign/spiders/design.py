@@ -55,7 +55,7 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        this_year = '2015'  # 14 -17
+        this_year = '2014'  # 14 -17
         form_data_one = {
             'cmd': 'getProTypeList',
             'type': '1',
@@ -109,10 +109,13 @@ class DesignSpider(scrapy.Spider):
         print('total pages:', key, total_pages)
 
         soup = BeautifulSoup(html, "html.parser")
+        img_paths = soup.select('a > img')
         urls = soup.select('p > a')
-        for url in urls:
+        for url, img_path in zip(urls, img_paths):
             print(url.get('href'))
-            yield Request(url=url_past + url.get('href'), meta={'this_year': this_year, 'award_name': key, 'num': num},
+
+            yield Request(url=url_past + url.get('href'),
+                          meta={'this_year': this_year, 'award_name': key, 'num': num, 'img_path': img_path.get('src')},
                           headers=self.headers, callback=self.detail_parse)
         if total_pages > 1 and page_num < total_pages:
             print('current page:', page_num)
@@ -131,13 +134,7 @@ class DesignSpider(scrapy.Spider):
                                      callback=self.parse)
 
     def detail_parse(self, response):
-
-        try:
-            # 图片路径
-            img_path = response.css('.only img::attr(src)').extract_first()
-        except:
-            img_path = ''
-
+        img_path = response.meta['img_path']
         try:
             # 作品名称
             design_name = response.css('.zuopin > div:nth-child(1) > div::text').extract_first()
@@ -164,17 +161,18 @@ class DesignSpider(scrapy.Spider):
 
         try:
             # 产品介绍
-            description = response.xpath('/html/body/div[2]/div[2]/div[2]/div/div/div[6]').xpath('string(.)').extract_first().strip()
+            description = response.xpath('/html/body/div[2]/div[2]/div[2]/div/div/div[6]').xpath(
+                'string(.)').extract_first().strip()
             try:
                 description = re.sub('\s', '', description)
                 description = description.replace('产品介绍：', '')
             except:
                 pass
-            # if description == '\r\n':
-            #     description = response.css('.zuopin > div:nth-child(6) > div > p:nth-child(1)::text').extract_first()
-            # if description is None:
-            #     description = response.css(
-            #         'body > div.cont > div.cont_c.fl > div.only > div > div > div:nth-child(6) > div > p > span::text').extract_first()
+                # if description == '\r\n':
+                #     description = response.css('.zuopin > div:nth-child(6) > div > p:nth-child(1)::text').extract_first()
+                # if description is None:
+                #     description = response.css(
+                #         'body > div.cont > div.cont_c.fl > div.only > div > div > div:nth-child(6) > div > p > span::text').extract_first()
         except:
             description = ''
 
