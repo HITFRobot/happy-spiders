@@ -66,7 +66,7 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'redstardesign.pipelines.RedstardesignPipeline': 200,
-    'redstardesign.pipelines.DownlodImagePipeline': 300
+    # 'redstardesign.pipelines.DownlodImagePipeline': 300
 }
 import os
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
