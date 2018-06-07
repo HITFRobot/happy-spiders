@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for design project
+# Scrapy settings for redstardesign project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'ifworlddesign'
+BOT_NAME = 'redstardesign'
 
-SPIDER_MODULES = ['ifworlddesign.spiders']
-NEWSPIDER_MODULE = 'ifworlddesign.spiders'
+SPIDER_MODULES = ['redstardesign.spiders']
+NEWSPIDER_MODULE = 'redstardesign.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'design (+http://www.yourdomain.com)'
+#USER_AGENT = 'redstardesign (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -47,15 +47,14 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'design.middlewares.DesignSpiderMiddleware': 543,
+#    'redstardesign.middlewares.RedstardesignSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-   # 'design.middlewares.DesignDownloaderMiddleware': 543,
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware' : 543
-}
+#DOWNLOADER_MIDDLEWARES = {
+#    'redstardesign.middlewares.RedstardesignDownloaderMiddleware': 543,
+#}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -66,11 +65,11 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'ifworlddesign.pipelines.DesignPipeline': 300,
-   #'ifworlddesign.pipelines.DownlodImagePipeline': 400
+   'redstardesign.pipelines.RedstardesignPipeline': 200,
+    'redstardesign.pipelines.DownlodImagePipeline': 300
 }
 import os
-CURRENT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 FILES_STORE = os.path.join(CURRENT_DIR, 'images')
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -92,6 +91,3 @@ FILES_STORE = os.path.join(CURRENT_DIR, 'images')
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-RETRY_ENABLED = True
-RETRY_TIMES = 10
-RETRY_HTTP_CODECS = [500, 503, 504, 400, 403, 404, 408]
