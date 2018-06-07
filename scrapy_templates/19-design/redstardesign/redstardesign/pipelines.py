@@ -17,7 +17,7 @@ data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 class RedstardesignPipeline(object):
     def __init__(self):
-        self.file = os.path.join(data_dir, '2016.xlsx')
+        self.file = os.path.join(data_dir, '2015.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
 
@@ -43,7 +43,7 @@ class RedstardesignPipeline(object):
 
 class DownlodImagePipeline(FilesPipeline):
     def get_media_requests(self, item, info):
-        host = 'http://www.redstaraward.org/'
+        host = 'http://www.redstaraward.org'
         img_path = host + item['img_path']
         year = item['year']
         yield scrapy.Request(url=img_path, meta={'img_path': img_path,'year':year})
@@ -52,5 +52,5 @@ class DownlodImagePipeline(FilesPipeline):
         img_path = request.meta['img_path']
         year = request.meta['year']
         img_name = img_path.split('/')[-1]
-        path = '%s/%s.jpg' % (year,img_name)
+        path = '%s/%s' % (year,img_name)
         return path
