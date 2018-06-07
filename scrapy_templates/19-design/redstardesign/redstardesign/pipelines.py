@@ -45,10 +45,12 @@ class DownlodImagePipeline(FilesPipeline):
     def get_media_requests(self, item, info):
         host = 'http://www.redstaraward.org/'
         img_path = host + item['img_path']
-        yield scrapy.Request(url=img_path, meta={'img_path': img_path})
+        year = item['year']
+        yield scrapy.Request(url=img_path, meta={'img_path': img_path,'year':year})
 
     def file_path(self, request, response=None, info=None):
         img_path = request.meta['img_path']
+        year = request.meta['year']
         img_name = img_path.split('/')[-1]
-        path = '%s.jpg' % img_name
+        path = '%s/%s.jpg' % (year,img_name)
         return path
