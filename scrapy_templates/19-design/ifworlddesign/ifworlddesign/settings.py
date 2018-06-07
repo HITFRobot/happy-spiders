@@ -52,9 +52,10 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'design.middlewares.DesignDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'design.middlewares.DesignDownloaderMiddleware': 543,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware' : 543
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -91,3 +92,6 @@ FILES_STORE = os.path.join(CURRENT_DIR, 'images')
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+RETRY_ENABLED = True
+RETRY_TIMES = 10
+RETRY_HTTP_CODECS = [500, 503, 504, 400, 403, 404, 408]

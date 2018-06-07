@@ -11,8 +11,8 @@ from ..items import RedstardesignItem
 
 class DesignSpider(scrapy.Spider):
     name = 'redstarspider'
-    global page_num
-    page_num = 1
+    # global page_num
+    # page_num = 1
     year_id = {
         '2017': '5773',
         '2016': '5452',
@@ -75,7 +75,8 @@ class DesignSpider(scrapy.Spider):
             temp.append(num.text.split('个')[0])
         for key, value in self.awardnum.items():
             print(key, temp[self.awardnum[key]])
-            global page_num
+            # global page_num
+            # 为了get总页数
             page_num = 1
             form_data = {
                 'cmd': 'getProList',
@@ -86,11 +87,13 @@ class DesignSpider(scrapy.Spider):
             }
             yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
                                      formdata=form_data,
-                                     meta={'this_year': this_year, 'award_name': key, 'num': temp[self.awardnum[key]]},
+                                     meta={'this_year': this_year, 'award_name': key, 'num': temp[self.awardnum[key]], 'page_num': page_num},
                                      callback=self.parse)
 
     def parse(self, response):
-        global page_num
+        # global page_num
+        # page_num 即为current_page
+        page_num = response.meta['page_num']
         this_year = response.meta.get('this_year')
         key = response.meta.get('award_name')
         num = response.meta.get('num')
@@ -99,6 +102,7 @@ class DesignSpider(scrapy.Spider):
         html = unicode_trans(design_lists)
         pages_html = unicode_trans(response.text.split(',')[3])
         try:
+            # get the total_pages
             total_pages = int(re.findall(".*value\)>(.*)\)\{alert.*", pages_html)[0])
         except:
             total_pages = 0
@@ -110,19 +114,20 @@ class DesignSpider(scrapy.Spider):
             print(url.get('href'))
             yield Request(url=url_past + url.get('href'), meta={'this_year': this_year, 'award_name': key, 'num': num},
                           headers=self.headers, callback=self.detail_parse)
-        if total_pages > 1 and page_num <= total_pages:
+        if total_pages > 1 and page_num < total_pages:
             print('current page:', page_num)
             page_num += 1
+            print('will crawl the page_num:', page_num)
             form_data = {
                 'cmd': 'getProList',
                 'page': str(page_num),
                 'key': key,
-                'type': '0',
+                'type': '1',
                 'yearid': self.year_id[this_year]
             }
             yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
                                      formdata=form_data,
-                                     meta={'this_year': this_year, 'award_name': key, 'num': num},
+                                     meta={'this_year': this_year, 'award_name': key, 'num': num, 'page_num': page_num},
                                      callback=self.parse)
 
     def detail_parse(self, response):
