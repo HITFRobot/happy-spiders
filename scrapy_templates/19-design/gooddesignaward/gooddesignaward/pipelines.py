@@ -47,6 +47,7 @@ class ExcelPipeline(object):
         self.file = None
         self.excel = None
         self.ws = None
+        self.numbers = set()
 
     def process_item(self, item, spider):
         year = item['year']
@@ -79,6 +80,9 @@ class ExcelPipeline(object):
         for i in range(7 - len(images)):
             images.append('')
 
+        if number in self.numbers:
+            return item
+        self.numbers.add(number)
         entry = [year, award, name, business, category, company, number, outline,
                     producer, director, designer, information, date] + images
         self.ws.append(entry)
