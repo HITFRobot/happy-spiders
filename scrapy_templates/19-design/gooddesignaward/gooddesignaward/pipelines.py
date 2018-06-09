@@ -54,7 +54,6 @@ class ExcelPipeline(object):
             if self.file is not None:
                 self.excel.close()
             self.file = os.path.join(data_dir, str(year)+'.xlsx')
-            os.remove(self.file)
             if not os.path.isfile(self.file):
                 shutil.copy(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../demo.xlsx'),
                             os.path.join(data_dir, str(year) + '.xlsx'))

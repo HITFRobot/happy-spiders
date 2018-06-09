@@ -10,7 +10,6 @@ import re
 class DesignSpider(scrapy.Spider):
     name = 'design'
     # allowed_domains = ['http://www.g-mark.org/award/search?from=2016&to=2016&prizeCode=GOLD&keyword=']
-    # start_urls = ['http://http://www.g-mark.org/award/search?from=2016&to=2016&prizeCode=GOLD&keyword=/']
     code_name_map = {
         'GOLD': 'Good Design Gold Award',
         'GRAND': 'Good Design Grand Award',
@@ -45,6 +44,7 @@ class DesignSpider(scrapy.Spider):
         'JIDPO_INSTRUCTION': 'JIDPO Special Prize -Prize for Instruction of Domestic Media Equipment-',
         'JIDPO_ECOLOGY': 'JIDPO Special Prize -Prize for Ecology-Conscious Products-'
     }
+    # start_urls = ['http://http://www.g-mark.org/award/search?from=2016&to=2016&prizeCode=GOLD&keyword=/']
 
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -62,19 +62,36 @@ class DesignSpider(scrapy.Spider):
     def start_requests(self):
         for year in range(1957, 2018):  # 遍历年份
             for code in self.code_name_map:
-                url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year,
-                                                                                                      code)
-                yield Request(url=url, headers=self.headers, callback=self.parse,
+                url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
+                yield Request(url=url, headers=self.headers, callback=self.parse_award,
                               meta={'year': year, 'code': code})
-                # time.sleep(random.randint(10, 20))
+            # time.sleep(random.randint(10, 20))
+            # 其他奖项
+            yield Request(url='http://www.g-mark.org/award/search/standard?year={}&lastAwardNo='.format(year),
+                          callback=self.parse_more, meta={'year': year})
 
-    def parse(self, response):
-        item_urls = response.xpath('//*[@id="result"]/section/section').css(
-            'li > a[data-pjax="#result"]::attr(href)').extract()
+    def parse_award(self, response):
+        item_urls = response.css('.itemList > li > a[data-pjax="#result"]::attr(href)').extract()
         for item_url in item_urls:
-            yield Request(url=parse.urljoin(response.url, item_url), headers=self.headers, callback=self.parse_detail,
-                          meta={'year': response.meta['year'],
-                                'code': response.meta['code']})
+            yield Request(url=parse.urljoin(response.url, item_url),
+                          headers=self.headers, callback=self.parse_detail,
+                          meta={'year': response.meta['year'], 'code': response.meta['code']})
+
+    def parse_more(self, response):
+        if 'Nothing matched to the condition.' in response.text:
+            return
+        item_urls = response.css('.itemList > li > a[data-pjax="#result"]::attr(href)').extract()
+        for item_url in item_urls:
+            yield Request(url=parse.urljoin(response.url, item_url),
+                          headers=self.headers, callback=self.parse_detail,
+                          meta={'year': response.meta['year']})
+        ## 再次点击more
+        last_url = response.css('.itemList > li:last-child > a > figure > img::attr(data-original)').extract_first()
+        lastNum = last_url.split('/')[-2]
+        yield Request(url='http://www.g-mark.org/award/search/standard?year={}&lastAwardNo={}'
+                      .format(response.meta['year'], lastNum),
+                      callback=self.parse_more,
+                      meta={'year': response.meta['year']})
 
     def parse_detail(self, response):
         item = GooddesignawardItem()
@@ -87,7 +104,10 @@ class DesignSpider(scrapy.Spider):
             year = response.meta['year']
         # 2. 奖项名称
         try:
-            award = self.code_name_map[response.meta['code']]
+            if 'code' in response.meta:
+                award = self.code_name_map[response.meta['code']]
+            else:
+                award = response.css('#detailArea > section > h2 > img::attr(alt)').extract_first()
         except:
             award = ''
         name = ''
@@ -193,6 +213,8 @@ class DesignSpider(scrapy.Spider):
                 date = ''
         try:
             image_urls = response.css('#mainphoto > ul.thumnail > li > a > img::attr(src)').extract()
+            if image_urls is None or len(image_urls) == 0:
+                image_urls = response.css('#mainphoto > ul > li > a > img::attr(src)').extract()
             images = [url for url in image_urls if 'youtube' not in url]
         except:
             images = []

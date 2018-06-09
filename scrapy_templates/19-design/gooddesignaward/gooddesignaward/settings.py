@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'gooddesignaward.pipelines.DownlodImagePipeline': 300,
+   # 'gooddesignaward.pipelines.DownlodImagePipeline': 300,
    'gooddesignaward.pipelines.ExcelPipeline': 400,
 }
 import os
