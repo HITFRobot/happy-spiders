@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request
-from items import GooddesignawardItem
+from ..items import GooddesignawardItem
 from urllib import parse
-from utils import *
+from ..utils import *
 import re
 
 
@@ -60,7 +60,7 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for year in range(1981, 1982):  # 遍历年份
+        for year in range(2017, 2018):  # 遍历年份
             for code in self.code_name_map:
                 url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
                 yield Request(url=url, headers=self.headers, callback=self.parse_award,
