@@ -11,9 +11,39 @@ class DesignSpider(scrapy.Spider):
     name = 'design'
     # allowed_domains = ['http://www.g-mark.org/award/search?from=2016&to=2016&prizeCode=GOLD&keyword=']
     # start_urls = ['http://http://www.g-mark.org/award/search?from=2016&to=2016&prizeCode=GOLD&keyword=/']
-    codes = ['GOLD']
     code_name_map = {
         'GOLD': 'Good Design Gold Award',
+        'GRAND': 'Good Design Grand Award',
+        'FUTURE_DESIGN': 'Good Design Special Award [Design for the Future]',
+        'SME': 'Good Design Prize of Small and Medium Enterprises',
+        'JCCI': 'Good Design Prize of the Japan Chamber of Commerce and Industry',
+        'JDP_CHAIRMAN': 'Good Design Special Award [Disaster Recovery Design]',
+        'BEST100': 'Good Design Best100',
+        'LONGLIFE': 'Good Design Long Life Design Award',
+        'JDP_GLOBAL_DESIGN_2013': 'Global Design 2013',
+        'LONGLIFE_SPECIAL': 'Good Design Long Life Design Special Award',
+        'SUSTAINABLE_DESIGN': 'Good Design Sustainable Design Award',
+        'FRONTIER': 'Good Design Frontier Design Award',
+        'LIFE_SCAPE_DESIGN': 'Good Design Life-Scape Design Award',
+        'UNIVERSAL_DESIGN': 'Universal Design Prize',
+        'ECOLOGY_DESIGN': 'Ecology Design Prize',
+        'INTERACTION_DESIGN': 'Interaction Design Prize',
+        'JUDGEING_COMMITTEE_CHAIRMAN': 'Good Design Special Award of Judging Committee Chairman',
+        'DESIGN_MANAGEMENT': 'Design Management Prize',
+        'MEDIA_DESIGN': 'Media Design Prize',
+        'PRESENTATION': 'Good Design Presentation Special Prize',
+        'URBAN_DESIGN': 'Urban Design Prize',
+        'ANNUAL_MANAGEMENT': 'Annual Management Prize',
+        'SME_20TH': '20th Anniversary Prize for Small and Medium Enterprises',
+        'MITI_20TH': '20th Anniversary Prize of Minister of Ministry of International Trade and Industry',
+        'ITA_20TH': '20th Anniversary Prize of International Trade Administration Bureau',
+        'LONGLIFE_20TH': '20th Anniversary Prize for Long-selling',
+        'INTERFACE': 'Prize for Interface',
+        'FOREIGN_PRODUCTS': 'Prize for Foreign Products',
+        'LANDSCAPE': 'Prize for Items in Harmony with the Landscape',
+        'SOCIAL_CONSCIOUS_PRODUCTS': 'Prize for Social-Conscious Products',
+        'JIDPO_INSTRUCTION': 'JIDPO Special Prize -Prize for Instruction of Domestic Media Equipment-',
+        'JIDPO_ECOLOGY': 'JIDPO Special Prize -Prize for Ecology-Conscious Products-'
     }
 
     headers = {
@@ -30,8 +60,8 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for year in range(2016, 2017):  # 遍历年份
-            for code in self.codes:
+        for year in range(1957, 2018):  # 遍历年份
+            for code in self.code_name_map:
                 url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year,
                                                                                                       code)
                 yield Request(url=url, headers=self.headers, callback=self.parse,

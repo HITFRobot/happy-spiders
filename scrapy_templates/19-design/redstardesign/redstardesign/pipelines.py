@@ -17,7 +17,7 @@ data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 class RedstardesignPipeline(object):
     def __init__(self):
-        self.file = os.path.join(data_dir, '2006.xlsx')
+        self.file = os.path.join(data_dir, '2014.xlsx')
         self.excel = load_workbook(self.file)
         self.ws = self.excel.active
 
@@ -36,6 +36,8 @@ class RedstardesignPipeline(object):
         all_data = [year, awards_name, num, design_name, productor_name, design_unit, awards, description, img_path]
         # self.ws.append(all_data)
         # self.excel.save(self.file)
+        self.ws.append(all_data)
+        self.excel.save(self.file)
         return item
 
     def close_spider(self, spider):

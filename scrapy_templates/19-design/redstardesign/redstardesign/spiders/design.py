@@ -56,6 +56,7 @@ class DesignSpider(scrapy.Spider):
 
     def start_requests(self):
         this_year = '2009'  # 14 -17
+
         form_data_one = {
             'cmd': 'getProTypeList',
             'type': '1',
