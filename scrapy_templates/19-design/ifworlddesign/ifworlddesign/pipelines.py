@@ -16,7 +16,6 @@ import sys
 data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 
-
 class DownlodImagePipeline(FilesPipeline):
     def get_media_requests(self, item, info):
         year = item['time']
