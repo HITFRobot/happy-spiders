@@ -13,6 +13,11 @@ import shutil
 
 
 data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
+images_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../images')
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+if not os.path.exists(images_dir):
+    os.makedirs(images_dir)
 
 
 class DownlodImagePipeline(FilesPipeline):
