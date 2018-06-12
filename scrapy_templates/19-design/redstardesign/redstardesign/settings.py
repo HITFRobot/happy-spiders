@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'redstardesign.pipelines.RedstardesignPipeline': 200,
+   # 'redstardesign.pipelines.RedstardesignPipeline': 200,
     'redstardesign.pipelines.DownlodImagePipeline': 300
 }
 import os

@@ -66,7 +66,7 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'gooddesignaward.pipelines.DownlodImagePipeline': 300,
-   #'gooddesignaward.pipelines.ExcelPipeline': 400,
+   'gooddesignaward.pipelines.ExcelPipeline': 400,
 }
 import os
 CURRENT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))

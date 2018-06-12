@@ -60,7 +60,9 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for year in range(1987, 2000):  # 遍历年份
+
+        for year in range(2017, 2018):  # 遍历年份
+
             for code in self.code_name_map:
                 url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
                 yield Request(url=url, headers=self.headers, callback=self.parse_award,
@@ -205,8 +207,8 @@ class DesignSpider(scrapy.Spider):
                 information = ''
             # 13. 投放市场时间
             try:
-                if 'Already on the market' in cur.xpath('string(.)').extract_first() \
-                        or '発売' in cur.xpath('string(.)').extract_first():
+                if 'Already on the market' in cur.xpath('string(.)').extract_first() or '発売' in cur.xpath(
+                        'string(.)').extract_first():
                     next = elements[i + 1]
                     date = next.xpath('string(.)').extract_first()
             except:

@@ -34,6 +34,8 @@ class RedstardesignPipeline(object):
         description = item['description']
 
         all_data = [year, awards_name, num, design_name, productor_name, design_unit, awards, description, img_path]
+        # self.ws.append(all_data)
+        # self.excel.save(self.file)
         self.ws.append(all_data)
         self.excel.save(self.file)
         return item
