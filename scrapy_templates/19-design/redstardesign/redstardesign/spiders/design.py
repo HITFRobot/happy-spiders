@@ -55,10 +55,10 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        this_year = '2014'  # 14 -17
+        this_year = '2017'  # 14 -17
         form_data_one = {
             'cmd': 'getProTypeList',
-            'type': '1',
+            'type': '0',
             'yearid': self.year_id[this_year]
         }
         yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
@@ -81,7 +81,7 @@ class DesignSpider(scrapy.Spider):
                 'cmd': 'getProList',
                 'page': str(page_num),
                 'key': key,
-                'type': '1',
+                'type': '0',
                 'yearid': self.year_id[this_year]
             }
             yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
@@ -125,7 +125,7 @@ class DesignSpider(scrapy.Spider):
                 'cmd': 'getProList',
                 'page': str(page_num),
                 'key': key,
-                'type': '1',
+                'type': '0',
                 'yearid': self.year_id[this_year]
             }
             yield scrapy.FormRequest(url='http://www.redstaraward.org/ajax/AjaxHandler_HXJGW_GW.ashx',
