@@ -10,7 +10,7 @@ import re
 class DesignSpider(scrapy.Spider):
     name = 'design'
     # allowed_domains = ['http://www.g-mark.org/award/search?from=2016&to=2016&prizeCode=GOLD&keyword=']
-    code_name_map = {
+    code_name_up_map = {
         'GOLD': 'Good Design Gold Award',
         'GRAND': 'Good Design Grand Award',
         'FUTURE_DESIGN': 'Good Design Special Award [Design for the Future]',
@@ -19,6 +19,8 @@ class DesignSpider(scrapy.Spider):
         'JDP_CHAIRMAN': 'Good Design Special Award [Disaster Recovery Design]',
         'BEST100': 'Good Design Best100',
         'LONGLIFE': 'Good Design Long Life Design Award',
+    }
+    code_name_down_map = {
         'JDP_GLOBAL_DESIGN_2013': 'Global Design 2013',
         'LONGLIFE_SPECIAL': 'Good Design Long Life Design Special Award',
         'SUSTAINABLE_DESIGN': 'Good Design Sustainable Design Award',
@@ -60,15 +62,22 @@ class DesignSpider(scrapy.Spider):
     }
 
     def start_requests(self):
-        for year in range(2017, 2018):  # 遍历年份
-            for code in self.code_name_map:
+        # code_name_up_map 这些奖项，按年份抓取
+        for year in range(1957, 2018):  # 遍历年份
+            for code in self.code_name_up_map:
                 url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
                 yield Request(url=url, headers=self.headers, callback=self.parse_award,
                               meta={'year': year, 'code': code})
             # time.sleep(random.randint(10, 20))
             # 其他奖项
-            yield Request(url='http://www.g-mark.org/award/search/standard?year={}&lastAwardNo='.format(year),
-                          callback=self.parse_more, meta={'year': year})
+            # yield Request(url='http://www.g-mark.org/award/search/standard?year={}&lastAwardNo='.format(year),
+            #               callback=self.parse_more, meta={'year': year})
+        # code_name_down_map 这些奖项，按照奖项抓取
+        # for code in self.code_name_down_map:
+        #     for year in range(1957, 2018):
+        #         url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
+        #         yield Request(url=url, headers=self.headers, callback=self.parse_award,
+        #                       meta={'year': year, 'code': code})
 
     def parse_award(self, response):
         item_urls = response.css('.itemList > li > a[data-pjax="#result"]::attr(href)').extract()
@@ -105,7 +114,7 @@ class DesignSpider(scrapy.Spider):
         # 2. 奖项名称
         try:
             if 'code' in response.meta:
-                award = self.code_name_map[response.meta['code']]
+                award = self.code_name_up_map[response.meta['code']]
             else:
                 award = response.css('#detailArea > section > h2 > img::attr(alt)').extract_first()
         except:
@@ -203,14 +212,12 @@ class DesignSpider(scrapy.Spider):
                     information = clean_text(information)
             except:
                 information = ''
-            # 13. 投放市场时间
-            try:
-                if 'Already on the market' in cur.xpath('string(.)').extract_first() \
-                    or '発売' in cur.xpath('string(.)').extract_first():
-                    next = elements[i + 1]
-                    date = next.xpath('string(.)').extract_first()
-            except:
-                date = ''
+        # 13. 投放市场时间
+        try:
+            if re.match('^\d{4}', elements[-1].xpath('string(.)').extract_first()):
+                date = elements[-1].xpath('string(.)').extract_first()
+        except:
+            date = ''
         try:
             image_urls = response.css('#mainphoto > ul.thumnail > li > a > img::attr(src)').extract()
             if image_urls is None or len(image_urls) == 0:
