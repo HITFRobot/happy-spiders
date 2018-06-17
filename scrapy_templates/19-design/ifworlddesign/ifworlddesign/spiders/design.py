@@ -32,8 +32,10 @@ class DesignsSpider(scrapy.Spider):
     cursor = 30
 
     def start_requests(self):
-        for year in range(1975, 1976):  # 1954 - 1975
-            url = 'https://ifworlddesignguide.com/design-excellence?time_min=' + str(year) + '&time_max=' + str(year)
+        for year in range(1996, 1997):  # 1954 - 1975
+            # url = 'https://ifworlddesignguide.com/design-excellence?time_min=' + str(year) + '&time_max=' + str(year)
+            # url = 'https://ifworlddesignguide.com/design-excellence?filter={"filters":[{"type":"gold_awarded","ids":[1]}]}'
+            url = 'https://ifworlddesignguide.com/design-excellence?filter={"filters":[{"type":"best_of","ids":[1]}]}'
             yield Request(url=url, headers=self.headers, callback=self.parse, meta={'year': year})
             # time.sleep(random.randint(10, 20))
 
@@ -59,13 +61,14 @@ class DesignsSpider(scrapy.Spider):
                 yield Request(url='https://ifworlddesignguide.com/' + href, callback=self.parse_detail,
                               meta={'year': year})
                 # time.sleep(random.randint(0, 1))
-
             # 获得下一页请求
-            next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
-                       'time_min=' + str(year) + '&time_max=' + str(year) + '&cursor=' + str(self.cursor) + \
-                       '&lang=en&count=30&orderby=' \
-                       'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=' + str(year) + '&time_max=' + str(year) + \
-                       '&search='
+            next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?filter={"filters":[{"type":"best_of","ids":[1]}]}&cursor=' + str(
+                self.cursor) + '&lang=en&count=30&orderby=date&filter={"filters":[{"type":"best_of","ids":[1]}]}&time_min=&time_max=&search='
+            # next_url = 'https://my.ifdesign.de/WdgService/articles/design_excellence?' \
+            #            'time_min=' + str(year) + '&time_max=' + str(year) + '&cursor=' + str(self.cursor) + \
+            #            '&lang=en&count=30&orderby=' \
+            #            'date&filter=%7B%22filters%22%3A%5B%5D%7D&time_min=' + str(year) + '&time_max=' + str(year) + \
+            #            '&search='
             yield Request(url=next_url, callback=self.parse, meta={'year': year})
             self.cursor += 30
             # next_url返回json
