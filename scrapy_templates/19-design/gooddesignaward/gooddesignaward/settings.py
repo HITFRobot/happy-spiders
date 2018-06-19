@@ -65,12 +65,12 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'gooddesignaward.pipelines.DownlodImagePipeline': 300,
+   #'gooddesignaward.pipelines.DownlodImagePipeline': 300,
    'gooddesignaward.pipelines.ExcelPipeline': 400,
 }
 import os
 CURRENT_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-FILES_STORE = os.path.join(CURRENT_DIR, 'images')
+FILES_STORE = os.path.join(CURRENT_DIR, 'images/awards/')
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True

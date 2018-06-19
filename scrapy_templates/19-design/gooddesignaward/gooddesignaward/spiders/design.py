@@ -63,21 +63,22 @@ class DesignSpider(scrapy.Spider):
 
     def start_requests(self):
         # code_name_up_map 这些奖项，按年份抓取
-        for year in range(1957, 2018):  # 遍历年份
-            for code in self.code_name_up_map:
-                url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
-                yield Request(url=url, headers=self.headers, callback=self.parse_award,
-                              meta={'year': year, 'code': code})
+        # for year in range(1957, 2018):  # 遍历年份
+        #     for code in self.code_name_up_map:
+        #         url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
+        #         yield Request(url=url, headers=self.headers, callback=self.parse_award,
+        #                       meta={'year': year, 'code': code})
             # time.sleep(random.randint(10, 20))
-            # 其他奖项
-            # yield Request(url='http://www.g-mark.org/award/search/standard?year={}&lastAwardNo='.format(year),
-            #               callback=self.parse_more, meta={'year': year})
         # code_name_down_map 这些奖项，按照奖项抓取
         # for code in self.code_name_down_map:
         #     for year in range(1957, 2018):
         #         url = 'http://www.g-mark.org/award/search?from={}&to={}&prizeCode={}&keyword='.format(year, year, code)
         #         yield Request(url=url, headers=self.headers, callback=self.parse_award,
         #                       meta={'year': year, 'code': code})
+        # other
+        for year in range(1957, 2018):
+            yield Request(url='http://www.g-mark.org/award/search/standard?year={}&lastAwardNo='.format(year),
+                          callback=self.parse_more, meta={'year': year})
 
     def parse_award(self, response):
         item_urls = response.css('.itemList > li > a[data-pjax="#result"]::attr(href)').extract()
@@ -114,11 +115,11 @@ class DesignSpider(scrapy.Spider):
         # 2. 奖项名称
         try:
             if 'code' in response.meta:
-                award = self.code_name_up_map[response.meta['code']]
+                award = self.code_name_down_map[response.meta['code']]
             else:
                 award = response.css('#detailArea > section > h2 > img::attr(alt)').extract_first()
         except:
-            award = ''
+            award = 'Good Design Award'
         name = ''
         business = ''
         category = ''

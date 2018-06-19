@@ -12,8 +12,6 @@ import re
 import shutil
 
 
-data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
-images_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../images')
 year_dict = {'1957': 1, '1987': 1, '1965': 1, '2002': 1, '1977': 1, '1994': 1, '1998': 1, '1959': 1, '1967': 1,
              '1990': 1, '1986': 1, '1962': 1, '1978': 1, '1971': 1, '1984': 1, '2010': 1, '2000': 1, '2004': 1,
              '1975': 1, '1995': 1, '2014': 1, '1976': 1, '1973': 1, '1968': 1, '2005': 1, '1964': 1, '1966': 1,
@@ -23,9 +21,8 @@ year_dict = {'1957': 1, '1987': 1, '1965': 1, '2002': 1, '1977': 1, '1994': 1, '
              '1981': 1, '2006': 1, '2009': 1, '2007': 1, '1983': 1, '2016': 1, '1961': 1}
 
 
-
-data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data')
-images_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../images')
+data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data/awards/')
+images_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../images/awards/')
 
 if not os.path.exists(data_dir):
     os.makedirs(data_dir)
@@ -37,6 +34,7 @@ class DownlodImagePipeline(FilesPipeline):
     def get_media_requests(self, item, info):
         year = item['year']
         name = item['name']
+        award = item['award']
         images = item['images']
         i = 1
 
@@ -47,28 +45,31 @@ class DownlodImagePipeline(FilesPipeline):
                     year_dict[year] += 1
                     i += 1
                     yield scrapy.Request(url=img_url,
-                                         meta={'image_name': image_name, 'year': year})
+                                         meta={'image_name': image_name,
+                                               'year': year,
+                                               'award': award})
         else:
             for img_url in images:
                 if 'http' in img_url:
                     image_name = name + '_' + str(i)
                     i += 1
                     yield scrapy.Request(url=img_url,
-                                         meta={'image_name': image_name, 'year': year})
+                                         meta={'image_name': image_name,
+                                               'year': year,
+                                               'award': award})
 
-        for img_url in images:
-            if 'http' in img_url:
-                image_name = name + '_' + str(i)
-                i += 1
-                yield scrapy.Request(url=img_url,
-                                     meta={'image_name': image_name, 'year': year})
-
+        # for img_url in images:
+        #     if 'http' in img_url:
+        #         image_name = name + '_' + str(i)
+        #         i += 1
+        #         yield scrapy.Request(url=img_url,
+        #                              meta={'image_name': image_name, 'year': year})
 
     def file_path(self, request, response=None, info=None):
         image_name = request.meta['image_name']
         image_name = re.sub(r'/', ' ', image_name)
-        year = request.meta['year']
-        path = '%s/%s.jpg' % (str(year), image_name)
+        award = request.meta['award']
+        path = '%s/%s.jpg' % (str(award), image_name)
         return path
 
 
@@ -82,18 +83,18 @@ class ExcelPipeline(object):
 
     def process_item(self, item, spider):
         year = item['year']
+        award = item['award']
         if self.file is None or year not in self.file:
             if self.file is not None:
                 self.excel.close()
-            self.file = os.path.join(data_dir, str(year)+'.xlsx')
+            self.file = os.path.join(data_dir, str(award)+'.xlsx')
 
             if not os.path.isfile(self.file):
                 shutil.copy(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../demo.xlsx'),
-                            os.path.join(data_dir, str(year) + '.xlsx'))
+                            os.path.join(data_dir, str(award) + '.xlsx'))
             self.excel = load_workbook(self.file)
             self.ws = self.excel.active
 
-        award = item['award']
         name = item['name']
         business = item['business']
         category = item['category']
