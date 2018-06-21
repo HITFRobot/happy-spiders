@@ -2,9 +2,6 @@
   <br>
   <a href="https://github.com/HITFRobot/happy-spiders">
   <img src="http://p6sh0jwf6.bkt.clouddn.com/2018-06-06-090837.jpg" width="400"></a>
-  <br>
-  数据服务小作坊
-  <br>
 </h1>
 
 <div align="center">
