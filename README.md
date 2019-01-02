@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
   <a href="https://github.com/HITFRobot/happy-spiders">
-  <img src="http://p6sh0jwf6.bkt.clouddn.com/2018-06-06-090837.jpg" width="400"></a>
+  <img src="https://media-1253434227.cos.ap-chengdu.myqcloud.com/2018-06-06-090837.jpg" width="400"></a>
 </h1>
 
 <div align="center">
